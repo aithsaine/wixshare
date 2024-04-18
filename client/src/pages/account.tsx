@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
 import api from '../tools/api'
-import { useQuery } from "react-query"
 import Loading from '../components/loading'
 import Post from '../components/post'
 
@@ -14,7 +13,7 @@ export default function Account() {
     const [user, setUser] = useState<any>()
     const [posts, setPosts] = useState([])
 
-    const [followStatus, setFollowStatus] = useState(user?.FollowStatus ?? "")
+    const [followStatus, setFollowStatus] = useState("")
     const following = async (e: any) => {
         e.preventDefault();
         try {
@@ -42,6 +41,7 @@ export default function Account() {
             const resp = await api.get(`api/getuser/${id}`)
             setUser(resp.data.user)
             setPosts(resp.data.posts)
+            setFollowStatus(resp.data.user.FollowStatus)
         }
         getUser()
     }, [])
@@ -86,7 +86,7 @@ export default function Account() {
                     {/* Buttons */}
                     <div className="flex space-x-4 justify-center">
                         {/* Follow Button */}
-                        {auth.id != user?.id && (
+                        {auth.id != user.id && (
                             followStatus == "followed" ? <button
                                 onClick={Unfollowe}
                                 className=" text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-xs py-1 px-4  text-center "  >Fllowing</button>

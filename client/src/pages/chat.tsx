@@ -22,9 +22,8 @@ export default function Chat() {
     const [selectedUserId, setSelectedUserId] = useState(urlParams.get("userid") ?? null)
     const dispatch = useDispatch()
     const markSeen = async () => {
-        const resp = await api.post(`api/chat/${auth.id}/${selectedUserId}/markseen`)
+        const resp = await api.post(`api/chat/${auth?.id}/${selectedUserId}/markseen`)
         if (resp.data.success) {
-            dispatch(markMessagesSeen(selectedUserId))
             dispatch(addNewMessages(resp.data.messages))
 
         }
@@ -35,8 +34,7 @@ export default function Chat() {
             selectedUserId && markSeen()
     }, [selectedUserId])
 
-    window.Echo.channel("messageWith." + auth.id).listen("SendMessage", function (e: any) {
-        console.log(e.message)
+    window.Echo.channel("messageWith." + auth?.id).listen("SendMessage", function (e: any) {
         dispatch(appendNewMessage(e.message))
         dispatch(addNewFriends(friends.map((elem: any) => {
             if (elem.id === e.message.sender_id && elem.id != selectedUserId) {
@@ -45,8 +43,10 @@ export default function Chat() {
             }
             return elem
         })))
+        if (e.message.sender_id == selectedUserId) {
 
-        selectedUserId && markSeen()
+            selectedUserId && markSeen()
+        }
 
     })
 
@@ -68,24 +68,24 @@ export default function Chat() {
         api.post("api/chat", {
             receiver_id: selectedUserId,
             message: newMsg
-        }).then(resp => {
+        }).then((resp: any) => {
             console.log(resp);
             dispatch(appendNewMessage(resp.data))
             setNewMsg("")
             setButtonDisabled(false)
-        }).catch(err => setButtonDisabled(false))
+        }).catch((err: any) => setButtonDisabled(false))
     }
     return (
         <section className='p-4 flex space-x-4 fixed w-full   h-[575px]  '>
-            <div className={`md:w-1/3  rounded-xl overflow-y-auto ${isDarkMode ? "bg-slate-800" : "bg-gray-200"}`}>
+            <div className={`md:w-1/3  rounded-xl overflow-y-auto ${isDarkMode ? "bg-slate-900" : "bg-gray-200"}`}>
                 {friends.map((item: any) => {
-                    return <div className={`p-1 ${selectedUserId == item.id ? "bg-sky-100" : ""}`}>
+                    return <div className={`p-1 ${selectedUserId == item.id ? "bg-green-300" : ""}`}>
                         <UserItem msgs_not_seen={messages.filter((elem: any) => elem.sender_id == item.id).filter((elem: any) => elem.seen_at == null).length} status={item.status} selectedUserId={selectedUserId} setSelectedUserId={setSelectedUserId} user={item} />
                         <hr className={`opacity-20 ${isDarkMode ? 'text-white' : "divide-neutral-950"}`} />
                     </div>
                 })}
             </div>
-            {selectedUserId && <div className={`md:w-2/3 w-full relative rounded-xl overflow-y-auto ${isDarkMode ? "bg-slate-800" : "bg-gray-200"}`}>
+            {selectedUserId && <div className={`md:w-2/3 w-full relative rounded-xl overflow-y-auto ${isDarkMode ? "bg-slate-900" : "bg-gray-200"}`}>
                 <div className="flex flex-col   absolute bottom-0 p-6 w-full " >
                     {messages && messages.sort((a: any, b: any) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)).filter((elem: any) => elem.receiver_id == selectedUserId || elem.sender_id == selectedUserId).map(
                         (item: any) => {

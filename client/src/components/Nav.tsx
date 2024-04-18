@@ -6,12 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import api from '../tools/api';
 import { Link, useNavigate } from 'react-router-dom';
 import { FEEDS, HOME } from '../routes/routes';
+import { logOut } from '../redux/actions/actionCreators';
 
 export default function Nav() {
     const { auth, friends, isDarkMode, messages } = useSelector((state: any) => state);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
-    const [image, setImage] = useState(`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth.picture}`)
+    const [image, setImage] = useState(`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}`)
     const dispatch = useDispatch()
     const [msgs_not_seen, SetMsgNotSeen] = useState(messages.filter((item: any) => item.seen_at == null) ?? 0);
     const navigate = useNavigate()
@@ -19,37 +20,39 @@ export default function Nav() {
 
 
     useEffect(() => {
-        SetMsgNotSeen(friends.reduce((previous: any, next: any) => previous + Number(next.msgs_not_seen), 0))
-    }, [friends])
+        SetMsgNotSeen(messages.filter((item: any) => item.seen_at == null).filter((item: any) => item.receiver_id == auth.id).length)
+    }, [messages])
 
 
-
-    window.Echo.channel("newMsgNotify." + auth.id).listen("MessageNotification",
+    window.Echo.channel("newMsgNotify." + auth?.id).listen("MessageNotification",
         function (e: any) {
             SetMsgNotSeen(e.countMsg)
         })
 
 
-    // useEffect(() => {
-    //     const handleClickOutside = (event: any) => {
-    //         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-    //             setIsOpen(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const handleClickOutside = (event: any) => {
+            let em: any = dropdownRef.current;
+            if (em) {
 
-    //     document.addEventListener("mousedown", handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener("mousedown", handleClickOutside);
-    //     };
-    // }, []);
+                if (!em.contains(event.target)) {
+                    setIsOpen(false);
+                }
+            }
+        };
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+
 
     const logout = async () => {
         const resp = await api.post("api/logout")
         if (resp.data.success) {
+            dispatch(logOut())
             navigate(HOME)
         }
     }
@@ -58,7 +61,7 @@ export default function Nav() {
         <>
             <nav className={`border-bottom border-black ${isDarkMode ? "bg-black shadow-sky-800" : "bg-white"}  px-6 shadow-lg  py-2 fixed w-full z-50 `}>
                 <div className="flex justify-between items-center">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex  items-center space-x-2">
                         <img className="h-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="" />
                         <SearchInput />
                     </div>
@@ -92,16 +95,16 @@ export default function Nav() {
                         <div className="">
                             <div className="ml-4 flex items-center md:ml-6">
                                 <div className="relative">
-                                    <button className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" onClick={toggleDropdown}>
+                                    <span className="flex text-sm cursor-pointer rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" onClick={e => setIsOpen(!isOpen)}>
                                         <span className="sr-only">Open user menu</span>
                                         <img className="h-10 w-10 rounded-full object-cover" src={image} alt="Profile" />
-                                    </button>
+                                    </span>
                                     {isOpen && (
-                                        <ul ref={dropdownRef} className="absolute z-50 right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg py-1 text-gray-800">
-                                            <li><a href="#" className="block px-4 py-2 hover:bg-gray-100">Profile</a></li>
-                                            <li><a href="#" className="block px-4 py-2 hover:bg-gray-100">Settings</a></li>
+                                        <ul ref={dropdownRef} className={`absolute z-50 right-0 mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-48  border  rounded-md shadow-sm py-1`}>
+                                            <li><Link to="#" className={`block px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}>Profile</Link></li>
+                                            <li><Link to="#" className={`block px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}>Settings</Link></li>
                                             <li><hr className="my-1" /></li>
-                                            <li><button onClick={logout} className="block px-4 py-2 hover:bg-gray-100">Logout</button></li>
+                                            <li><button onClick={logout} className={`block px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}>Logout</button></li>
                                         </ul>
                                     )}
                                 </div>

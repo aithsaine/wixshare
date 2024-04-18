@@ -7,6 +7,7 @@ import {
     APPENDMULTIPLEPOSTS,
     APPENDNEWMESSAGE,
     APPENDNEWPOST,
+    LOGOUT,
     MASKMESSAGESEEN,
     TOGGLELIGHTMODE
 } from "./types"
@@ -77,6 +78,11 @@ export const markMessagesSeen = (data: any) => {
     return {
         type: MASKMESSAGESEEN,
         payload: data
+    }
+}
+export const logOut = () => {
+    return {
+        type: LOGOUT
     }
 }
 

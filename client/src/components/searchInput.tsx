@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function SearchInput() {
     return (
-        <form action="/search" className=" w-full px-4">
+        <form action="/search" className=" hidden md:block w-full px-4">
             <div className="relative">
                 <input type="text" name="q" className="w-full border  shadow p-2 rounded-full dark:text-gray-800 dark:border-gray-700 dark:bg-gray-200" placeholder="search" />
                 <button type="submit">

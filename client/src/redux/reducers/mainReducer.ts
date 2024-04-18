@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, MASKMESSAGESEEN, TOGGLELIGHTMODE } from "../actions/types";
+import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, LOGOUT, MASKMESSAGESEEN, TOGGLELIGHTMODE } from "../actions/types";
 
 const initialState: any = {
     auth: null,
@@ -34,6 +34,8 @@ function mainReducer(state = initialState, action: any) {
             if (action.payload !== state.messages[state.messages.length - 1])
                 return { ...state, messages: [...state.messages, action.payload] }
             return state
+        case LOGOUT:
+            return { ...state, auth: null, messages: [], friends: [], suggests: [] }
         case MASKMESSAGESEEN:
             return {
                 ...state, friends: state.friends.map((item: any) => {
