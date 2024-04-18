@@ -8,23 +8,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FEEDS, HOME } from '../routes/routes';
 
 export default function Nav() {
-    const { auth, friends, isDarkMode } = useSelector((state: any) => state);
+    const { auth, friends, isDarkMode, messages } = useSelector((state: any) => state);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [image, setImage] = useState(`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth.picture}`)
     const dispatch = useDispatch()
-    const [msgs_not_seen, SetMsgNotSeen] = useState(0);
+    const [msgs_not_seen, SetMsgNotSeen] = useState(messages.filter((item: any) => item.seen_at == null) ?? 0);
     const navigate = useNavigate()
 
-    useEffect(() => {
-        const getUnreadedMsgs = async () => {
-            const resp = await api.get("api/messages/unreaded");
-            if (resp.status === 200) {
-                SetMsgNotSeen(resp.data)
-            }
-        }
-        getUnreadedMsgs();
-    }, [])
+
 
     useEffect(() => {
         SetMsgNotSeen(friends.reduce((previous: any, next: any) => previous + Number(next.msgs_not_seen), 0))

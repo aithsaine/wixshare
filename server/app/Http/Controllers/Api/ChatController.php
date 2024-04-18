@@ -31,7 +31,7 @@ class ChatController extends Controller
     }
 
 
-    public function markseen($receiver_id, $sender_id)
+    public function markseen(Request $request, $receiver_id, $sender_id)
     {
         $chats = Chat::where("receiver_id", $receiver_id)
             ->where("sender_id", $sender_id)
@@ -43,7 +43,7 @@ class ChatController extends Controller
             $chat->update(['seen_at' => now()]);
         });
 
-        return response()->json(["success" => true]);
+        return response()->json(["success" => true, "messages" =>  array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray())]);
     }
 
     public function getUnseenMessages(Request $request)

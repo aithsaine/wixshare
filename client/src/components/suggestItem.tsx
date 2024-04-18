@@ -40,7 +40,7 @@ export default function SuggestItem({ user }: any) {
             hidden={false}
             animate="show"
             className="py-2 flex items-center  justify-between  cursor-pointer ">
-            <Link to={`user/${user.id}`} className="flex items-start">
+            <Link to={`/account/${user.id}`} className="flex items-start">
                 <img className="rounded-full object-cover h-10 w-10" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user.picture}`} />
                 <div className="ml-2 flex flex-col items-start">
                     <div className={`leading-snug text-xs flex items-start flex-col ${isDarkMode ? "text-white" : "font-bold"}  `}><span>{user.first_name?.toUpperCase()}</span> <span>{user.last_name?.toUpperCase()}</span></div>

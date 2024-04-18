@@ -25,6 +25,8 @@ export default function Chat() {
         const resp = await api.post(`api/chat/${auth.id}/${selectedUserId}/markseen`)
         if (resp.data.success) {
             dispatch(markMessagesSeen(selectedUserId))
+            dispatch(addNewMessages(resp.data.messages))
+
         }
     }
 
@@ -78,7 +80,7 @@ export default function Chat() {
             <div className={`md:w-1/3  rounded-xl overflow-y-auto ${isDarkMode ? "bg-slate-800" : "bg-gray-200"}`}>
                 {friends.map((item: any) => {
                     return <div className={`p-1 ${selectedUserId == item.id ? "bg-sky-100" : ""}`}>
-                        <UserItem msgs_not_seen={item.msgs_not_seen} status={item.status} selectedUserId={selectedUserId} setSelectedUserId={setSelectedUserId} user={item} />
+                        <UserItem msgs_not_seen={messages.filter((elem: any) => elem.sender_id == item.id).filter((elem: any) => elem.seen_at == null).length} status={item.status} selectedUserId={selectedUserId} setSelectedUserId={setSelectedUserId} user={item} />
                         <hr className={`opacity-20 ${isDarkMode ? 'text-white' : "divide-neutral-950"}`} />
                     </div>
                 })}

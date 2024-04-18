@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Middleware\AddBearerTokenFromCookie;
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Middleware\LastSeen;
+use App\Http\Resources\PostResource;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
 
@@ -23,6 +24,8 @@ Route::controller(AuthenticationController::class)
         Route::post("login", "login");
         Route::post("logout", "logout")->middleware("auth:sanctum");
     });
+
+
 
 Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     // Post Controller
@@ -70,4 +73,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
 
         return response()->file($filePath);
     })->name("picture.get");
+    Route::get("getuser/{id}", function ($id) {
+        return response()->json(["user" => new UserResource(User::find($id)), "posts" => PostResource::collection(User::find($id)->posts)]);
+    });
 });
