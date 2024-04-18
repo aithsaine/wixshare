@@ -1,0 +1,36 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.loader-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #007a3d; /* Green */
+  margin: 0 5px;
+  animation: loader-animation 1.5s infinite ease-in-out;
+}
+
+.loader-circle:nth-child(2) {
+  background-color: rgb(198, 188, 188);
+}
+
+.loader-circle:nth-child(3) {
+  background-color: #ce1126; /* Red */
+}
+
+@keyframes loader-animation {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
