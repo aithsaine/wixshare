@@ -14,7 +14,7 @@ Route::get('/user', function (Request $request) {
     $auth =  new UserResource($request->user());
     $messages = array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray());
     $friends = UserResource::collection(User::whereNot("id", $request->user()->id)->get());
-    return response()->json(["success" => true, "auth" => $auth, "friends" => $friends, "messages" => $messages, "suggests" => []]);
+    return response()->json(["success" => true, "auth" => $auth, "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get())]);
 })->middleware("auth:sanctum");
 
 Route::controller(AuthenticationController::class)
@@ -54,6 +54,11 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     //Comment Controller
     Route::get("/comments/{post_id}", [\App\Http\Controllers\Api\CommentController::class, "index"]);
     Route::post("/comment/store", [\App\Http\Controllers\Api\CommentController::class, "store"])->name("comment.store");
+
+
+    //Follower Controller
+    Route::post("follow/store", [\App\Http\Controllers\Api\FollowController::class, "follow"]);
+    Route::delete("follow/{user_id}/delete", [\App\Http\Controllers\Api\FollowController::class, "unfollow"]);
 
 
 

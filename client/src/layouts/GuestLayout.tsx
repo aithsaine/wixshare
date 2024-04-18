@@ -9,7 +9,7 @@ import Loading from '../components/loading'
 export default function GuestLayout() {
     const { auth } = useSelector((state: any) => state)
 
-    const [loading, setLoading] = useState(auth == null ?? false)
+    const [loading, setLoading] = useState(auth == null)
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -34,8 +34,9 @@ export default function GuestLayout() {
             window.localStorage.setItem("light_mode", "dark")
 
     }, [])
-    return (
 
+
+    return (
         loading ? <Loading /> :
             <div>
                 <Outlet />
@@ -43,4 +44,5 @@ export default function GuestLayout() {
             </div>
 
     )
+
 }

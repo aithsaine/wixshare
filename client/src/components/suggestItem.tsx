@@ -10,23 +10,6 @@ export default function SuggestItem({ user }: any) {
     const { isDarkMode } = useSelector((state: any) => state)
     const [followStatus, setFollowStatus] = useState(user.FollowStatus)
 
-
-    const [image, setImage] = useState("")
-    useEffect(() => {
-        const getPict = async () => {
-            const response = await api.get(`api/storage/picture/${user.picture}`, {
-                responseType: 'blob',
-            })
-            if (response.status == 200) {
-
-                const blobUrl = URL.createObjectURL(response.data);
-                setImage(blobUrl)
-            }
-
-        }
-        getPict();
-
-    }, [])
     const following = async (e: any) => {
         e.preventDefault();
         try {
@@ -42,7 +25,7 @@ export default function SuggestItem({ user }: any) {
         try {
 
             setFollowStatus("")
-            await api.delete(`follow/${user.id}/delete`)
+            await api.delete(`api/follow/${user.id}/delete`)
         } catch (err) {
             setFollowStatus("followed")
         }
@@ -58,7 +41,7 @@ export default function SuggestItem({ user }: any) {
             animate="show"
             className="py-2 flex items-center  justify-between  cursor-pointer ">
             <Link to={`user/${user.id}`} className="flex items-start">
-                <img className="rounded-full object-cover h-10 w-10" src={image} />
+                <img className="rounded-full object-cover h-10 w-10" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user.picture}`} />
                 <div className="ml-2 flex flex-col items-start">
                     <div className={`leading-snug text-xs flex items-start flex-col ${isDarkMode ? "text-white" : "font-bold"}  `}><span>{user.first_name?.toUpperCase()}</span> <span>{user.last_name?.toUpperCase()}</span></div>
                     <div className="leading-snug text-xs dark:text-gray-400 ">Web Developer</div>

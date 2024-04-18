@@ -1,5 +1,17 @@
-import { data } from "autoprefixer"
-import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, MASKMESSAGESEEN, TOGGLELIGHTMODE } from "./types"
+import {
+    ADDAUTHENTICATE,
+    ADDNEWFRIENDS,
+    ADDNEWMESSAGES,
+    ADDNEWPOST,
+    ADDSUGGESTFRIENDS,
+    APPENDMULTIPLEPOSTS,
+    APPENDNEWMESSAGE,
+    APPENDNEWPOST,
+    MASKMESSAGESEEN,
+    TOGGLELIGHTMODE
+} from "./types"
+
+
 export const Add_authenticate = (data: any) => {
     return {
         type: ADDAUTHENTICATE,
@@ -67,3 +79,4 @@ export const markMessagesSeen = (data: any) => {
         payload: data
     }
 }
+

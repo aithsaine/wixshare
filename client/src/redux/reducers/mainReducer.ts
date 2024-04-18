@@ -43,7 +43,6 @@ function mainReducer(state = initialState, action: any) {
                 })
             }
 
-
         default:
             return state;
     }

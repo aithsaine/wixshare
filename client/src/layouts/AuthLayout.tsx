@@ -13,7 +13,7 @@ export default function Authenticated() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(auth === null)
 
     async function getUser() {
         csrf()

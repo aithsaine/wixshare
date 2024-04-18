@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SearchInput from "../components/searchInput";
 import LightButton from '../components/lightButton';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import api from '../tools/api';
 import { Link, useNavigate } from 'react-router-dom';
 import { FEEDS, HOME } from '../routes/routes';
@@ -12,7 +12,7 @@ export default function Nav() {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [image, setImage] = useState(`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth.picture}`)
-
+    const dispatch = useDispatch()
     const [msgs_not_seen, SetMsgNotSeen] = useState(0);
     const navigate = useNavigate()
 
@@ -27,7 +27,7 @@ export default function Nav() {
     }, [])
 
     useEffect(() => {
-        SetMsgNotSeen(friends.reduce((previous: any, next: any) => previous + Number(next.msgs_not_seen)))
+        SetMsgNotSeen(friends.reduce((previous: any, next: any) => previous + Number(next.msgs_not_seen), 0))
     }, [friends])
 
 
