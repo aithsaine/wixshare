@@ -6,6 +6,7 @@ import api from "../tools/api";
 import { useSelector } from "react-redux";
 export default function Comment({ user_id, post_id, setLoad, commentsCnt, setCommentsCnt }: any) {
     const [comments, setComments] = useState<any>([]);
+    const [wait, setWait] = useState(true)
     const [newComment, setNewComment] = useState<string>("")
     const { isDarkMode } = useSelector((state: any) => state)
 
@@ -14,10 +15,11 @@ export default function Comment({ user_id, post_id, setLoad, commentsCnt, setCom
             const response = await api.get(`/api/comments/${post_id}/`)
             if (response.data.status == "success") {
                 setComments(response.data.comments)
+                setWait(false)
             }
 
         }
-        getComments()
+        commentsCnt > 0 && getComments()
 
         console.log(comments)
 
@@ -31,6 +33,7 @@ export default function Comment({ user_id, post_id, setLoad, commentsCnt, setCom
             setComments([resp.data.comment, ...comments])
             setCommentsCnt(commentsCnt + 1)
             setNewComment("")
+            setWait(false)
         }
     }
     return (
@@ -59,7 +62,25 @@ export default function Comment({ user_id, post_id, setLoad, commentsCnt, setCom
                                 <PaperAirplaneIcon onClick={saveComment} className="w-6 cursor-pointer " title="Save comment" />
                             </div >
                             <div className="flex flex-col p-2">
-                                {comments && comments.map((comment: any) => <CommentItem filename={comment.picture} user_name={comment.user_name} user_id={comment.user_id} date={comment.date} content={comment.content} />)}
+
+
+                                {!wait ? comments.map((comment: any) => <CommentItem filename={comment.picture} user_name={comment.user_name} user_id={comment.user_id} date={comment.date} content={comment.content} />) : (
+                                    <div className="flex flex-col">
+
+                                        {
+                                            Array.from({ length: commentsCnt }, (_, idx) => (
+                                                <div key={idx} className="flex items-center justify-between">
+                                                    <div className="flex items-center">
+                                                        <span className="mr-2 h-8 w-8 rounded-full bg-gray-100"></span>
+                                                        <span className="h-4 w-40 rounded-lg bg-gray-100"></span>
+                                                    </div>
+                                                    <span className="h-4 w-14 rounded-lg bg-gray-100"></span>
+                                                </div>
+                                            ))}
+
+                                    </div>
+
+                                )}
                             </div>
                         </div>
                     </div>

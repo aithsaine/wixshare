@@ -7,6 +7,8 @@ import {
     APPENDMULTIPLEPOSTS,
     APPENDNEWMESSAGE,
     APPENDNEWPOST,
+    APPENDPOSTS,
+    GETPOSTS,
     LOGOUT,
     MASKMESSAGESEEN,
     TOGGLELIGHTMODE
@@ -86,3 +88,17 @@ export const logOut = () => {
     }
 }
 
+
+export const getPosts = (data: any) => {
+    return {
+        type: GETPOSTS,
+        payload: data
+
+    }
+}
+export const appendPosts = (data: any) => {
+    return {
+        type: APPENDPOSTS,
+        payload: data
+    }
+}

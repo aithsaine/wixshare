@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, LOGOUT, MASKMESSAGESEEN, TOGGLELIGHTMODE } from "../actions/types";
+import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, LOGOUT, MASKMESSAGESEEN, TOGGLELIGHTMODE } from "../actions/types";
 
 const initialState: any = {
     auth: null,
@@ -8,6 +8,8 @@ const initialState: any = {
     messages: [],
     test: "redux is working",
     friends: [],
+    page: 1
+
 }
 
 function mainReducer(state = initialState, action: any) {
@@ -23,10 +25,14 @@ function mainReducer(state = initialState, action: any) {
         case APPENDNEWPOST:
             return { ...state, posts: [action.payload, ...state.posts] };
         case APPENDMULTIPLEPOSTS:
-            return { ...state, posts: [...state.posts, ...action.payload] };
+            console.log(action.payload[action.payload.length - 1]?.id !== state.posts[state.posts.length - 1]?.id)
+            if (action.payload[action.payload.length - 1].id !== state.posts[state.posts.length - 1]?.id)
+                return { ...state, posts: [...state.posts, ...action.payload], page: state.page + 1 };
+            return state;
         case ADDSUGGESTFRIENDS:
             return { ...state, suggestions: action.payload }
         case ADDNEWMESSAGES:
+
             return { ...state, messages: [...action.payload] }
         case ADDNEWFRIENDS:
             return { ...state, friends: [...action.payload] }

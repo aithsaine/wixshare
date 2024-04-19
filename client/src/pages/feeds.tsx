@@ -7,32 +7,27 @@ import SharePost from '../components/sharePost'
 import ContentLoader from "react-content-loader";
 import SuggestItem from '../components/suggestItem'
 import Post from '../components/post'
-import { addNewPost } from '../redux/actions/actionCreators'
+import { addNewPost, appendMultiplePosts } from '../redux/actions/actionCreators'
 
 
 export default function Feeds() {
-    const { auth, posts, isDarkMode, suggestions } = useSelector((state: any) => state)
-    const [page, setPage] = useState(1)
+
+    const { auth, posts, page, isDarkMode, suggestions } = useSelector((state: any) => state)
     const [pers, setPers] = useState(0)
     const dispatch = useDispatch()
-    const [Stateposts, setPosts] = useState<any>([])
 
     const getPosts = async () => {
-        csrf()
         const response = await api.get(`api/posts/index?page=${page}`)
         if (response.data.success) {
-            if (Stateposts.length < response.data.length) {
-                setPosts([...Stateposts, ...response.data.posts])
+            if (posts.length < response.data.length) {
+                dispatch(appendMultiplePosts((response.data.posts)))
                 setPers(0)
-                setPage(page + 1)
 
 
             }
         }
     }
-    useEffect(() => {
-        getPosts()
-    }, []);
+
 
     window.addEventListener("scroll", (item) => {
 
@@ -40,24 +35,22 @@ export default function Feeds() {
             b: any = document.body,
             st: any = 'scrollTop',
             sh: any = 'scrollHeight';
-        let pers = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
-        if (pers >= 90) {
-            setPers(pers)
-        }
-    })
+        let val = (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight) * 100;
+        setPers(Math.floor(val))
 
+    })
     useEffect(() => {
-        if (pers > 95)
+        getPosts()
+    }, [])
+    useEffect(() => {
+        if (pers === 90)
             getPosts()
     }, [pers]);
-
-
-
     const items = [
         {
             key: 1,
             title: "profile",
-            path: `user/${auth.id}`,
+            path: `/account/${auth?.id}`,
             icon: UserIcon
 
         },
@@ -89,18 +82,16 @@ export default function Feeds() {
         {
             key: 6,
             title: "Edit Info",
-            path: "/profile",
+            path: "/profile/edit",
             icon: PencilSquareIcon
         }
 
     ]
 
 
-    useEffect(() => {
-        dispatch(addNewPost(Stateposts))
-
-    }, [Stateposts])
-
+    // useEffect(() => {
+    //     dispatch(addNewPost(Stateposts))
+    // }, [])
 
     return (
         <div className="mt-0 relative flex p-1">
@@ -114,27 +105,13 @@ export default function Feeds() {
 
             </div>
             <div className="  p-2  flex flex-col items-start min-h-screen md:w-2/3 lg:w-3/6 w-full   overflow-hidden sm:rounded-lg ">
-                <h1 className='p-2 mb-2 mt-14 font-bold text-sky-800 text-xl'>Bonjour {auth.gender == "male" ? "Mr" : "Mss"} {auth.first_name} {auth.last_name}</h1 >
+                <h1 className='p-2 mb-2 mt-14 font-bold text-sky-800 text-xl'>Bonjour {auth?.gender == "male" ? "Mr" : "Mss"} {auth?.first_name} {auth?.last_name}</h1 >
 
                 <SharePost />
 
 
-                {posts && posts.map((item: any) => <Post post={item}
-                />)}
-                <ContentLoader
-                    speed={4}
-                    className={"lg:w-3/4 w-full mt-8"}
-                    viewBox="0 0 400 160"
-                    backgroundColor="#f3f3f3"
-                    foregroundColor="#ecebeb"
-                >
-                    <rect x="48" y="8" rx="18" ry="10" width="88" height="15" />
-                    <rect x="48" y="26" rx="3" ry="3" width="52" height="10" />
-                    <rect x="0" y="56" rx="3" ry="3" width="410" height="15" />
-                    <rect x="0" y="72" rx="3" ry="3" width="380" height="15" />
-                    <rect x="0" y="88" rx="3" ry="3" width="178" height="15" />
-                    <circle cx="20" cy="20" r="20" />
-                </ContentLoader>
+                {posts.map((elem: any, index: Number) => <Post post={elem} />)}
+
                 <ContentLoader
                     speed={2}
                     className={" w-3/4"}
@@ -161,19 +138,7 @@ export default function Feeds() {
                     <rect x="0" y="88" rx="3" ry="3" width="178" height="15" />
                     <circle cx="20" cy="20" r="20" />
                 </ContentLoader>
-                <ContentLoader
-                    speed={2}
-                    className={"lg:w-3/4 w-full"}
-                    viewBox="0 0 400 160"
-                    backgroundColor="#f3f3f3"
-                    foregroundColor="#ecebeb"
-                >
-                    <rect x="48" y="8" rx="18" ry="10" width="88" height="30" />
-                    <rect x="48" y="26" rx="3" ry="3" width="52" height="10" />
-                    <rect x="0" y="56" rx="3" ry="3" width="410" height="15" />
-                    <rect x="0" y="72" rx="3" ry="3" width="380" height="15" />
-                    <rect x="0" y="88" rx="3" ry="3" width="178" height="15" />
-                </ContentLoader>
+
 
             </div>
 

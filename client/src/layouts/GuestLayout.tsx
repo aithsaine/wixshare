@@ -9,12 +9,11 @@ import Loading from '../components/loading'
 export default function GuestLayout() {
     const { auth } = useSelector((state: any) => state)
 
-    const [loading, setLoading] = useState(auth == null)
+    const [loading, setLoading] = useState(true)
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
     async function getUser() {
-        csrf()
         try {
             const resp = await api.get("api/user")
             if (resp.status === 200) {
@@ -29,11 +28,14 @@ export default function GuestLayout() {
         }
     }
     useEffect(() => {
-        getUser()
+        !auth ? getUser() : navigate(FEEDS)
         if (!localStorage.getItem("light_mode"))
             window.localStorage.setItem("light_mode", "dark")
 
+
     }, [])
+
+
 
 
     return (

@@ -44,11 +44,11 @@ export default function Chat() {
             return elem
         })))
         if (e.message.sender_id == selectedUserId) {
-
             selectedUserId && markSeen()
         }
 
     })
+
 
 
     friends.map((element: any) => {

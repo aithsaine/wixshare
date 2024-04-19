@@ -16,7 +16,6 @@ export default function Authenticated() {
     const [loading, setLoading] = useState(auth === null)
 
     async function getUser() {
-        csrf()
         try {
             const resp = await api.get("api/user")
             dispatch(Add_authenticate(resp.data.auth))
@@ -30,7 +29,7 @@ export default function Authenticated() {
         }
     }
     useEffect(() => {
-        getUser()
+        !auth && getUser()
         if (!localStorage.getItem("light_mode"))
             window.localStorage.setItem("light_mode", "dark")
     }, [])
