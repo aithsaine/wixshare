@@ -2,7 +2,10 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import clsx from "clsx"
 export default function LeftSideBoxChat({ message }: any) {
-    const { isDarkMode } = useSelector((state: any) => state);
+    const specificStateSelector = (state: any) => ({
+        isDarkMode: state.isDarkMode,
+    });
+    const { isDarkMode } = useSelector(specificStateSelector);
 
     return (
         <div className="col-start-1 col-end-9 p-1">

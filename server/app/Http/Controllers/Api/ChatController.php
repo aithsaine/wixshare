@@ -43,7 +43,9 @@ class ChatController extends Controller
             $chat->update(['seen_at' => now()]);
         });
 
-        return response()->json(["success" => true, "messages" =>  array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray())]);
+        if (count($chats) > 0)
+            return response()->json(["success" => true, "messages" =>  array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray())]);
+        return response()->json(["success" => false]);
     }
 
     public function getUnseenMessages(Request $request)

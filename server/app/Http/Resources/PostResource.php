@@ -65,6 +65,7 @@ class PostResource extends JsonResource
             "user_name" => $this->user->first_name . " " . $this->user->last_name,
             "user_id" => $this->user_id,
             "id" => $this->id,
+            "created_at" => $this->created_at,
             "title" => $this->title,
             "files" => $this->getFilesNames(),
             "commentsCount" => count($this->comments),

@@ -3,7 +3,10 @@ import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 
 export default function RightSideBoxChat({ message }: any) {
-    const { auth } = useSelector((state: any) => state);
+    const specificStateSelector = (state: any) => ({
+        auth: state.auth,
+    });
+    const { auth } = useSelector(specificStateSelector);
 
     return (
         <div className="col-start-6 col-end-13 p-1">

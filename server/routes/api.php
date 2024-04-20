@@ -68,7 +68,6 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     //Other
     Route::get('/storage/picture/{filename}', function ($filename) {
         $filePath = Storage::path('/profiles/' . $filename);
-
         $resp = response();
 
         return response()->file($filePath);

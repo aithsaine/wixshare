@@ -1,12 +1,16 @@
 import { PaperAirplaneIcon, PaperClipIcon } from '@heroicons/react/24/solid'
 import React, { useState } from 'react'
-import toast from 'react-hot-toast'
 import api from '../tools/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { appendNewPost } from '../redux/actions/actionCreators'
+import { Toaster, toast } from 'sonner'
 
 export default function SharePost() {
-    const { auth, isDarkMode } = useSelector((state: any) => state)
+    const specificStateSelector = (state: any) => ({
+        auth: state.auth,
+        isDarkMode: state.isDarkMode,
+    });
+    const { auth, isDarkMode } = useSelector(specificStateSelector)
     const dispatch = useDispatch()
     const [postFile, setPostFile] = useState<any>()
     const [title, setTitle] = useState<string>("")
@@ -21,21 +25,22 @@ export default function SharePost() {
             onUploadProgress: (progressEvent) => {
                 const total = progressEvent.total ?? 1;
                 const progress = Math.round((progressEvent.loaded / total) * 100);
-                setUploadProgress(progress);
+                postFile && setUploadProgress(progress);
             }
         }
 
         );
         if (resp.data.success) {
             setTitle("")
-            toast.success(resp.data.message);
             console.log(resp.data.post)
             dispatch(appendNewPost(resp.data.post))
+            toast.success(resp.data.message)
             setUploadProgress(0)
         }
     }
     return (
         <div className={` w-full px-4 flex  border-2 shadow-2xl flex-col items-center rounded-xl ${isDarkMode ? "bg-slate-900 " : "bg-white"}   lg:w-3/4`}>
+            {/* <Toaster position="bottom-right" /> */}
             {uploadProgress > 0 && (
                 <div className="relative w-full pt-1">
                     <div className="flex mb-2 items-center justify-between">

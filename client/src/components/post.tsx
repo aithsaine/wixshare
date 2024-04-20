@@ -10,20 +10,58 @@ import VideoPlayer from "./videoPlayer";
 import Comment from "./comment";
 import { appendNewPost } from "../redux/actions/actionCreators";
 
-export default function Post({ post }: any) {
+export default function Post({ post, key }: any) {
     const dispatch = useDispatch()
-    const { auth, isDarkMode } = useSelector((state: any) => state)
-    const [lks, setLikes] = useState(post?.likes)
-    const [dsl, setDislikes] = useState(post?.dislikes)
+    const specificStateSelector = (state: any) => ({
+        auth: state.auth,
+        isDarkMode: state.isDarkMode,
+    });
+    const { auth, isDarkMode } = useSelector(specificStateSelector)
+    const [lks, setLikes] = useState(post?.likes ?? 0 ?? 0)
+    const [dsl, setDislikes] = useState(post?.dislikes ?? 0)
     const [reactType, setReactType] = useState(post?.reaction)
-    const [commentsCnt, setCommentsCnt] = useState(post?.commentsCount)
+    const [commentsCnt, setCommentsCnt] = useState(post?.commentsCount ?? 0)
     const submitHandler = async (e: any, type: String) => {
         e.preventDefault()
-        const resp = await api.post("api/reaction/store", { type, user_id: auth.id, post_id: post?.id })
-        setLikes(resp.data.post?.likes)
-        setDislikes(resp.data.post?.dislikes)
-        setReactType(resp.data.post?.reaction)
-        dispatch(appendNewPost(resp.data.post))
+        console.log("reaction : ", reactType)
+        console.log("clik on : ", type)
+        if (reactType == "like") {
+            if (type == "like") {
+
+                setLikes(lks - 1)
+                setReactType("none")
+            }
+            else {
+                setLikes(lks - 1)
+                setDislikes(dsl + 1)
+                setReactType(type)
+            }
+
+        }
+        else if (reactType == "dislike") {
+            if (type == "dislike") {
+                setDislikes(dsl - 1)
+                setReactType("none")
+            }
+            else {
+                setDislikes(dsl - 1)
+                setLikes(lks + 1)
+                setReactType(type)
+            }
+        }
+        else {
+            if (type == 'like') {
+                setLikes(lks + 1)
+            }
+            else {
+                setDislikes(dsl + 1)
+            }
+            setReactType(type)
+        }
+        const resp = await api.post("api/reaction/store", { type, user_id: auth?.id, post_id: post?.id })
+        setLikes(resp?.data?.post.likes)
+        setDislikes(resp?.data?.post.dislikes)
+        setReactType(resp.data?.post.reaction)
 
 
     }
@@ -38,8 +76,8 @@ export default function Post({ post }: any) {
     const fileExt = post?.files[0]?.split(".")?.slice(-1)
     return (
         <>
-            <div style={{ minHeight: "20px" }}
-                className={`w-full my-4 p-2 relative flex  flex-col items-start mt-4 rounded-xl ${isDarkMode ? "bg-slate-900 text-white shadow-md shadow-white" : "text-black bg-white shadow-xl"} lg:w-3/4`}>
+            <div key={key} style={{ minHeight: "20px" }}
+                className={`w-full my-4 p-2 relative flex  flex-col items-start mt-4 rounded-xl ${isDarkMode ? "bg-slate-900 text-white sd shadow-whide" : "text-black bg-white shadow-md"} lg:w-3/4`}>
                 <Link to={`/user/${auth.id}`} className="flex items-center">
                     <img className="rounded-full object-cover h-10 w-10" src={post?.user_picture} />
                     <div className="ml-2 flex flex-col items-start">

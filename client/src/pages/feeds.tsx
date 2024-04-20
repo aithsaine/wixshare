@@ -7,12 +7,18 @@ import SharePost from '../components/sharePost'
 import ContentLoader from "react-content-loader";
 import SuggestItem from '../components/suggestItem'
 import Post from '../components/post'
-import { addNewPost, appendMultiplePosts } from '../redux/actions/actionCreators'
+import { appendMultiplePosts } from '../redux/actions/actionCreators'
 
 
 export default function Feeds() {
-
-    const { auth, posts, page, isDarkMode, suggestions } = useSelector((state: any) => state)
+    const specificStateSelector = (state: any) => ({
+        auth: state.auth,
+        posts: state.posts,
+        isDarkMode: state.isDarkMode,
+        suggestions: state.suggestions,
+        page: state.page
+    });
+    const { auth, posts, page, isDarkMode, suggestions } = useSelector(specificStateSelector)
     const [pers, setPers] = useState(0)
     const dispatch = useDispatch()
 
@@ -110,7 +116,7 @@ export default function Feeds() {
                 <SharePost />
 
 
-                {posts.map((elem: any, index: Number) => <Post post={elem} />)}
+                {posts.map((elem: any, index: Number) => <Post key={index} post={elem} />)}
 
                 <ContentLoader
                     speed={2}

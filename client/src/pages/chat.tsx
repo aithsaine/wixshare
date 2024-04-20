@@ -11,50 +11,52 @@ import RightSideBoxChat from '../components/RightSideBoxChat';
 
 
 export default function Chat() {
-
-    //msgs.sort((a, b) => (a.id > b.id) ? 1 : ((b.id > a.id) ? -1 : 0)) for msgs
-    const { auth, friends, isDarkMode, messages } = useSelector((state: any) => state)
+    const specificStateSelector = (state: any) => ({
+        auth: state.auth,
+        friends: state.friends,
+        isDarkMode: state.isDarkMode,
+        messages: state.messages
+    });
+    const { auth, friends, isDarkMode, messages } = useSelector(specificStateSelector)
     const [newMsg, setNewMsg] = useState("")
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const [buttonDisabled, setButtonDisabled] = useState(false)
-
     const [selectedUserId, setSelectedUserId] = useState(urlParams.get("userid") ?? null)
+    const [hasNotSeenMsgs, setHasNotSeenMsgs] = useState(selectedUserId ? messages.filter((msg: any) => msg.sender_id == selectedUserId).filter((msg: any) => msg.seen_at !== null).length > 0 : false)
+
     const dispatch = useDispatch()
     const markSeen = async () => {
+        setHasNotSeenMsgs(false)
         const resp = await api.post(`api/chat/${auth?.id}/${selectedUserId}/markseen`)
         if (resp.data.success) {
             dispatch(addNewMessages(resp.data.messages))
-
         }
     }
 
+
+
     useEffect(() => {
-        if (selectedUserId !== null)
-            selectedUserId && markSeen()
+        if (hasNotSeenMsgs) {
+
+            markSeen()
+        }
     }, [selectedUserId])
 
     window.Echo.channel("messageWith." + auth?.id).listen("SendMessage", function (e: any) {
         dispatch(appendNewMessage(e.message))
-        dispatch(addNewFriends(friends.map((elem: any) => {
-            if (elem.id === e.message.sender_id && elem.id != selectedUserId) {
+        if (selectedUserId == e.message.sender_id)
+            hasNotSeenMsgs && markSeen()
 
-                return { ...elem, msgs_not_seen: elem.msgs_not_seen + 1 }
-            }
-            return elem
-        })))
-        if (e.message.sender_id == selectedUserId) {
-            selectedUserId && markSeen()
-        }
 
     })
-
 
 
     friends.map((element: any) => {
 
         window.Echo.channel("UserStatus." + element.id).listen("UpdateUserStatus", function (e: any) {
             dispatch(addNewFriends(friends.map((item: any) => {
+
                 if (item.id == e.user.id) {
                     return { ...item, status: e.user.status }
                 }
@@ -69,7 +71,6 @@ export default function Chat() {
             receiver_id: selectedUserId,
             message: newMsg
         }).then((resp: any) => {
-            console.log(resp);
             dispatch(appendNewMessage(resp.data))
             setNewMsg("")
             setButtonDisabled(false)
@@ -80,7 +81,7 @@ export default function Chat() {
             <div className={`md:w-1/3  rounded-xl overflow-y-auto ${isDarkMode ? "bg-slate-900" : "bg-gray-200"}`}>
                 {friends.map((item: any) => {
                     return <div className={`p-1 ${selectedUserId == item.id ? "bg-green-300" : ""}`}>
-                        <UserItem msgs_not_seen={messages.filter((elem: any) => elem.sender_id == item.id).filter((elem: any) => elem.seen_at == null).length} status={item.status} selectedUserId={selectedUserId} setSelectedUserId={setSelectedUserId} user={item} />
+                        <UserItem setHasNotSeenMsgs={setHasNotSeenMsgs} status={item.status} selectedUserId={selectedUserId} setSelectedUserId={setSelectedUserId} user={item} />
                         <hr className={`opacity-20 ${isDarkMode ? 'text-white' : "divide-neutral-950"}`} />
                     </div>
                 })}
