@@ -17,7 +17,6 @@ export default function UserItem({ user, status, setHasNotSeenMsgs }: any) {
     const [msgs_not_seen, setMsgsNotSeen] = useState(messages.filter(((items: any) => items.sender_id == user.id)).filter((item: any) => item.seen_at === null).length ?? 0)
     useEffect(() => {
         setMsgsNotSeen(messages.filter(((items: any) => items.sender_id == user.id)).filter((item: any) => item.seen_at == null).length)
-        console.log(msgs_not_seen)
     }, [messages])
 
     return (

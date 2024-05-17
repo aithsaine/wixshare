@@ -30,10 +30,8 @@ export default function Chat() {
         dispatch(setUserId(urlParams.get("userid")))
     }
     const [hasNotSeenMsgs, setHasNotSeenMsgs] = useState(selectedUserId ? messages.filter((msg: any) => msg.sender_id == selectedUserId).filter((msg: any) => msg.seen_at !== null).length > 0 : false)
-
     const markSeen = async () => {
         setAccessMskSeen(false)
-        setHasNotSeenMsgs(false)
         const resp = await api.post(`api/chat/${auth?.id}/${selectedUserId}/markseen`)
         if (resp.data.success) {
             dispatch(addNewMessages(resp.data.messages))
@@ -41,20 +39,12 @@ export default function Chat() {
         setAccessMskSeen(true)
     }
 
-
-
     useEffect(() => {
-        accessMskSeen && markSeen()
+        markSeen()
     }, [selectedUserId])
 
-    window.Echo.channel("messageWith." + auth?.id).listen("SendMessage", function (e: any) {
-        dispatch(appendNewMessage(e.message))
-        if (selectedUserId !== e.message.sender_id && accessMskSeen) {
-            markSeen()
-        }
 
 
-    })
 
 
     friends.map((element: any) => {
