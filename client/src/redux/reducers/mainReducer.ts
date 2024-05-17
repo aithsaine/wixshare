@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, LOGOUT, MASKMESSAGESEEN, TOGGLELIGHTMODE } from "../actions/types";
+import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE } from "../actions/types";
 
 const initialState: any = {
     auth: null,
@@ -8,7 +8,8 @@ const initialState: any = {
     messages: [],
     test: "redux is working",
     friends: [],
-    page: 1
+    page: 1,
+    selectedUserId: null,//for chat component
 
 }
 
@@ -50,6 +51,8 @@ function mainReducer(state = initialState, action: any) {
                     return item
                 })
             }
+        case SETSELECTEDUSERID:
+            return { ...state, selectedUserId: action.payload }
 
         default:
             return state;

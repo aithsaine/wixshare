@@ -3,7 +3,7 @@ import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import { LOGIN } from '../routes/routes';
 import { Outlet, useNavigate } from 'react-router-dom';
 import api, { csrf } from '../tools/api';
-import { Add_authenticate, addNewFriends, addNewMessages, addSuggestFriend } from '../redux/actions/actionCreators';
+import { Add_authenticate, addNewFriends, addNewMessages, addSuggestFriend, setUserId } from '../redux/actions/actionCreators';
 import Loading from '../components/loading';
 import Nav from '../components/Nav';
 import { Toaster } from 'sonner';

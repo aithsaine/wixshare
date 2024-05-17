@@ -11,6 +11,7 @@ import {
     GETPOSTS,
     LOGOUT,
     MASKMESSAGESEEN,
+    SETSELECTEDUSERID,
     TOGGLELIGHTMODE
 } from "./types"
 
@@ -99,6 +100,12 @@ export const getPosts = (data: any) => {
 export const appendPosts = (data: any) => {
     return {
         type: APPENDPOSTS,
+        payload: data
+    }
+}
+export const setUserId = (data: any) => {
+    return {
+        type: SETSELECTEDUSERID,
         payload: data
     }
 }

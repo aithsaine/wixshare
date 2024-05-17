@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import InputEmoji from "react-input-emoji";
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../tools/api';
-import { addNewFriends, addNewMessages, appendNewMessage, markMessagesSeen } from '../redux/actions/actionCreators';
+import { addNewFriends, addNewMessages, appendNewMessage, markMessagesSeen, setUserId } from '../redux/actions/actionCreators';
 import UserItem from '../components/UserItem';
 import RightSideBoxChat from '../components/RightSideBoxChat';
 // import { echo } from '../tools/echo';
@@ -15,38 +15,43 @@ export default function Chat() {
         auth: state.auth,
         friends: state.friends,
         isDarkMode: state.isDarkMode,
-        messages: state.messages
+        messages: state.messages,
+        selectedUserId: state.selectedUserId
     });
-    const { auth, friends, isDarkMode, messages } = useSelector(specificStateSelector)
+    const { auth, friends, isDarkMode, messages, selectedUserId } = useSelector(specificStateSelector)
     const [newMsg, setNewMsg] = useState("")
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const [buttonDisabled, setButtonDisabled] = useState(false)
-    const [selectedUserId, setSelectedUserId] = useState(urlParams.get("userid") ?? null)
+    const dispatch = useDispatch()
+    const [accessMskSeen, setAccessMskSeen] = useState(true)
+
+    if (urlParams.get("userid") !== null) {
+        dispatch(setUserId(urlParams.get("userid")))
+    }
     const [hasNotSeenMsgs, setHasNotSeenMsgs] = useState(selectedUserId ? messages.filter((msg: any) => msg.sender_id == selectedUserId).filter((msg: any) => msg.seen_at !== null).length > 0 : false)
 
-    const dispatch = useDispatch()
     const markSeen = async () => {
+        setAccessMskSeen(false)
         setHasNotSeenMsgs(false)
         const resp = await api.post(`api/chat/${auth?.id}/${selectedUserId}/markseen`)
         if (resp.data.success) {
             dispatch(addNewMessages(resp.data.messages))
         }
+        setAccessMskSeen(true)
     }
 
 
 
     useEffect(() => {
-        if (hasNotSeenMsgs) {
-
-            markSeen()
-        }
+        accessMskSeen && markSeen()
     }, [selectedUserId])
 
     window.Echo.channel("messageWith." + auth?.id).listen("SendMessage", function (e: any) {
         dispatch(appendNewMessage(e.message))
-        if (selectedUserId == e.message.sender_id)
-            hasNotSeenMsgs && markSeen()
+        if (selectedUserId !== e.message.sender_id && accessMskSeen) {
+            markSeen()
+        }
 
 
     })
@@ -81,7 +86,7 @@ export default function Chat() {
             <div className={`md:w-1/3  rounded-xl overflow-y-auto ${isDarkMode ? "bg-slate-900" : "bg-gray-200"}`}>
                 {friends.map((item: any) => {
                     return <div className={`p-1 ${selectedUserId == item.id ? "bg-green-300" : ""}`}>
-                        <UserItem setHasNotSeenMsgs={setHasNotSeenMsgs} status={item.status} selectedUserId={selectedUserId} setSelectedUserId={setSelectedUserId} user={item} />
+                        <UserItem setHasNotSeenMsgs={setHasNotSeenMsgs} status={item.status} user={item} />
                         <hr className={`opacity-20 ${isDarkMode ? 'text-white' : "divide-neutral-950"}`} />
                     </div>
                 })}
