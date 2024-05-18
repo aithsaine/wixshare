@@ -7,21 +7,30 @@ import api from '../tools/api';
 import { Link, useNavigate } from 'react-router-dom';
 import { FEEDS, HOME } from '../routes/routes';
 import { logOut } from '../redux/actions/actionCreators';
+import { Button } from '@mui/base';
+import UserItem from './UserItem';
+import NotificationFrom from './notificationFrom';
 
 export default function Nav() {
-    const { auth, friends, isDarkMode, messages } = useSelector((state: any) => state);
+    const { auth, friends, isDarkMode, messages, notifications } = useSelector((state: any) => state);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const dropdownRef2 = useRef(null);
     const [image, setImage] = useState(`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}`)
     const dispatch = useDispatch()
-    const [msgs_not_seen, SetMsgNotSeen] = useState(messages.filter((item: any) => item.seen_at == null) ?? 0);
+    const [msgs_not_seen, SetMsgNotSeen] = useState(messages.filter((item: any) => item.seen_at == null).length ?? 0);
     const navigate = useNavigate()
-
+    const [isOppenNotifications, setIsOpenNotifications] = useState(false)
+    const [notifications_not_seen, setNotificationsNotSeen] = useState(0)
 
 
     useEffect(() => {
-        SetMsgNotSeen(messages.filter((item: any) => item.seen_at == null).filter((item: any) => item.receiver_id == auth.id).length)
+        SetMsgNotSeen(messages.filter((item: any) => item.seen_at == null).filter((item: any) => item.receiver_id == auth?.id).length)
     }, [messages])
+
+    useEffect(() => {
+        notifications && setNotificationsNotSeen(notifications.filter((item: any) => item.seen == 0).length)
+    }, [notifications])
 
 
     window.Echo.channel("newMsgNotify." + auth?.id).listen("MessageNotification",
@@ -32,11 +41,21 @@ export default function Nav() {
 
     useEffect(() => {
         const handleClickOutside = (event: any) => {
+
             let em: any = dropdownRef.current;
+            let em2: any = dropdownRef2.current;
             if (em) {
 
                 if (!em.contains(event.target)) {
                     setIsOpen(false);
+
+                }
+            }
+            if (em2) {
+
+                if (!em2.contains(event.target)) {
+                    setIsOpenNotifications(false);
+
                 }
             }
         };
@@ -46,6 +65,7 @@ export default function Nav() {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
 
 
 
@@ -65,7 +85,7 @@ export default function Nav() {
                         <img className="h-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="" />
                         <SearchInput />
                     </div>
-                    <div className="relative flex justify-around w-2/5 items-center">
+                    <div className="relative flex justify-around w-2/5 items-center" >
                         <div className="relative group">
                             <div className="group-hover:bg-gray-3  00 cursor-pointer p-2 group-hover:rounded-lg transition-all ease-in-out duration-300">
                                 <Link to={FEEDS}> <img className="md:h-8 h-6 cursor-pointer" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/000000/external-home-ui-essential-kmg-design-flat-kmg-design.png" /></Link>
@@ -73,13 +93,43 @@ export default function Nav() {
                             <div className="absolute group-hover:border-b-2 group-hover:cursor-pointer mt-2 border-blue-500 w-full transition-all duration-100 ease-in-out "></div>
                         </div>
 
-                        <div className="relative group">
+                        {/* <div className="relative group">
                             <div className="group-hover:bg-gray-3  00 cursor-pointer p-2 group-hover:rounded-lg transition-all ease-in-out duration-300">
                                 <img className="md:h-8 h-6 cursor-pointer" src="https://img.icons8.com/external-bearicons-outline-color-bearicons/64/000000/external-watch-call-to-action-bearicons-outline-color-bearicons.png" />
                             </div>
                             <div className="absolute group-hover:border-b-2 group-hover:cursor-pointer mt-2 border-blue-500 w-full transition-all duration-100 ease-in-out "></div>
+                        </div> */}
+                        {/*  Notifications Icon */}
+                        <div className="relative group">
+                            <div className="group-hover:bg-gray-3  00 cursor-pointer p-2 group-hover:rounded-lg transition-all ease-in-out duration-300">
+                                <Button className='' onClick={e => setIsOpenNotifications(!isOppenNotifications)}>   <img width="32" height="32" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/external-notification-user-interface-kmg-design-flat-kmg-design.png" alt="external-notification-user-interface-kmg-design-flat-kmg-design" />
+
+                                </Button>
+                            </div>
+                            {notifications_not_seen > 0 && <span className="absolute top-2 end-0 inline-flex items-center py-0.5 px-1.5 rounded-lg text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-red-500  text-white">{notifications_not_seen}</span>
+                            }
+                            {isOppenNotifications &&
+
+                                <div ref={dropdownRef2} className={`absolute z-50 p-2  shadow-xl shadow-slate-500  mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-72 h-60 w-48  border  rounded-md shadow-sm py-1`}>
+                                    <div className='flex flex-col'>
+                                        {
+
+                                            notifications && notifications.map((item: any) => {
+                                                switch (item.type) {
+                                                    case "new_follower":
+                                                        return <li onClick={(e: any) => setIsOpenNotifications(false)} className='flex  items-center font-bold text-[10px]'><NotificationFrom user_id={item.from} content={" started following you"} />   </li>
+
+                                                }
+                                            })
+                                        }
+                                    </div >
+                                </div>
+                            }
+                            <div className="absolute group-hover:border-b-2 group-hover:cursor-pointer mt-2 border-blue-500 w-full transition-all duration-100 ease-in-out "></div>
                         </div>
-                        {/* Add the messages button */}
+
+
+                        {/*  messages Icon */}
                         <div className="relative group">
                             <div className="group-hover:bg-gray-3  00 cursor-pointer p-2 group-hover:rounded-lg transition-all ease-in-out duration-300">
                                 <Link to='/chat'>   <img className="md:h-8 h-6 cursor-pointer" src="https://img.icons8.com/fluency/48/speech-bubble-with-dots--v1.png" /></Link>

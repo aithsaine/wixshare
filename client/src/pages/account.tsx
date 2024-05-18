@@ -36,6 +36,7 @@ export default function Account() {
     }
 
     useEffect(() => {
+
         const getUser = async () => {
 
             const resp = await api.get(`api/getuser/${id}`)
@@ -44,7 +45,7 @@ export default function Account() {
             setFollowStatus(resp.data.user.FollowStatus)
         }
         getUser()
-    }, [])
+    }, [id])
 
 
     if (!user) {

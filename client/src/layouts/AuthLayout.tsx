@@ -3,7 +3,7 @@ import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import { LOGIN } from '../routes/routes';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import api, { csrf } from '../tools/api';
-import { Add_authenticate, addNewFriends, addNewMessages, addSuggestFriend, appendNewMessage, setUserId } from '../redux/actions/actionCreators';
+import { Add_authenticate, addNewFriends, addNewMessages, addNotifications, addSuggestFriend, appendNewMessage, insertNotification, setUserId } from '../redux/actions/actionCreators';
 import Loading from '../components/loading';
 import Nav from '../components/Nav';
 import { Toaster } from 'sonner';
@@ -22,7 +22,6 @@ export default function Authenticated() {
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(auth === null)
     const [accessMskSeen, setAccessMskSeen] = useState(true)
-    console.log(location.pathname)
     async function getUser() {
         try {
             const resp = await api.get("api/user")
@@ -30,11 +29,16 @@ export default function Authenticated() {
             dispatch(addSuggestFriend(resp.data.suggests))
             dispatch(addNewMessages(resp.data.messages))
             dispatch(addNewFriends(resp.data.friends))
+            dispatch(addNotifications(resp.data.notifications))
             setLoading(false)
         } catch (error) {
             return navigate(LOGIN)
         }
     }
+
+    window.Echo.channel("notifyUser." + auth?.id).listen("Notify", function (e: any) {
+        dispatch(insertNotification(e.notification))
+    })
 
     const markSeen = async () => {
         setAccessMskSeen(false)
@@ -52,9 +56,10 @@ export default function Authenticated() {
 
             markSeen()
         }
-
-
     })
+
+
+
     useEffect(() => {
         !auth && getUser()
         if (!localStorage.getItem("light_mode"))

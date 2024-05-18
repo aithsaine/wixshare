@@ -17,7 +17,6 @@ export default function SuggestItem({ user }: any) {
             setFollowStatus("followed")
             await api.post("api/follow/store", { user_id: user.id })
         } catch (err) {
-            setFollowStatus("")
         }
     }
     const Unfollowe = async (e: any) => {
@@ -27,7 +26,6 @@ export default function SuggestItem({ user }: any) {
             setFollowStatus("")
             await api.delete(`api/follow/${user.id}/delete`)
         } catch (err) {
-            setFollowStatus("followed")
         }
     }
 
@@ -44,7 +42,6 @@ export default function SuggestItem({ user }: any) {
                 <img className="rounded-full object-cover h-10 w-10" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user.picture}`} />
                 <div className="ml-2 flex flex-col items-start">
                     <div className={`leading-snug text-xs flex items-start flex-col ${isDarkMode ? "text-white" : "font-bold"}  `}><span>{user.first_name?.toUpperCase()}</span> <span>{user.last_name?.toUpperCase()}</span></div>
-                    <div className="leading-snug text-xs dark:text-gray-400 ">Web Developer</div>
                 </div>
             </Link>
             {followStatus == "followed" ? <button

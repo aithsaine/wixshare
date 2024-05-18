@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE } from "../actions/types";
+import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDNOTIFICATIONS, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, INSERTNOTIFICATION, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE } from "../actions/types";
 
 const initialState: any = {
     auth: null,
@@ -24,7 +24,6 @@ function mainReducer(state = initialState, action: any) {
         case ADDNEWPOST:
             return { ...state, posts: [...action.payload] };
         case APPENDNEWPOST:
-            console.log(action.payload);
             return { ...state, posts: [action.payload, ...state.posts] };
         case APPENDMULTIPLEPOSTS:
             if (action.payload[action.payload.length - 1].id !== state.posts[state.posts.length - 1]?.id)
@@ -54,6 +53,12 @@ function mainReducer(state = initialState, action: any) {
         case SETSELECTEDUSERID:
             return { ...state, selectedUserId: action.payload }
 
+        case INSERTNOTIFICATION:
+            if (state.notifications.length > 0 && action.payload !== state.notifications[state.notifications.length - 1])
+                return { ...state, notifications: [...state.notifications, action.payload] }
+            return state;
+        case ADDNOTIFICATIONS:
+            return { ...state, notifications: action.payload }
         default:
             return state;
     }

@@ -3,12 +3,14 @@ import {
     ADDNEWFRIENDS,
     ADDNEWMESSAGES,
     ADDNEWPOST,
+    ADDNOTIFICATIONS,
     ADDSUGGESTFRIENDS,
     APPENDMULTIPLEPOSTS,
     APPENDNEWMESSAGE,
     APPENDNEWPOST,
     APPENDPOSTS,
     GETPOSTS,
+    INSERTNOTIFICATION,
     LOGOUT,
     MASKMESSAGESEEN,
     SETSELECTEDUSERID,
@@ -106,6 +108,20 @@ export const appendPosts = (data: any) => {
 export const setUserId = (data: any) => {
     return {
         type: SETSELECTEDUSERID,
+        payload: data
+    }
+}
+
+export const insertNotification = (data: any) => {
+    return {
+        type: INSERTNOTIFICATION,
+        payload: data
+    }
+}
+
+export const addNotifications = (data: any) => {
+    return {
+        type: ADDNOTIFICATIONS,
         payload: data
     }
 }
