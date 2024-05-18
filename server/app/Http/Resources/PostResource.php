@@ -28,7 +28,7 @@ class PostResource extends JsonResource
         if (\Carbon\Carbon::parse($dt)->diffInDays(Carbon::now()) < 7) {
             return (int)\Carbon\Carbon::parse($dt)->diffInDays(Carbon::now()) . " days ago";
         }
-        if (\Carbon\Carbon::parse($dt)->diffInWeeks(Carbon::now()) <= 4) {
+        if (\Carbon\Carbon::parse($dt)->diffInWeeks(Carbon::now()) <= 5) {
             return (int)\Carbon\Carbon::parse($dt)->diffInWeeks(Carbon::now()) . " weeks ago";
         }
         if (\Carbon\Carbon::parse($dt)->diffInMonths(Carbon::now()) < 12) {

@@ -24,8 +24,6 @@ class ChatController extends Controller
         $message->receiver_id = $request->receiver_id;
         $message->message = $request->message;
         $message->save();
-        $response =
-            response()->json(["success" => true, "message" => $message]);
         event(new SendMessage($message));
         event(new MessageNotification($message));
     }

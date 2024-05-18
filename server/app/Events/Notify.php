@@ -11,14 +11,16 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class NotifyEvent
+class Notify implements ShouldBroadcastNow
 {
-    use Dispatchable, InteractsWithSockets, ShouldBroadcastNow;
-    public Notification $notification;
+    use Dispatchable, InteractsWithSockets;
+
+
+    public  $notification;
     /**
      * Create a new event instance.
      */
-    public function __construct(Notification $notification)
+    public function __construct($notification)
     {
         $this->notification = $notification;
     }
@@ -31,7 +33,7 @@ class NotifyEvent
     public function broadcastOn(): array
     {
         return [
-            new Channel('notify_User_' . $this->notification->to),
+            new Channel("notifyUser." . $this->notification->to),
         ];
     }
 }

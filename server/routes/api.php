@@ -8,6 +8,7 @@ use App\Http\Middleware\AddBearerTokenFromCookie;
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Middleware\LastSeen;
 use App\Http\Resources\PostResource;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
 
@@ -15,7 +16,8 @@ Route::get('/user', function (Request $request) {
     $auth =  new UserResource($request->user());
     $messages = array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray());
     $friends = UserResource::collection(User::whereNot("id", $request->user()->id)->get());
-    return response()->json(["success" => true, "auth" => $auth, "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get())]);
+    $notifications = Notification::where("to", $request->user()->id)->get();
+    return response()->json(["success" => true, "auth" => $auth, "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get()), "notifications" => $notifications]);
 })->middleware("auth:sanctum");
 
 Route::controller(AuthenticationController::class)
@@ -74,5 +76,8 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     })->name("picture.get");
     Route::get("getuser/{id}", function ($id) {
         return response()->json(["user" => new UserResource(User::find($id)), "posts" => PostResource::collection(User::find($id)->posts)]);
+    });
+    Route::get("notification/user/{user_id}", function ($user_id) {
+        return response()->json(["user" => new UserResource(User::find($user_id))]);
     });
 });
