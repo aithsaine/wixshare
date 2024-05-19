@@ -77,7 +77,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::get("getuser/{id}", function ($id) {
         return response()->json(["user" => new UserResource(User::find($id)), "posts" => PostResource::collection(User::find($id)->posts)]);
     });
-    Route::get("notification/user/{user_id}", function ($user_id) {
-        return response()->json(["user" => new UserResource(User::find($user_id))]);
+    Route::post("notification/users", function (Request $request) {
+        return response()->json(["users" =>  UserResource::collection(User::findMany($request->users))]);
     });
 });

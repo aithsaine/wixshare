@@ -44,8 +44,10 @@ class FollowController extends Controller
     public function unfollow(Request $request, $user_id)
     {
         $save = Follower::where("user_id", $request->user()->id)->where("follower_id", $user_id)->first()->delete();
-        if ($save)
+        if ($save) {
+            Notification::where("from", $request->user()->id)->where("to", $user_id)->first()->delete();
             return response()->json(["status" => "success"]);
+        }
         return response()->json(["status" => "failed"]);
     }
 }
