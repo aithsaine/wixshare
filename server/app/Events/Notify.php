@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\NotificationResource;
 use App\Models\Notification;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
@@ -22,7 +23,7 @@ class Notify implements ShouldBroadcastNow
      */
     public function __construct($notification)
     {
-        $this->notification = $notification;
+        $this->notification = new NotificationResource($notification);
     }
 
     /**

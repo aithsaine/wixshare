@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\Helper;
 use App\Models\Reaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,32 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class PostResource extends JsonResource
 {
-    public static function  getDate($dt)
-    {
-        if (\Carbon\Carbon::parse($dt)->diffInSeconds(Carbon::now()) < 5) {
-            return "just now";
-        }
-        if (\Carbon\Carbon::parse($dt)->diffInSeconds(Carbon::now()) < 60) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInSeconds(Carbon::now()) . " seconds ago";
-        }
-        if (\Carbon\Carbon::parse($dt)->diffInMinutes(Carbon::now()) < 60) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInMinutes(Carbon::now()) . " minutes ago";
-        }
-        if (\Carbon\Carbon::parse($dt)->diffInHours(Carbon::now()) < 24) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInHours(Carbon::now()) . " hours ago";
-        }
-        if (\Carbon\Carbon::parse($dt)->diffInDays(Carbon::now()) < 7) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInDays(Carbon::now()) . " days ago";
-        }
-        if (\Carbon\Carbon::parse($dt)->diffInWeeks(Carbon::now()) <= 5) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInWeeks(Carbon::now()) . " weeks ago";
-        }
-        if (\Carbon\Carbon::parse($dt)->diffInMonths(Carbon::now()) < 12) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInMonths(Carbon::now()) . " months ago";
-        }
 
-        return (int)\Carbon\Carbon::parse($dt)->diffInYears(Carbon::now()) . " years ago";
-    }
     /**
      * Transform the resource into an array.
      *
@@ -71,7 +47,7 @@ class PostResource extends JsonResource
             "commentsCount" => count($this->comments),
             "likes" => count(Reaction::where("post_id", $this->id)->where("type", "like")->get()),
             "dislikes" => count(Reaction::where("post_id", $this->id)->where("type", "dislike")->get()),
-            "date" => self::getDate($this->created_at),
+            "date" => Helper::getDate($this->created_at),
             "reaction" => Reaction::where("post_id", $this->id)->where("user_id", Auth::user()->id)->first()->type ?? "none"
         ];
     }

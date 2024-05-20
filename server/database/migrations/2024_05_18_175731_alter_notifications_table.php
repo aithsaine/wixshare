@@ -11,7 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::table("notifications", function (Blueprint $table) {
+            $table->unsignedBigInteger("data_code")->after("type")->nullable();
+        });
     }
 
     /**

@@ -10,7 +10,7 @@ class Notification extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["content", "from", "to", "seen"];
+    protected $fillable = ["content", "from", "to", "seen", "data_code"];
 
     public static function validate(Request $request)
     {
@@ -19,7 +19,7 @@ class Notification extends Model
                 "content" => 'required',
                 "from" => ["required", "exists:users,id"],
                 "to" => ["required", "exists:users,id"],
-                "seen" => 'required'
+                "seen" => 'required',
             ]
         );
     }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Middleware\AddBearerTokenFromCookie;
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Middleware\LastSeen;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PostResource;
 use App\Models\Notification;
 use App\Models\User;
@@ -17,7 +18,7 @@ Route::get('/user', function (Request $request) {
     $messages = array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray());
     $friends = UserResource::collection(User::whereNot("id", $request->user()->id)->get());
     $notifications = Notification::where("to", $request->user()->id)->get();
-    return response()->json(["success" => true, "auth" => $auth, "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get()), "notifications" => $notifications]);
+    return response()->json(["success" => true, "auth" => $auth, "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get()), "notifications" => NotificationResource::collection($notifications)]);
 })->middleware("auth:sanctum");
 
 Route::controller(AuthenticationController::class)
