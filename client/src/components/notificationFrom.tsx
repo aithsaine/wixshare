@@ -3,28 +3,31 @@ import api from '../tools/api'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-export default function NotificationFrom({ user_id, content }: any) {
-    const { isDarkMode } = useSelector((state: any) => state)
+export default function NotificationFrom({ content }: any) {
+    const { isDarkMode, notifications } = useSelector((state: any) => state)
     const navigate = useNavigate()
-    const [user, setUser] = useState<any>()
+    const [users, setUsers] = useState<any>()
     useEffect(() => {
-        const getUser = async () => {
-            console.log(user_id)
-            const resp = await api.get(`api/notification/user/${user_id}`)
-            setUser(resp?.data.user)
+        const getUsers = async () => {
+            const resp = await api.post(`api/notification/users`, { users: notifications.map((item: any) => item.from) })
+            setUsers(resp?.data.users)
+            console.log(resp?.data.users)
         }
-        getUser()
+        getUsers()
     }, [])
     return (
-        user && (
+        users && (
+            notifications.map((item: any) => {
 
-            <div>
-                <div onClick={(e: any) => navigate(`/account/${user_id}`)} className="flex items-end py-3">
-                    <img className="rounded-full object-cover h-6 w-6" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}`} />
-                    <div className={`leading-snug text-[12px]  ${isDarkMode ? "text-white" : "font-bold"}  `}><span>{user?.first_name + " " + user?.last_name + " " + content}</span></div>
+
+                return <div className=''>
+                    <Link to={`/account/${item.from}`} className="flex items-center font-mono py-3">
+                        <img className="rounded-full object-cover h-6 w-6" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${users.find((elem: any) => elem.id == item.from).picture}`} />
+                        <div className={`leading-snug text-[12px]  ${isDarkMode ? "text-white" : "text-black"}  `}><span className='me-1'>{users.find((elem: any) => elem.id == item.from)?.first_name + " " + users.find((elem: any) => elem.id == item.from)?.last_name}</span> {content}</div>
+                    </Link>
+                    <hr />
                 </div>
-                <hr />
-            </div>
+            })
         )
     )
 }

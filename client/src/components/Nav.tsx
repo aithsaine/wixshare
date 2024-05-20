@@ -110,18 +110,11 @@ export default function Nav() {
                             }
                             {isOppenNotifications &&
 
-                                <div ref={dropdownRef2} className={`absolute z-50 p-2  shadow-xl shadow-slate-500  mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-72 h-60 w-48  border  rounded-md shadow-sm py-1`}>
-                                    <div className='flex flex-col'>
-                                        {
+                                <div ref={dropdownRef2} className={`absolute z-50 p-1  shadow-xl shadow-slate-500  mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-96 h-96 overflow-y-auto  border  rounded-md shadow-sm py-1`}>
+                                    <div className='flex flex-col  '>
+                                        <h1 className='text-center text-2xl'>Notifications:</h1>
+                                        <NotificationFrom content={" started following you"} />
 
-                                            notifications && notifications.map((item: any) => {
-                                                switch (item.type) {
-                                                    case "new_follower":
-                                                        return <li onClick={(e: any) => setIsOpenNotifications(false)} className='flex  items-center font-bold text-[10px]'><NotificationFrom user_id={item.from} content={" started following you"} />   </li>
-
-                                                }
-                                            })
-                                        }
                                     </div >
                                 </div>
                             }
@@ -162,7 +155,7 @@ export default function Nav() {
                         </div>
                     </div>
                 </div>
-            </nav>
+            </nav >
         </>
     );
 }

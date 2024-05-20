@@ -67,7 +67,7 @@ export default function Authenticated() {
     }, [])
 
     return (
-        (loading) ? <Loading /> : <main className={`relative w-full ${isDarkMode ? "bg-black text-white" : "bg-white"} mb-0 no-scrollbar`}>
+        (loading) ? <Loading /> : <main className={`relative w-full ${isDarkMode ? "bg-black text-white" : "bg-white"} mb-0 no-scrollbar font-mono`}>
             <Nav />
 
             <Toaster theme={isDarkMode ? "dark" : "light"} position="bottom-right" />
