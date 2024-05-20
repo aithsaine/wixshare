@@ -102,7 +102,7 @@ export default function Nav() {
                         {/*  Notifications Icon */}
                         <div className="relative group">
                             <div className="group-hover:bg-gray-3  00 cursor-pointer p-2 group-hover:rounded-lg transition-all ease-in-out duration-300">
-                                <Button className='' onClick={e => setIsOpenNotifications(!isOppenNotifications)}>   <img width="32" height="32" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/external-notification-user-interface-kmg-design-flat-kmg-design.png" alt="external-notification-user-interface-kmg-design-flat-kmg-design" />
+                                <Button className='' onClick={e => setIsOpenNotifications(!isOppenNotifications)}>   <img className="md:h-8 h-6 cursor-pointer" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/external-notification-user-interface-kmg-design-flat-kmg-design.png" alt="external-notification-user-interface-kmg-design-flat-kmg-design" />
 
                                 </Button>
                             </div>
@@ -110,8 +110,9 @@ export default function Nav() {
                             }
                             {isOppenNotifications &&
 
-                                <div ref={dropdownRef2} className={`absolute z-50 p-1  shadow-xl shadow-slate-500  mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-96 h-96 overflow-y-auto  border  rounded-md shadow-sm py-1`}>
+                                <div ref={dropdownRef2} className={`absolute z-50 p-2  shadow-sm shadow-slate-500  mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-96 h-96 overflow-y-auto  border  rounded-md shadow-sm py-1`}>
                                     <div className='flex flex-col  '>
+
                                         <h1 className='text-center text-2xl'>Notifications:</h1>
                                         <NotificationFrom content={" started following you"} />
 

@@ -21,11 +21,14 @@ export default function NotificationFrom({ content }: any) {
 
 
                 return <div className=''>
-                    <Link to={`/account/${item.from}`} className="flex items-center font-mono py-3">
-                        <img className="rounded-full object-cover h-6 w-6" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${users.find((elem: any) => elem.id == item.from).picture}`} />
-                        <div className={`leading-snug text-[12px]  ${isDarkMode ? "text-white" : "text-black"}  `}><span className='me-1'>{users.find((elem: any) => elem.id == item.from)?.first_name + " " + users.find((elem: any) => elem.id == item.from)?.last_name}</span> {content}</div>
+                    <Link to={`/account/${item.from_id}`} className=' flex justify-between items-center' >
+                        <div className={`flex items-center font-mono ps-1 py-3 my-1 ${isDarkMode ? " bg-slate-500" : " bg-sky-200"} text-black rounded-xl w-full`}>
+                            <img className="rounded-full object-cover h-8 w-8" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${item.user_picture}`} />
+                            <div className={`leading-snug text-[12px] text-black"}  `}><span className='m-1 font-bold'>{item.sender_name}</span> {item.type == "new_follower" ? " followed you" : item.type == "new_comment" ? "commented on your post" : "reacted on your post"}</div>
+                            <span className='text-[10px] ms-4'>{item.time}</span>
+                        </div>
+                        <div className='w-2 h-2 bg-green-900 rounded-full ms-1 '></div>
                     </Link>
-                    <hr />
                 </div>
             })
         )
