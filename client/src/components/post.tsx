@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import VideoPlayer from "./videoPlayer";
 import Comment from "./comment";
 import { appendNewPost } from "../redux/actions/actionCreators";
+import { ImageList, ImageListItem } from "@mui/material";
+import { Image } from "primereact/image";
 
 export default function Post({ post, key }: any) {
     const dispatch = useDispatch()
@@ -76,7 +78,6 @@ export default function Post({ post, key }: any) {
 
     const videoExtensions = ["mp4", "mkv"]
     const imageExtensions = ["jpg", "png", "webp"]
-    const fileExt = post?.files[0]?.split(".")?.slice(-1)
     return (
         <>
             <div key={key} style={{ minHeight: "20px" }}
@@ -91,13 +92,48 @@ export default function Post({ post, key }: any) {
 
                 <button className={"right-0 absolute "}><EllipsisHorizontalIcon className={"w-10 h-6 font-bold   inline-block cursor-pointer"} /></button>
                 <p className={"m-4"}>{post?.title}</p>
-                {post.files[0] &&
-                    fileExt && videoExtensions.includes(fileExt[0]) ?
+                {post.files.length > 1 ?
+                    <ImageList variant="masonry" cols={3} gap={8}>
+                        {post.files &&
+                            post.files.map((item: any) => {
+                                const fileExt = item.split(".")?.slice(-1)
+                                return (
+                                    <ImageListItem key={item}>
 
-                    < VideoPlayer file={`http://localhost:8000/storage/posts/${post?.id}/${post?.files[0]}`} /> :
-                    fileExt && imageExtensions.includes(fileExt[0]) ?
-                        < img className={` w-full  border-2 `} src={`http://localhost:8000/storage/posts/${post?.id}/${post?.files[0]}`} /> : <></>}
+                                        {fileExt && videoExtensions.includes(fileExt[0]) ?
 
+                                            < VideoPlayer file={`http://localhost:8000/storage/posts/${post?.id}/${item}`
+                                            } /> :
+                                            fileExt && imageExtensions.includes(fileExt[0]) ?
+                                                < Image preview
+
+                                                    loading="lazy" className={`cursor-pointer w-full  border-2 `} src={`http://localhost:8000/storage/posts/${post?.id}/${item}`} /> : <></>
+                                        }                                    </ImageListItem>
+                                )
+
+                            })
+                        }
+                    </ImageList>
+                    :
+                    post.files &&
+                    post.files.map((item: any) => {
+                        const fileExt = item.split(".")?.slice(-1)
+                        return (
+                            <ImageListItem key={item}>
+
+                                {fileExt && videoExtensions.includes(fileExt[0]) ?
+
+                                    < VideoPlayer file={`http://localhost:8000/storage/posts/${post?.id}/${item}`
+                                    } /> :
+                                    fileExt && imageExtensions.includes(fileExt[0]) ?
+                                        < Image preview
+
+                                            loading="lazy" className={` w-full cursor-pointe border-2 `} src={`http://localhost:8000/storage/posts/${post?.id}/${item}`} /> : <></>
+                                }                                    </ImageListItem>
+                        )
+
+                    })
+                }
 
 
                 <div className={"m-4 flex items-center justify-between w-full"}>
@@ -121,7 +157,7 @@ export default function Post({ post, key }: any) {
 
                 </div>
 
-            </div>
+            </div >
         </>
     )
 }

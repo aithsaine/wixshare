@@ -33,7 +33,17 @@ export default function NotificationFrom({ content }: any) {
                         <div className='w-2 h-2 bg-green-900 rounded-full ms-1 '></div>
                     </Link>
                 </div>
-            }) : <div>ss</div>
+            }) :
+            Array.from({ length: notifications.length }, (_, idx) => (
+                <div key={idx} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                        <span className="mr-2 h-8 w-8 rounded-full bg-gray-100"></span>
+                        <span className="h-4 w-40 rounded-lg bg-gray-100"></span>
+                    </div>
+                    <span className="h-4 w-14 rounded-lg bg-gray-100"></span>
+                </div>
+            ))
+
 
 
     )
