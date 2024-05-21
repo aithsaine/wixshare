@@ -7,6 +7,7 @@ import Post from '../components/post'
 import { Button, ButtonGroup } from "@nextui-org/react";
 
 import { Image } from 'primereact/image';
+import ProfileCard from '../components/profileCard'
 
 
 export default function Account() {
@@ -60,25 +61,28 @@ export default function Account() {
         }>
             <div className={`${isDarkMode ? "bg-black text-white" : " text-black"} shadow-md rounded-xl relative py-16 overflow-hidden`}>
 
-                <div className="  border bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-36 relative ">
-                    <div className='w-44 h-32 absolute z-0 top-16 left-8 flex flex-col items-center'>
+                <div className='w-full  flex justify-start relative    items-start ms-4'>
+                    <ProfileCard user={user} />
+                    <div className='w-full justify-start '>
 
-                        <Image className=" w-28 h-28 rounded-full object-cover mx-auto mb-4" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}`} alt="User Avatar" preview />
-                        <h2 className=" font-semibold text-center">{user?.first_name} {user?.last_name}</h2>
-                        {/* Job Title */}
-                        <p className="text-xs ms-4 ">Software Engineer</p>
+                        <div className=" mx-4 rounded-2xl border bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-36 relative ">
 
+
+                        </div>
+                        <ButtonGroup className='mx-4'>
+                            <Button onClick={(e: any) => setWhere("about")} className={"hover:border-b-4 rounded-2xl hover:border-indigo-500"}>About</Button>
+                            <Button onClick={(e: any) => setWhere("posts")} className={"hover:border-b-4 rounded-2xl hover:border-indigo-500"}>Posts</Button>
+                            <Button onClick={(e: any) => setWhere("")} className={"hover:border-b-4 rounded-2xl hover:border-indigo-500"}>Three</Button>
+                        </ButtonGroup>
+                        {
+                            where && where == "posts" ?
+                                <section className=' flex w-full items-center justify-start'>
+                                    <div className='w-full space-y-10 min-h-screen ms-6'>
+                                        {posts.map(item => <Post post={item} />)}
+                                    </div>
+                                </section> : ""
+                        }
                     </div>
-
-                </div>
-                <div className='w-full flex md:justify-around justify-center ms-4'>
-                    <ButtonGroup>
-                        <Button onClick={(e: any) => setWhere("about")} className={"hover:border-b-4 rounded-2xl hover:border-indigo-500"}>About</Button>
-                        <Button onClick={(e: any) => setWhere("posts")} className={"hover:border-b-4 rounded-2xl hover:border-indigo-500"}>Posts</Button>
-                        <Button onClick={(e: any) => setWhere("")} className={"hover:border-b-4 rounded-2xl hover:border-indigo-500"}>Three</Button>
-                    </ButtonGroup>
-                    <div>
-                        &nbsp;                </div>
                 </div>
                 {/* Header */}
                 <div className=" px-4 py-2 text-start">
@@ -88,14 +92,7 @@ export default function Account() {
                 {/* Body */}
 
             </div>
-            {
-                where && where == "posts" ?
-                    <section className=' flex w-full items-center justify-center'>
-                        <div className='w-2/3 space-y-10 min-h-screen ms-6'>
-                            {posts.map(item => <Post post={item} />)}
-                        </div>
-                    </section> : ""
-            }
+
         </main >
 
     )

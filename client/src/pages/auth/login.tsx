@@ -6,7 +6,7 @@ import { FEEDS, REGISETR, UPLOADPROFILEPICTURE } from '../../routes/routes';
 import Lottie from 'react-lottie';
 import animationdata from "../../assets/lottiefiles/phone.json";
 import Bars from 'react-loading-icons/dist/esm/components/bars';
-import api, { csrf } from '../../tools/api';
+import api from '../../tools/api';
 import toast from 'react-hot-toast';
 
 export default function Login() {
@@ -27,7 +27,6 @@ export default function Login() {
     };
     const submit = async (e: any) => {
         e.preventDefault()
-        csrf()
         try {
             setWait(true);
             const resp = await api.post("api/login", {
