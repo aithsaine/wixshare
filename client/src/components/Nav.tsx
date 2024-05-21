@@ -10,6 +10,8 @@ import { logOut } from '../redux/actions/actionCreators';
 import { Button } from '@mui/base';
 import UserItem from './UserItem';
 import NotificationFrom from './notificationFrom';
+import { PlayIcon } from '@heroicons/react/24/solid';
+import { Skeleton } from "@nextui-org/react";
 
 export default function Nav() {
     const { auth, friends, isDarkMode, messages, notifications } = useSelector((state: any) => state);
@@ -80,12 +82,12 @@ export default function Nav() {
     return (
         <>
             <nav className={`border-bottom border-black ${isDarkMode ? "bg-black shadow-sky-800" : "bg-white"}  px-6 shadow-lg  py-2 fixed w-full z-50 `}>
-                <div className="flex justify-between items-center">
-                    <div className="flex  items-center space-x-2">
+                <div className="flex justify-between items-start">
+                    <div className="flex   space-x-2">
                         <img className="h-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="" />
                         <SearchInput />
                     </div>
-                    <div className="relative flex justify-around w-2/5 items-center" >
+                    <div className="relative flex justify-around w-2/5 items-start" >
                         <div className="relative group">
                             <div className="group-hover:bg-gray-3  00 cursor-pointer p-2 group-hover:rounded-lg transition-all ease-in-out duration-300">
                                 <Link to={FEEDS}> <img className="md:h-8 h-6 cursor-pointer" src="https://img.icons8.com/external-kmg-design-flat-kmg-design/32/000000/external-home-ui-essential-kmg-design-flat-kmg-design.png" /></Link>
@@ -110,8 +112,8 @@ export default function Nav() {
                             }
                             {isOppenNotifications &&
 
-                                <div ref={dropdownRef2} className={`absolute z-50 p-2  shadow-sm shadow-slate-500  mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-96 h-96 overflow-y-auto  border  rounded-md shadow-sm py-1`}>
-                                    <div className='flex flex-col  '>
+                                <div ref={dropdownRef2} className={`absolute z-50 p-2  shadow-sm shadow-slate-500  mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-96 h-96 overflow-y-auto    rounded-md shadow-sm py-1`}>
+                                    <div className='flex  flex-col  '>
 
                                         <h1 className='text-center text-2xl'>Notifications:</h1>
                                         <NotificationFrom content={" started following you"} />

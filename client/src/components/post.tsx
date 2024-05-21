@@ -65,6 +65,9 @@ export default function Post({ post, key }: any) {
 
 
     }
+
+
+    // edit post
     const [load, setLoad] = useState(false)
 
 
@@ -91,7 +94,7 @@ export default function Post({ post, key }: any) {
                 {post.files[0] &&
                     fileExt && videoExtensions.includes(fileExt[0]) ?
 
-                    < VideoPlayer file={`http://localhost:8000/${post?.files[0]}`} /> :
+                    < VideoPlayer file={`http://localhost:8000/storage/posts/${post?.id}/${post?.files[0]}`} /> :
                     fileExt && imageExtensions.includes(fileExt[0]) ?
                         < img className={` w-full  border-2 `} src={`http://localhost:8000/storage/posts/${post?.id}/${post?.files[0]}`} /> : <></>}
 

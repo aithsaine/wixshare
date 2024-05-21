@@ -8,14 +8,14 @@ import { useSelector } from 'react-redux'
 
 export default function SuggestItem({ user }: any) {
     const { isDarkMode } = useSelector((state: any) => state)
-    const [followStatus, setFollowStatus] = useState(user.FollowStatus)
+    const [followStatus, setFollowStatus] = useState(user?.FollowStatus)
 
     const following = async (e: any) => {
         e.preventDefault();
         try {
 
             setFollowStatus("followed")
-            await api.post("api/follow/store", { user_id: user.id })
+            await api.post("api/follow/store", { user_id: user?.id })
         } catch (err) {
         }
     }
@@ -24,7 +24,7 @@ export default function SuggestItem({ user }: any) {
         try {
 
             setFollowStatus("")
-            await api.delete(`api/follow/${user.id}/delete`)
+            await api.delete(`api/follow/${user?.id}/delete`)
         } catch (err) {
         }
     }
@@ -38,19 +38,20 @@ export default function SuggestItem({ user }: any) {
             hidden={false}
             animate="show"
             className="py-2 flex items-center  justify-between  cursor-pointer ">
-            <Link to={`/account/${user.id}`} className="flex items-start">
-                <img className="rounded-full object-cover h-10 w-10" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user.picture}`} />
+            <Link to={`/account/${user?.id}`} className="flex items-start">
+                <img className="rounded-full object-cover h-10 w-10" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}`} />
                 <div className="ml-2 flex flex-col items-start">
-                    <div className={`leading-snug text-xs flex items-start flex-col ${isDarkMode ? "text-white" : "font-bold"}  `}><span>{user.first_name?.toUpperCase()}</span> <span>{user.last_name?.toUpperCase()}</span></div>
+                    <div className={`leading-snug text-xs flex items-center flex-col ${isDarkMode ? "text-white" : "font-bold"}  `}>{user?.first_name?.toUpperCase() + ' ' + user?.last_name?.toUpperCase()} </div>
                 </div>
             </Link>
-            {followStatus == "followed" ? <button
-                onClick={Unfollowe}
-                className="h-8 px-3 text-md font-bold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-100"            >Fllowing</button>
-                : <button
-                    onClick={following}
-                    className="h-8 px-3 text-md font-bold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-100"                >Fllow</button>
+            {
+                followStatus == "followed" ? <button
+                    onClick={Unfollowe}
+                    className="h-8 px-3 text-md font-bold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-100"            >Fllowing</button>
+                    : <button
+                        onClick={following}
+                        className="h-8 px-3 text-md font-bold text-blue-400 border border-blue-400 rounded-full hover:bg-blue-100"                >Fllow</button>
             }
-        </motion.div>
+        </motion.div >
     )
 }

@@ -14,7 +14,7 @@ export default function SharePost() {
     const dispatch = useDispatch()
     const [postFile, setPostFile] = useState<any>()
     const [title, setTitle] = useState<string>("")
-    const [user_id, setUserId] = useState(auth.id)
+    const [user_id, setUserId] = useState(auth?.id)
     const [uploadProgress, setUploadProgress] = useState(0);
     const submit = async (e: any) => {
         e.preventDefault();
@@ -63,7 +63,7 @@ export default function SharePost() {
                     </div>
                 </div>
             )}
-            <textarea name="" id="mytextarea" value={title} onChange={e => setTitle(e.target.value)} placeholder={`What's on your mind, ${auth.first_name?.toUpperCase()}?`} className={`w-full mt-2 rounded-xl ${isDarkMode ? 'bg-gray-800' : "bg-gray-200"}    text-md border-none  resize-none`} rows={2}></textarea>
+            <textarea name="" id="mytextarea" value={title} onChange={e => setTitle(e.target.value)} placeholder={`What's on your mind, ${auth?.first_name?.toUpperCase()}?`} className={`w-full mt-2 rounded-xl ${isDarkMode ? 'bg-gray-800' : "bg-gray-200"}    text-md border-none  resize-none`} rows={2}></textarea>
             <form onSubmit={submit} encType="multipart/form-data" className="w-full space-y-2">
                 <input type="file" onChange={e => setPostFile(e.target?.files ?? [0])} name="Postfile" className='hidden' id="post-file" />
                 <div className='flex w-full  items-center justify-between'>

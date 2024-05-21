@@ -54,8 +54,8 @@ function mainReducer(state = initialState, action: any) {
             return { ...state, selectedUserId: action.payload }
 
         case INSERTNOTIFICATION:
-            if (action.payload !== state.notifications[state.notifications.length - 1])
-                return { ...state, notifications: [...state.notifications, action.payload] }
+            if (action.payload !== state.notifications[0])
+                return { ...state, notifications: [action.payload, ...state.notifications] }
             return state;
         case ADDNOTIFICATIONS:
             return { ...state, notifications: action.payload }

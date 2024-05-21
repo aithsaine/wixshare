@@ -2,21 +2,24 @@ import React, { useEffect, useState } from 'react'
 import api from '../tools/api'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Skeleton } from 'primereact/skeleton'
 
 export default function NotificationFrom({ content }: any) {
     const { isDarkMode, notifications } = useSelector((state: any) => state)
+    const [iswaiting, setWaiting] = useState(true)
     const navigate = useNavigate()
     const [users, setUsers] = useState<any>()
     useEffect(() => {
         const getUsers = async () => {
             const resp = await api.post(`api/notification/users`, { users: notifications.map((item: any) => item.from) })
+            setWaiting(false)
             setUsers(resp?.data.users)
-            console.log(resp?.data.users)
         }
         getUsers()
     }, [])
     return (
-        users && (
+        !iswaiting ?
+
             notifications.map((item: any) => {
 
 
@@ -30,7 +33,8 @@ export default function NotificationFrom({ content }: any) {
                         <div className='w-2 h-2 bg-green-900 rounded-full ms-1 '></div>
                     </Link>
                 </div>
-            })
-        )
+            }) : <div>ss</div>
+
+
     )
 }
