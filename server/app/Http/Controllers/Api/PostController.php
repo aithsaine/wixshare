@@ -31,7 +31,9 @@ class PostController extends Controller
 
         if ($request->hasFile("postFile")) {
             $newPost->hasAssets = true;
-            $request->file("postFile")[0]->store("public/posts/{$newPost->id}/");
+            foreach ($request->file("postFile") as $item) {
+                $item->store("public/posts/{$newPost->id}/");
+            }
         }
         $newPost->save();
         return response()->json(["message" => "post created with success", "post" => new PostResource($newPost), "success" => true]);
