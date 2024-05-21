@@ -28,14 +28,17 @@ class FollowController extends Controller
             $follower->follower_id = $request->user_id;
             $follower->save();
             $followerName = User::find($request->user_id)->name; // Assuming 'name' is a field in the User model.
-            $notification = new Notification();
-            $notification->content = $followerName . " followed you";
-            $notification->from = $request->user()->id;
-            $notification->to = $request->user_id;
-            $notification->type = "new_follower";
-            $notification->seen = false;
-            $notification->save(); // Make sure to save the notification.
-            event(new Notify($notification));
+            if ($request->user_id != $request->user()->id) {
+
+                $notification = new Notification();
+                $notification->content = $followerName . " followed you";
+                $notification->from = $request->user()->id;
+                $notification->to = $request->user_id;
+                $notification->type = "new_follower";
+                $notification->seen = false;
+                $notification->save(); // Make sure to save the notification.
+                event(new Notify($notification));
+            }
             return response()->json(["success" => true]);
         }
     }

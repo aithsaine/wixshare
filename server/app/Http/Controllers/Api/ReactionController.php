@@ -30,15 +30,19 @@ class ReactionController extends Controller
         $react->user_id = $request->user_id;
         $react->post_id = $request->post_id;
         $react->save();
-        $notification = new Notification();
-        $notification->content =  " comment you";
-        $notification->from = $request->user()->id;
-        $notification->to = Post::find($request->post_id)->user_id;
-        $notification->type = "new_reaction";
-        $notification->seen = false;
-        $notification->data_code = $request->post_id;
-        $notification->save();
-        event(new Notify($notification));
+        $to_id = Post::find($request->post_id)->user_id;
+        if ($to_id != $request->user()->id) {
+
+            $notification = new Notification();
+            $notification->content =  " comment you";
+            $notification->from = $request->user()->id;
+            $notification->to = $to_id;
+            $notification->type = "new_reaction";
+            $notification->seen = false;
+            $notification->data_code = $request->post_id;
+            $notification->save();
+            event(new Notify($notification));
+        }
 
         return response()->json(["status" => "success", "post" => PostResource::make($react->post)]);
     }
