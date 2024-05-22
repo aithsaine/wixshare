@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Image } from 'primereact/image';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-const ProfileCard = ({ user }: any) => {
+const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
+    const { auth } = useSelector((state: any) => state)
     return (
-        <div className=" dark:bg-gray-700 h-full hidden md:block bg-gray-200 ">
-            {/* Card start */}
+        <div className="  h-screen hidden md:block ">
             <div className="max-w-sm h-full bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg">
-                <div className="border-b px-4 pb-6">
+                <div className=" px-4 pb-6">
                     <div className="text-center my-4">
-                        <img
-                            className="h-32 w-32 rounded-full border-4 border-white dark:border-gray-800 mx-auto my-4"
+                        <Image
+                            preview
+                            className="h-32 w-32 rounded-full  mx-auto my-4"
                             src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}`} alt="Profile"
                         />
                         <div className="py-2">
@@ -28,72 +32,50 @@ const ProfileCard = ({ user }: any) => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-2 px-2">
-                        <button className="flex-1 rounded-full bg-blue-600 dark:bg-blue-800 text-white antialiased font-bold hover:bg-blue-800 dark:hover:bg-blue-900 px-4 py-2">
-                            Follow
-                        </button>
-                        <button className="flex-1 rounded-full border-2 border-gray-400 dark:border-gray-700 font-semibold text-black dark:text-white px-4 py-2">
-                            Message
-                        </button>
-                    </div>
-                </div>
-                <div className="px-4 py-4">
-                    <div className="flex gap-2 items-center text-gray-800 dark:text-gray-300 mb-4">
-                        <svg
-                            className="h-6 w-6 text-gray-600 dark:text-gray-400"
-                            fill="currentColor"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                        >
-                            <path d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm0-2a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9 11a1 1 0 0 1-2 0v-2a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v2a1 1 0 0 1-2 0v-2a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v2z" />
-                        </svg>
-                        <span>
-                            <strong className="text-black dark:text-white">12</strong> Followers you know
-                        </span>
-                    </div>
-                    <div className="flex">
-                        <div className="flex justify-end mr-2">
-                            <img
-                                className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
-                                src="https://randomuser.me/api/portraits/men/32.jpg"
-                                alt="Follower 1"
-                            />
-                            <img
-                                className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
-                                src="https://randomuser.me/api/portraits/women/31.jpg"
-                                alt="Follower 2"
-                            />
-                            <img
-                                className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
-                                src="https://randomuser.me/api/portraits/men/33.jpg"
-                                alt="Follower 3"
-                            />
-                            <img
-                                className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
-                                src="https://randomuser.me/api/portraits/women/32.jpg"
-                                alt="Follower 4"
-                            />
-                            <img
-                                className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
-                                src="https://randomuser.me/api/portraits/men/44.jpg"
-                                alt="Follower 5"
-                            />
-                            <img
-                                className="border-2 border-white dark:border-gray-800 rounded-full h-10 w-10 -mr-2"
-                                src="https://randomuser.me/api/portraits/women/42.jpg"
-                                alt="Follower 6"
-                            />
-                            <span className="flex items-center justify-center bg-white dark:bg-gray-800 text-sm text-gray-800 dark:text-white font-semibold border-2 border-gray-200 dark:border-gray-700 rounded-full h-10 w-10">
-                                +999
-                            </span>
+                    <div className="px-4 py-4">
+                        <div className="flex justify-between gap-2 items-center text-gray-800 dark:text-gray-300 mb-4">
+
+                            <div className='flex flex-col items-center'>
+                                <span>
+
+                                    <strong className="text-black dark:text-white"></strong> Followers
+                                </span>
+                                <span>{user.followers}</span>
+
+                            </div>
+                            <div className='flex flex-col items-center'>
+                                <span>
+
+                                    <strong className="text-black dark:text-white"></strong> Following
+                                </span>
+                                <span>{user.following}</span>
+
+                            </div>
                         </div>
+
                     </div>
+                    {auth?.id !== user?.id && <div className="flex gap-2 px-2">
+
+                        {
+                            followStatus == "followed" ? <button
+                                onClick={Unfollowe}
+                                className="flex-1 rounded-full bg-blue-600 dark:bg-blue-800 text-white antialiased font-bold hover:bg-blue-800 dark:hover:bg-blue-900 px-4 py-2"                            >Fllowing</button>
+                                : <button
+                                    onClick={following}
+                                    className="flex-1 rounded-full bg-blue-600 dark:bg-blue-800 text-white antialiased font-bold hover:bg-blue-800 dark:hover:bg-blue-900 px-4 py-2"                                >Fllow</button>
+                        }
+
+
+                        < Link to={`/chat?userid=${user?.id}`}
+                            className="flex-1 rounded-full border-2 border-gray-400 dark:border-gray-700 font-semibold text-black dark:text-white px-4 py-2">
+                            Message
+                        </Link>
+                    </div>}
                 </div>
+
+                {/* Card end */}
             </div>
-            {/* Card end */}
-        </div>
+        </div >
     );
 };
 

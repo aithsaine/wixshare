@@ -20,14 +20,14 @@ export default function NotificationFrom({ content }: any) {
     return (
         !iswaiting ?
 
-            notifications.map((item: any) => {
+            notifications.sort((a: any, b: any) => (b.id > a.id) ? 1 : ((a.id > b.id) ? -1 : 0)).map((item: any) => {
 
 
                 return <div className=''>
                     <Link to={`/account/${item.from_id}`} className=' flex justify-between items-center' >
                         <div className={`flex items-center font-mono ps-1 py-3 my-1 ${isDarkMode ? " bg-slate-500" : " bg-sky-200"} text-black rounded-xl w-full`}>
                             <img className="rounded-full object-cover h-8 w-8" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${item.user_picture}`} />
-                            <div className={`leading-snug text-[12px] text-black"}  `}><span className='m-1 font-bold'>{item.sender_name}</span> {item.type == "new_follower" ? " followed you" : item.type == "new_comment" ? "commented on your post" : "reacted on your post"}</div>
+                            <div className={`leading-snug text-[12px] text-black"}  `}><span className='m-1 font-bold'>{item.sender_name}</span> {item.type == "new_follower" ? " started following you" : item.type == "new_comment" ? "commented on your post" : "reacted on your post"}</div>
                             <span className='text-[10px] ms-4'>{item.time}</span>
                         </div>
                         <div className='w-2 h-2 bg-green-900 rounded-full ms-1 '></div>

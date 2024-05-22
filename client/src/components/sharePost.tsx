@@ -4,12 +4,14 @@ import api from '../tools/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { appendNewPost } from '../redux/actions/actionCreators'
 import { Toaster, toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 export default function SharePost() {
     const specificStateSelector = (state: any) => ({
         auth: state.auth,
         isDarkMode: state.isDarkMode,
     });
+    const navigate = useNavigate()
     const { auth, isDarkMode } = useSelector(specificStateSelector)
     const dispatch = useDispatch()
     const [postFile, setPostFile] = useState<any>()
@@ -32,10 +34,11 @@ export default function SharePost() {
         );
         if (resp.data.success) {
             setTitle("")
-            console.log(resp.data.post)
             dispatch(appendNewPost(resp.data.post))
             toast.success(resp.data.message)
+
             setUploadProgress(0)
+            navigate("/feeds")
         }
     }
     return (

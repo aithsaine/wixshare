@@ -115,8 +115,10 @@ export default function Feeds() {
 
                 <SharePost />
 
+                <div className='w-full'>
 
-                {posts.map((elem: any, index: Number) => <Post key={index} post={elem} />)}
+                    {posts.map((elem: any) => { return <Post post={elem} /> })}
+                </div>
 
                 <ContentLoader
                     speed={2}

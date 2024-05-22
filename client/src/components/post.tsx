@@ -12,21 +12,19 @@ import { appendNewPost } from "../redux/actions/actionCreators";
 import { ImageList, ImageListItem } from "@mui/material";
 import { Image } from "primereact/image";
 
-export default function Post({ post, key }: any) {
+export default function Post({ post }: any) {
     const dispatch = useDispatch()
     const specificStateSelector = (state: any) => ({
         auth: state.auth,
         isDarkMode: state.isDarkMode,
     });
     const { auth, isDarkMode } = useSelector(specificStateSelector)
-    const [lks, setLikes] = useState(post?.likes ?? 0 ?? 0)
+    const [lks, setLikes] = useState(post?.likes ?? 0)
     const [dsl, setDislikes] = useState(post?.dislikes ?? 0)
     const [reactType, setReactType] = useState(post?.reaction)
     const [commentsCnt, setCommentsCnt] = useState(post?.commentsCount ?? 0)
     const submitHandler = async (e: any, type: String) => {
         e.preventDefault()
-        console.log("reaction : ", reactType)
-        console.log("clik on : ", type)
         if (reactType == "like") {
             if (type == "like") {
 
@@ -80,7 +78,7 @@ export default function Post({ post, key }: any) {
     const imageExtensions = ["jpg", "png", "webp"]
     return (
         <>
-            <div key={key} style={{ minHeight: "20px" }}
+            <div key={post.id} style={{ minHeight: "20px" }}
                 className={`w-full my-4 p-2 relative flex  flex-col items-start mt-4 rounded-xl ${isDarkMode ? "bg-slate-900 text-white sd shadow-whide" : "text-black bg-white shadow-md"} lg:w-3/4`}>
                 <Link to={`/account/${post.user_id}`} className="flex items-center">
                     <img className="rounded-full object-cover h-10 w-10" src={post?.user_picture} />

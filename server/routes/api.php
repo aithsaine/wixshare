@@ -19,7 +19,7 @@ Route::get('/user', function (Request $request) {
     $friends = UserResource::collection(User::whereNot("id", $request->user()->id)->get());
     $notifications = Notification::where("to", $request->user()->id)->get();
     return response()->json(["success" => true, "auth" => $auth, "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get()), "notifications" => NotificationResource::collection($notifications)]);
-})->middleware("auth:sanctum");
+})->middleware(["auth:sanctum", LastSeen::class]);
 
 Route::controller(AuthenticationController::class)
     ->group(function () {
