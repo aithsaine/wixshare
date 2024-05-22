@@ -6,12 +6,9 @@ import Loading from '../components/loading'
 import Post from '../components/post'
 import { Button, ButtonGroup } from "@nextui-org/react";
 import { Tooltip } from 'primereact/tooltip';
-
-import { Image } from 'primereact/image';
+import { Messages } from 'primereact/messages';
 import ProfileCard from '../components/profileCard'
 import { CameraIcon, DevicePhoneMobileIcon, EnvelopeIcon } from '@heroicons/react/24/solid'
-
-
 export default function Account() {
     const { id } = useParams()
     const { isDarkMode, auth } = useSelector((state: any) => state)
@@ -63,7 +60,6 @@ export default function Account() {
     if (!user) {
         return <Loading />
     }
-
     return (user &&
         < main className={`${isDarkMode ? "bg-black text-white" : ""} min-h-screen md:px-28 mt-6`
         }>
@@ -131,7 +127,7 @@ export default function Account() {
                                 {/* display posts */}
                                 {where == "posts" ?
                                     <div className='w-full space-y-10 min-h-screen ms-6'>
-                                        {posts.map(item => <Post post={item} />)}
+                                        {posts.length > 0 ? posts.map(item => <Post post={item} />) : <Messages ref={"msgs"} />}
                                     </div> : ""
                                 }
 

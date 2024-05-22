@@ -24,19 +24,19 @@ export default function Chat() {
     const urlParams = new URLSearchParams(queryString);
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const dispatch = useDispatch()
-    const [accessMskSeen, setAccessMskSeen] = useState(true)
 
-    if (urlParams.get("userid") !== null) {
-        dispatch(setUserId(urlParams.get("userid")))
-    }
+    useEffect(() => {
+        if (urlParams.get("userid") !== null) {
+            dispatch(setUserId(urlParams.get("userid")))
+        }
+    }, [urlParams.get("userid")])
+
     const [hasNotSeenMsgs, setHasNotSeenMsgs] = useState(selectedUserId ? messages.filter((msg: any) => msg.sender_id == selectedUserId).filter((msg: any) => msg.seen_at !== null).length > 0 : false)
     const markSeen = async () => {
-        setAccessMskSeen(false)
         const resp = await api.post(`api/chat/${auth?.id}/${selectedUserId}/markseen`)
         if (resp.data.success) {
             dispatch(addNewMessages(resp.data.messages))
         }
-        setAccessMskSeen(true)
     }
 
     useEffect(() => {
