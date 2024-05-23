@@ -1,17 +1,18 @@
 <?php
 
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Http\Middleware\LastSeen;
+use Illuminate\Support\Facades\App;
+use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\NotificationResource;
 use App\Http\Middleware\AddBearerTokenFromCookie;
 use App\Http\Controllers\Api\AuthenticationController;
-use App\Http\Middleware\LastSeen;
-use App\Http\Resources\NotificationResource;
-use App\Http\Resources\PostResource;
-use App\Models\Notification;
-use App\Models\User;
-use Illuminate\Support\Facades\App;
 
 Route::get('/user', function (Request $request) {
     $auth =  new UserResource($request->user());
@@ -79,6 +80,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
         return response()->json(["user" => new UserResource(User::find($id)), "posts" => PostResource::collection(User::find($id)->posts)]);
     });
     Route::post("notification/users", function (Request $request) {
-        return response()->json(["users" =>  UserResource::collection(User::findMany($request->users))]);
+        $posts = PostResource::collection(Post::findMany($request->posts));
+        return response()->json(["users" =>  UserResource::collection(User::findMany($request->users)), "posts" => $posts]);
     });
 });

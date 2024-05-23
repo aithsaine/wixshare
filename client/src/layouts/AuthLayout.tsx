@@ -48,8 +48,6 @@ export default function Authenticated() {
         }
         setAccessMskSeen(true)
     }
-
-
     window.Echo.channel("messageWith." + auth?.id).listen("SendMessage", function (e: any) {
         dispatch(appendNewMessage(e.message))
         if (selectedUserId !== e.message.sender_id && accessMskSeen && location.pathname == "/chat") {

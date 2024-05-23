@@ -22,7 +22,8 @@ class NotificationResource extends JsonResource
             "from_id" => $this->from,
             "type" => $this->type,
             "seen" => $this->seen,
-            "time" => Helper::getDate($this->created_at)
+            "time" => Helper::getDate($this->created_at),
+            "data_id" => $this->data_code
         ];
     }
 }

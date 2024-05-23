@@ -7,7 +7,6 @@ import Lottie from 'react-lottie';
 import animationdata from "../../assets/lottiefiles/phone.json";
 import Bars from 'react-loading-icons/dist/esm/components/bars';
 import api from '../../tools/api';
-import toast from 'react-hot-toast';
 
 export default function Login() {
     const [email, setEmail] = useState<String>("")
@@ -42,7 +41,6 @@ export default function Login() {
             }
 
         } catch (error: any) {
-            console.log(error.response)
             // setErrors(error.response.data)
             setWait(false);
 

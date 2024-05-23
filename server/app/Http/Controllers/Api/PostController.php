@@ -45,4 +45,6 @@ class PostController extends Controller
 
         return response()->file($filePath);
     }
+
+   
 }

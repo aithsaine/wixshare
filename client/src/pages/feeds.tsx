@@ -8,6 +8,7 @@ import ContentLoader from "react-content-loader";
 import SuggestItem from '../components/suggestItem'
 import Post from '../components/post'
 import { appendMultiplePosts } from '../redux/actions/actionCreators'
+import { SETTINGS } from '../routes/routes'
 
 
 export default function Feeds() {
@@ -61,12 +62,6 @@ export default function Feeds() {
 
         },
         {
-            key: 2,
-            title: "Videos",
-            path: "/",
-            icon: VideoCameraIcon
-        },
-        {
             key: 3,
             title: "Analytics",
             path: "/",
@@ -87,17 +82,14 @@ export default function Feeds() {
         },
         {
             key: 6,
-            title: "Edit Info",
-            path: "/profile/edit",
+            title: "Settings",
+            path: SETTINGS,
             icon: PencilSquareIcon
         }
 
     ]
 
 
-    // useEffect(() => {
-    //     dispatch(addNewPost(Stateposts))
-    // }, [])
 
     return (
         <div className="mt-0 relative flex p-1">
