@@ -28,7 +28,7 @@ export default function NotificationFrom({ content }: any) {
 
                 return <div className=''>
                     <Link to={`/account/${item.from_id}`} className=' flex justify-between flex-col items-center' >
-                        <div className={` font-mono px-1 py-3 my-1 ${isDarkMode ? " bg-slate-500" : " bg-sky-200"} text-black rounded-xl w-full`}>
+                        <div className={` font-mono px-3 py-3 my-1 ${isDarkMode ? " bg-slate-500" : " bg-sky-200"} text-black rounded-xl w-full`}>
 
                             <div className={`flex items-center justify-between w-full`}>
                                 <img className="rounded-full object-cover h-8 w-8" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${item.user_picture}`} />

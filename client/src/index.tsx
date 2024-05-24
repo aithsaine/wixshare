@@ -31,6 +31,11 @@ if (!window.Echo) {
     cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
   });
 }
+if (!window.Pusher) {
+  console.log("noooooo pusher")
+} if (!window.Echo) {
+  console.log("noooooo echo")
+}
 root.render(
 
   // Initialize Pusher

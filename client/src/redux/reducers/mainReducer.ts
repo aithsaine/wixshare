@@ -1,4 +1,4 @@
-import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDNOTIFICATIONS, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, INSERTNOTIFICATION, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE } from "../actions/types";
+import { ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDNOTIFICATIONS, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, INSERTNOTIFICATION, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE, UPDATEPROFILE } from "../actions/types";
 
 const initialState: any = {
     auth: null,
@@ -61,6 +61,8 @@ function mainReducer(state = initialState, action: any) {
             return state;
         case ADDNOTIFICATIONS:
             return { ...state, notifications: action.payload }
+        case UPDATEPROFILE:
+            return { ...state, auth: action.payload }
         default:
             return state;
     }

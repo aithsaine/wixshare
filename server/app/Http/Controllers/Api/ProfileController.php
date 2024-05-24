@@ -23,14 +23,14 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request)
     {
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-        if ($request->hasFile("picture")) {
+        if ($request->hasFile("picture") && $request->picture !== $request->user()->picture) {
             $request->validate(["picture" => "image", "mimes:png,jpg,jpeg"]);
             if ($request->user()->picture !== "profile.png") {
 
@@ -47,7 +47,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('dashboard');
+        return response()->json(["user" => new UserResource($request->user()), 'success' => true]);
     }
 
     /**
@@ -88,7 +88,8 @@ class ProfileController extends Controller
                 $request->user()->picture = $newName;
             }
             $request->user()->save();
-            return response()->json(["success" => true]);
+            $user = new UserResource($request->user());
+            return response()->json(["success" => true, "user" => $user]);
         } catch (ValidationException $err) {
             return response($err->errors(), 422);
         }

@@ -14,7 +14,8 @@ import {
     LOGOUT,
     MASKMESSAGESEEN,
     SETSELECTEDUSERID,
-    TOGGLELIGHTMODE
+    TOGGLELIGHTMODE,
+    UPDATEPROFILE
 } from "./types"
 
 
@@ -122,6 +123,13 @@ export const insertNotification = (data: any) => {
 export const addNotifications = (data: any) => {
     return {
         type: ADDNOTIFICATIONS,
+        payload: data
+    }
+}
+
+export const updateProfile = (data: any) => {
+    return {
+        type: UPDATEPROFILE,
         payload: data
     }
 }
