@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use Exception;
 use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
@@ -99,5 +100,19 @@ class ProfileController extends Controller
     {
         $user = new UserResource(User::find($user_id));
         return response()->json(["success" => true, "status" => $user->status]);
+    }
+
+    public function AddDescription(Request $request)
+    {
+        try {
+            $request->validate([
+                "description" => "required|max:3000|min:50"
+            ]);
+            $request->user()->description = $request->description;
+            $request->user()->save();
+            return response()->json(["success" => true, "description" => $request->description]);
+        } catch (ValidationException $er) {
+            return response($er->errors(), 422);
+        }
     }
 }

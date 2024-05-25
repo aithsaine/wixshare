@@ -1,4 +1,5 @@
 import {
+    ADDAUTHDESCRIPTION,
     ADDAUTHENTICATE,
     ADDNEWFRIENDS,
     ADDNEWMESSAGES,
@@ -130,6 +131,13 @@ export const addNotifications = (data: any) => {
 export const updateProfile = (data: any) => {
     return {
         type: UPDATEPROFILE,
+        payload: data
+    }
+}
+
+export const addAuthDescription = (data: String) => {
+    return {
+        type: ADDAUTHDESCRIPTION,
         payload: data
     }
 }

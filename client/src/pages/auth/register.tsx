@@ -27,7 +27,6 @@ export default function Register() {
     const submit: FormEventHandler = async (e) => {
         e.preventDefault();
         setWait(true);
-        csrf()
         try {
             const resp = await api.post("api/register", { first_name, last_name, gender, email, password, password_confirmation })
             if (resp.data?.success) {

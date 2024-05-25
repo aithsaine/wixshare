@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from "@mui/material";
 import api from '../tools/api';
-import { UseSelector, useSelector } from 'react-redux';
+import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { FEEDS } from '../routes/routes';
 import toast from 'react-hot-toast';
+import { updateProfile } from '../redux/actions/actionCreators';
 
 function FileUpload() {
     const { auth } = useSelector((state: any) => state)
@@ -48,7 +49,7 @@ function FileUpload() {
             reader.readAsDataURL(file);
         }
     };
-
+    const dispatch = useDispatch()
     const uploadFile = async (e: any) => {
         e.preventDefault();
         try {
@@ -58,7 +59,8 @@ function FileUpload() {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            if (resp.data.success) {
+            if (resp?.data.success) {
+                dispatch(updateProfile(resp?.data.user))
                 toast.success("Your profile Picture has been Added!");
                 navigate(FEEDS)
             }

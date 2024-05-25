@@ -105,7 +105,7 @@ export default function UpdateInformations({ user }: any) {
                     <TextField
                         id="birthday-input"
                         type="date"
-                        className='w-full'
+                        className='w-full text-white'
                         value={birthday}
                         onChange={e => {
                             setBirthday(e.target.value)

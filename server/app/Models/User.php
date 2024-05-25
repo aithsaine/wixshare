@@ -28,6 +28,10 @@ class User extends Authenticatable
         "gender",
         "birthday",
         'password',
+        "description",
+        "phone",
+        "country",
+        "hasCover"
     ];
 
     /**
@@ -60,7 +64,10 @@ class User extends Authenticatable
             "email" => ["required", "unique:users,email",],
             "password" => "required",
             "birthday" => ["required", "date", new VerifyAgeRule()],
-            "gender" => "required"
+            "gender" => "required",
+            "description" => "max:500",
+            "phone" => "",
+            "hasCover" => "boolean"
         ]);
     }
     public  function posts()

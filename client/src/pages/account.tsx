@@ -8,7 +8,7 @@ import { Button, ButtonGroup } from "@nextui-org/react";
 import { Tooltip } from 'primereact/tooltip';
 import { Messages } from 'primereact/messages';
 import ProfileCard from '../components/profileCard'
-import { CameraIcon, DevicePhoneMobileIcon, EnvelopeIcon } from '@heroicons/react/24/solid'
+import { CameraIcon, DevicePhoneMobileIcon, EnvelopeIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
 export default function Account() {
     const { id } = useParams()
     const { isDarkMode, auth } = useSelector((state: any) => state)
@@ -60,6 +60,7 @@ export default function Account() {
     if (!user) {
         return <Loading />
     }
+
     return (user &&
         < main className={`${isDarkMode ? "bg-black text-white" : ""} min-h-screen md:px-28 mt-6`
         }>
@@ -91,13 +92,13 @@ export default function Account() {
                                     where == "about" ?
                                         <div className='w-full py-4 space-y-10 min-h-screen ms-6'>
 
-                                            <h2 className={` text-lg font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}  `}>Introduction:</h2>
+                                            <h2 className={` text-lg inline font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}  `}>{user.id === auth.id && <Link to={"/settings"}><PencilSquareIcon title='update your intro' className='w-6 h-6 inline-block' /></Link>}Introduction: </h2>
                                             <ul className={`w-full space-y-1  ${isDarkMode ? " text-gray-400" : "text-gray-500"}  list-inside `}>
                                                 <li>
-                                                    <div className="flex items-center justify-start">
+                                                    <div id="intro" dangerouslySetInnerHTML={{ __html: user.description }} className="flex items-start flex-col justify-start">
 
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam error recusandae ut vero illum eum odit sequi eligendi ipsa officiis possimus fuga quae, nulla ipsum earum laudantium assumenda ex ratione nam vitae corrupti id exercitationem sunt quas? Inventore ab exercitationem tempora totam a earum nesciunt. Atque dolore ea delectus blanditiis.
                                                     </div>
+
                                                 </li>
 
 
@@ -126,8 +127,18 @@ export default function Account() {
                                 }
                                 {/* display posts */}
                                 {where == "posts" ?
-                                    <div className='w-full space-y-10 min-h-screen ms-6'>
-                                        {posts.length > 0 ? posts.map(item => <Post post={item} />) : <Messages ref={"msgs"} />}
+                                    <div className='w-full space-y-10 min-h-screen p-4 ms-6'>
+                                        {posts.length > 0 ? posts.map(item => <Post post={item} />) :
+                                            <div className="bg-teal-100 border-t-4 mt-10 border-teal-500 rounded-b text-teal-900 px-4 py-3 me-6 shadow-md" role="alert">
+                                                <div className="flex">
+                                                    <div className="py-1"><svg className="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" /></svg></div>
+                                                    <div>
+                                                        <p className="font-bold">Information</p>
+                                                        <p className="text-sm">No Post Available Right Now.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
                                     </div> : ""
                                 }
 

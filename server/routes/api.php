@@ -56,7 +56,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::get("user/{user_id}", [\App\Http\Controllers\Api\ProfileController::class,  "getUser"]);
     Route::delete('/profile', [\App\Http\Controllers\Api\ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch("/profile/picture/update", [\App\Http\Controllers\Api\ProfileController::class,  "uploadOnlyPicture"])->name("profile.updatePicture");
-
+    Route::patch("/profile/description", [\App\Http\Controllers\Api\ProfileController::class, "addDescription"]);
 
     //Comment Controller
     Route::get("/comments/{post_id}", [\App\Http\Controllers\Api\CommentController::class, "index"]);
