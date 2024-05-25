@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
-    const { auth } = useSelector((state: any) => state)
+    const { auth, isDarkMode } = useSelector((state: any) => state)
     return (
         <div className="  h-screen hidden md:block ">
-            <div className="max-w-sm h-full bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+            <div className={`max-w-sm h-full ${isDarkMode ? "bg-gray-900 text-white" : "bg-white"}   rounded-lg overflow-hidden shadow-lg`}>
                 <div className=" px-4 pb-6">
                     <div className="text-center my-4">
                         <Image
@@ -16,10 +16,10 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
                             src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}`} alt="Profile"
                         />
                         <div className="py-2">
-                            <h3 className="font-bold text-2xl text-gray-800 dark:text-white mb-1">{user?.first_name} {user?.last_name}</h3>
-                            <div className="inline-flex text-gray-700 dark:text-gray-300 items-center">
+                            <h3 className={`font-bold text-2xl ${isDarkMode ? "text-white" : "text-gray-800"}   mb-1`}>{user?.first_name} {user?.last_name}</h3>
+                            <div className={`inline-flex  ${isDarkMode ? " text-gray-500" : "text-gray-800"} items-center`}>
                                 <svg
-                                    className="h-5 w-5 text-gray-400 dark:text-gray-600 mr-1"
+                                    className={`h-5 w-5  ${isDarkMode ? " text-gray-400" : "text-gray-800"} mr-1`}
                                     fill="currentColor"
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
@@ -33,7 +33,7 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
                         </div>
                     </div>
                     <div className="px-4 py-4">
-                        <div className="flex justify-between gap-2 items-center text-gray-800 dark:text-gray-300 mb-4">
+                        <div className={`flex justify-between gap-2 items-center   ${isDarkMode ? " text-gray-400" : "text-gray-800"} mb-4`}>
 
                             <div className='flex flex-col items-center'>
                                 <span>
@@ -46,7 +46,7 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
                             <div className='flex flex-col items-center'>
                                 <span>
 
-                                    <strong className="text-black dark:text-white"></strong> Following
+                                    <strong className={`${isDarkMode ? " text-white" : "text-black"}`}></strong> Following
                                 </span>
                                 <span>{user.following}</span>
 
@@ -62,12 +62,12 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
                                 className="flex-1 rounded-full bg-blue-600 dark:bg-blue-800 text-white antialiased font-bold hover:bg-blue-800 dark:hover:bg-blue-900 px-4 py-2"                            >Fllowing</button>
                                 : <button
                                     onClick={following}
-                                    className="flex-1 rounded-full bg-blue-600 dark:bg-blue-800 text-white antialiased font-bold hover:bg-blue-800 dark:hover:bg-blue-900 px-4 py-2"                                >Fllow</button>
+                                    className={`flex-1 rounded-full  bg-blue-600 ${isDarkMode ? "hover:bg-blue-900 bg-blue-800" : ""} text-white antialiased font-bold hover:bg-blue-800 px-4 py-2`}                                >Fllow</button>
                         }
 
 
                         < Link to={`/chat?userid=${user?.id}`}
-                            className="flex-1 rounded-full border-2 border-gray-400 dark:border-gray-700 font-semibold text-black dark:text-white px-4 py-2">
+                            className={`flex-1 rounded-full border-2  ${isDarkMode ? "border-gray-700 font-semibold text-white" : "border-gray-400 text-black"}  px-4 py-2`}>
                             Message
                         </Link>
                     </div>}

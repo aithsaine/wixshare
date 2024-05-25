@@ -8,10 +8,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FEEDS, HOME } from '../routes/routes';
 import { logOut } from '../redux/actions/actionCreators';
 import { Button } from '@mui/base';
-import UserItem from './UserItem';
 import NotificationFrom from './notificationFrom';
-import { PlayIcon } from '@heroicons/react/24/solid';
-import { Skeleton } from "@nextui-org/react";
+import logo from "../assets/imgs/logo.png"
+import { ArrowLeftStartOnRectangleIcon, Cog6ToothIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 
 export default function Nav() {
     const { auth, friends, isDarkMode, messages, notifications } = useSelector((state: any) => state);
@@ -81,10 +80,10 @@ export default function Nav() {
 
     return (
         <>
-            <nav className={`border-bottom border-black ${isDarkMode ? "bg-black shadow-sky-800" : "bg-white"}  px-6 shadow-lg  py-2 fixed w-full z-50 `}>
-                <div className="flex justify-between items-start">
+            <nav className={`border-bottom border-black ${isDarkMode ? "bg-black shadow-sky-800" : "bg-white"}  px-6 shadow-lg   py-2 fixed w-full z-50 `}>
+                <div className="flex justify-between items-center">
                     <div className="flex   space-x-2">
-                        <img className="h-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="" />
+                        <img className="h-8" src={logo} alt="" />
                         <SearchInput />
                     </div>
                     <div className="relative flex justify-around w-2/5 items-start" >
@@ -95,12 +94,12 @@ export default function Nav() {
                             <div className="absolute group-hover:border-b-2 group-hover:cursor-pointer mt-2 border-blue-500 w-full transition-all duration-100 ease-in-out "></div>
                         </div>
 
-                        {/* <div className="relative group">
+                        <div className="relative group">
                             <div className="group-hover:bg-gray-3  00 cursor-pointer p-2 group-hover:rounded-lg transition-all ease-in-out duration-300">
                                 <img className="md:h-8 h-6 cursor-pointer" src="https://img.icons8.com/external-bearicons-outline-color-bearicons/64/000000/external-watch-call-to-action-bearicons-outline-color-bearicons.png" />
                             </div>
                             <div className="absolute group-hover:border-b-2 group-hover:cursor-pointer mt-2 border-blue-500 w-full transition-all duration-100 ease-in-out "></div>
-                        </div> */}
+                        </div>
                         {/*  Notifications Icon */}
                         <div className="relative group">
                             <div className="group-hover:bg-gray-3  00 cursor-pointer p-2 group-hover:rounded-lg transition-all ease-in-out duration-300">
@@ -147,10 +146,10 @@ export default function Nav() {
                                     </span>
                                     {isOpen && (
                                         <ul ref={dropdownRef} className={`absolute z-50 right-0 mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-48  border  rounded-md shadow-sm py-1`}>
-                                            <li><Link to="#" className={`block px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}>Profile</Link></li>
-                                            <li><Link to="#" className={`block px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}>Settings</Link></li>
+                                            <li><Link to={`/account/${auth.id}`} className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><UserCircleIcon className='w-6 h-6' />{auth.first_name.toUpperCase()}</Link></li>
+                                            <li><Link to="/settings" className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><Cog6ToothIcon className='w-6 h-6' /> Settings</Link></li>
                                             <li><hr className="my-1" /></li>
-                                            <li><button onClick={logout} className={`block px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}>Logout</button></li>
+                                            <li><button onClick={logout} className={`flex space-x-2 w-full text-start px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><ArrowLeftStartOnRectangleIcon className='w-6 h-6' /> Logout</button></li>
                                         </ul>
                                     )}
                                 </div>
