@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 use Exception;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
@@ -24,33 +25,50 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
+
     public function update(ProfileUpdateRequest $request)
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $validatedData = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-        if ($request->hasFile("picture") && $request->picture !== $request->user()->picture) {
-            $request->validate(["picture" => "image", "mimes:png,jpg,jpeg"]);
-            if ($request->user()->picture !== "profile.png") {
+        // Fill user data
+        $user->fill($validatedData);
 
-                if (Storage::exists('public/profiles/' . $request->user()->picture)) {
-                    Storage::delete('publicprofiles/' . $request->user()->picture);
-                }
-            }
-            $newName = uniqid() . "." . $request->file("picture")->getClientOriginalExtension();
-            $savePict =   $request->file("picture")->storeAs("public/profiles", $newName);
-            if ($savePict) {
-                $request->user()->picture = $newName;
-            }
+        // Check if email has been changed and reset email verification if so
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        // Validate and handle the profile picture if it exists
+        if ($request->hasFile('picture')) {
+            $request->validate([
+                'picture' => 'image|mimes:png,jpg,jpeg',
+            ]);
 
-        return response()->json(["user" => new UserResource($request->user()), 'success' => true]);
+            // Delete the old profile picture if it exists and is not the default
+            if ($user->picture !== 'profile.png' && File::exists(public_path('storage/profiles/' . $user->picture))) {
+                File::delete(public_path('storage/profiles/' . $user->picture));
+            }
+
+            // Generate a new unique name for the picture
+            $newName = uniqid() . '.' . $request->file('picture')->getClientOriginalExtension();
+
+            // Store the new picture in public/storage/profiles
+            $request->file('picture')->move(public_path('storage/profiles'), $newName);
+
+            // Update the user's picture field if the storage was successful
+            $user->picture = $newName;
+        }
+
+        // Save user data
+        $user->save();
+
+        // Return updated user resource
+        return response()->json([
+            'user' => new UserResource($user),
+            'success' => true,
+        ]);
     }
-
     /**
      * Delete the user's account.
      */
@@ -79,8 +97,9 @@ class ProfileController extends Controller
                 "picture" => "required|mimes:jpg,png,gif,jpeg,webp",
             ]);
             if ($request->user()->picture !== "profile.png") {
-                if (Storage::exists('profiles/' . $request->user()->picture)) {
-                    Storage::delete('profiles/' . $request->user()->picture);
+
+                if (File::exists(public_path('storage/profiles/' . $request->user()->picture))) {
+                    File::delete(public_path('storage/profiles/' . $request->user()->picture));
                 }
             }
             $newName = uniqid() . "." . $request->file("picture")->getClientOriginalExtension();

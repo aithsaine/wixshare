@@ -20,14 +20,21 @@ class PostResource extends JsonResource
      */
     public function getFilesNames()
     {
-        $files = Storage::files('public/posts/' . $this->id);
+        $directory = public_path("storage/posts/{$this->id}");
 
-        $fileNames = [];
-        foreach ($files as $file) {
-            $fileNames[] = pathinfo($file, PATHINFO_BASENAME);
+        // Check if the directory exists
+        if (file_exists($directory) && is_dir($directory)) {
+            // Get the list of files in the directory
+            $files = scandir($directory);
+
+            // Filter out '.' and '..' from the list
+            $files = array_diff($files, ['.', '..']);
+
+            // Return the filenames
+            return $files;
         }
 
-        return $fileNames;
+        return [];
     }
 
     public function toArray(Request $request): array
