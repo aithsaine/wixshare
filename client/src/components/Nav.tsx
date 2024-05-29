@@ -23,7 +23,9 @@ export default function Nav() {
     const navigate = useNavigate()
     const [isOppenNotifications, setIsOpenNotifications] = useState(false)
     const [notifications_not_seen, setNotificationsNotSeen] = useState(0)
-
+    useEffect(() => {
+        setImage(`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}`)
+    }, [auth])
 
     useEffect(() => {
         SetMsgNotSeen(messages.filter((item: any) => item.seen_at == null).filter((item: any) => item.receiver_id == auth?.id).length)

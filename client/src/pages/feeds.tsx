@@ -19,6 +19,7 @@ export default function Feeds() {
         suggestions: state.suggestions,
         page: state.page
     });
+
     const { auth, posts, page, isDarkMode, suggestions } = useSelector(specificStateSelector)
     const [pers, setPers] = useState(0)
     const dispatch = useDispatch()
@@ -29,8 +30,6 @@ export default function Feeds() {
             if (posts.length < response.data.length) {
                 dispatch(appendMultiplePosts((response.data.posts)))
                 setPers(0)
-
-
             }
         }
     }
@@ -109,7 +108,7 @@ export default function Feeds() {
 
                 <div className='w-full'>
 
-                    {posts.map((elem: any) => { return <Post post={elem} /> })}
+                    {posts.sort((a: any, b: any) => (a.created_at < b.created_at) ? 1 : ((b.created_at < a.created_at) ? -1 : 0)).map((elem: any) => { return <Post post={elem} /> })}
                 </div>
 
                 <ContentLoader

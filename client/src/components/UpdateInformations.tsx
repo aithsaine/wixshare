@@ -15,6 +15,7 @@ export default function UpdateInformations({ user }: any) {
     const [allowUpdate, setAllowUpdate] = useState(false)
     const handleFileChange = (e: any) => {
         const file = e.target.files[0];
+        setAllowUpdate(true)
 
         setPicture(file);
         if (file) {

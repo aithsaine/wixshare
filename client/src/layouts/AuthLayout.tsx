@@ -7,7 +7,6 @@ import { Add_authenticate, addNewFriends, addNewMessages, addNotifications, addS
 import Loading from '../components/loading';
 import Nav from '../components/Nav';
 import { Toaster } from 'sonner';
-import ScrollToTop from '../helpers/scrollToTop';
 export default function Authenticated() {
     const location = useLocation();
 

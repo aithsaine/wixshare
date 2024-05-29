@@ -55,7 +55,8 @@ class PostResource extends JsonResource
             "likes" => count(Reaction::where("post_id", $this->id)->where("type", "like")->get()),
             "dislikes" => count(Reaction::where("post_id", $this->id)->where("type", "dislike")->get()),
             "date" => Helper::getDate($this->created_at),
-            "reaction" => Reaction::where("post_id", $this->id)->where("user_id", Auth::user()->id)->first()->type ?? "none"
+            "reaction" => Reaction::where("post_id", $this->id)->where("user_id", Auth::user()->id)->first()->type ?? "none",
+            "created_at" => $this->created_at
         ];
     }
 }
