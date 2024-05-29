@@ -1,5 +1,5 @@
 import { PaperAirplaneIcon, PaperClipIcon } from '@heroicons/react/24/solid'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import api from '../tools/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { appendNewPost } from '../redux/actions/actionCreators'
@@ -14,7 +14,7 @@ export default function SharePost() {
     const navigate = useNavigate()
     const { auth, isDarkMode } = useSelector(specificStateSelector)
     const dispatch = useDispatch()
-    const [postFile, setPostFile] = useState<any>()
+    const [postFile, setPostFile] = useState<FileList>()
     const [title, setTitle] = useState<string>("")
     const [user_id, setUserId] = useState(auth?.id)
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -41,6 +41,7 @@ export default function SharePost() {
             navigate("/feeds")
         }
     }
+
     return (
         <div className={` w-full px-4 flex  border-2 shadow-2xl flex-col items-center rounded-xl ${isDarkMode ? "bg-slate-900 " : "bg-white"}   lg:w-3/4`}>
             {/* <Toaster position="bottom-right" /> */}
@@ -68,16 +69,21 @@ export default function SharePost() {
             )}
             <textarea name="" id="mytextarea" value={title} onChange={e => setTitle(e.target.value)} placeholder={`What's on your mind, ${auth?.first_name?.toUpperCase()}?`} className={`w-full mt-2 rounded-xl ${isDarkMode ? 'bg-gray-800' : "bg-gray-200"}    text-md border-none  resize-none`} rows={2}></textarea>
             <form onSubmit={submit} encType="multipart/form-data" className="w-full space-y-2">
-                <input type="file" multiple onChange={e => setPostFile(e.target?.files ?? [0])} name="Postfile" className='hidden' id="post-file" />
+                <input type="file" multiple onChange={(e: any) => {
+                    setPostFile(e.currentTarget.files ?? [])
+                }
+                } name="Postfile" className='hidden' id="post-file" />
                 <div className='flex w-full  items-center justify-between'>
                     <button type='button' onClick={() => {
                         document?.getElementById("post-file")?.click()
-                    }} className='text-md  font-bold  text-sky-600 p-4'>File <PaperClipIcon className='w-6 h-6 inline-block mx-1 ' />
+                    }} className='text-md  font-bold  text-sky-600 p-4'><span className='m-2 bg-green-800 text-white text-xs rounded p-2'>{postFile?.length && (postFile?.length)}</span>File <PaperClipIcon className='w-6 h-6 inline-block mx-1 ' />
                     </button >
                     <button type={"submit"} className='text-md  font-bold  text-sky-600 p-4'>Send<PaperAirplaneIcon className='w-6 h-6 inline-block mx-1 text-sky-600' /></button>
                 </div>
             </form>
+            <ul>
 
+            </ul>
         </div>
     )
 }

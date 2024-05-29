@@ -102,11 +102,14 @@ class ProfileController extends Controller
                     File::delete(public_path('storage/profiles/' . $request->user()->picture));
                 }
             }
-            $newName = uniqid() . "." . $request->file("picture")->getClientOriginalExtension();
-            $savePict =   $request->file("picture")->storeAs("public/profiles", $newName);
-            if ($savePict) {
-                $request->user()->picture = $newName;
-            }
+            $newName = uniqid() . '.' . $request->file('picture')->getClientOriginalExtension();
+
+            // Store the new picture in public/storage/profiles
+            $request->file('picture')->move(public_path('storage/profiles'), $newName);
+
+            // Update the user's picture field if the storage was successful
+
+            $request->user()->picture = $newName;
             $request->user()->save();
             $user = new UserResource($request->user());
             return response()->json(["success" => true, "user" => $user]);

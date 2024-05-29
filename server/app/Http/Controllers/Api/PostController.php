@@ -42,19 +42,17 @@ class PostController extends Controller
         $newPost->user_id = $request->user_id;
         $newPost->save();
 
-        if ($request->hasFile("postFile")) {
-            $newPost->hasAssets = true;
-            $postDirectory = "storage/posts/{$newPost->id}/";
+        $newPost->hasAssets = true;
+        $postDirectory = "storage/posts/{$newPost->id}/";
 
-            // Create directory if it doesn't exist
-            if (!File::exists(public_path($postDirectory))) {
-                File::makeDirectory(public_path($postDirectory), 0755, true);
-            }
+        // Create directory if it doesn't exist
+        // if (!File::exists(public_path($postDirectory))) {
+        //     File::makeDirectory(public_path($postDirectory), 0755, true);
+        // }
 
-            foreach ($request->file("postFile") as $file) {
-                $fileName = uniqid() . '_' . $file->getClientOriginalName();
-                $file->move(public_path($postDirectory), $fileName);
-            }
+        foreach ($request->file("postFile") as $file) {
+            $fileName = uniqid() . '_' . $file->getClientOriginalName();
+            $file->move(public_path($postDirectory), $fileName);
         }
 
         $newPost->save();
