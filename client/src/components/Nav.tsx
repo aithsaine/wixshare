@@ -148,7 +148,7 @@ export default function Nav() {
                                     </span>
                                     {isOpen && (
                                         <ul ref={dropdownRef} className={`absolute z-50 right-0 mt-2 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-48  border  rounded-md shadow-sm py-1`}>
-                                            <li><Link to={`/account/${auth.id}`} className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><UserCircleIcon className='w-6 h-6' />{auth.first_name.toUpperCase()}</Link></li>
+                                            <li><Link to={`/account/${auth?.id}`} className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><UserCircleIcon className='w-6 h-6' />{auth?.first_name.toUpperCase()}</Link></li>
                                             <li><Link to="/settings" className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><Cog6ToothIcon className='w-6 h-6' /> Settings</Link></li>
                                             <li><hr className="my-1" /></li>
                                             <li><button onClick={logout} className={`flex space-x-2 w-full text-start px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><ArrowLeftStartOnRectangleIcon className='w-6 h-6' /> Logout</button></li>

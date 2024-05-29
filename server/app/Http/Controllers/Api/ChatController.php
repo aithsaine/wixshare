@@ -7,6 +7,7 @@ use App\Events\SendMessage;
 use Illuminate\Http\Request;
 use App\Events\MessageNotification;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 
 class ChatController extends Controller
 {
@@ -24,8 +25,8 @@ class ChatController extends Controller
         $message->receiver_id = $request->receiver_id;
         $message->message = $request->message;
         $message->save();
-        event(new SendMessage($message));
-        event(new MessageNotification($message));
+        event(new SendMessage($message, new UserResource($request->user())));
+        // event(new MessageNotification($message));
     }
 
 

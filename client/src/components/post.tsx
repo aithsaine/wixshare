@@ -8,12 +8,11 @@ import api from "../tools/api";
 import { Link } from "react-router-dom";
 import VideoPlayer from "./videoPlayer";
 import Comment from "./comment";
-import { appendNewPost } from "../redux/actions/actionCreators";
 import { ImageList, ImageListItem } from "@mui/material";
 import { Image } from "primereact/image";
 
+
 export default function Post({ post }: any) {
-    const dispatch = useDispatch()
     const specificStateSelector = (state: any) => ({
         auth: state.auth,
         isDarkMode: state.isDarkMode,
@@ -70,92 +69,86 @@ export default function Post({ post }: any) {
     // edit post
     const [load, setLoad] = useState(false)
 
-
-
-
-
     const videoExtensions = ["mp4", "mkv"]
     const imageExtensions = ["jpg", "png", "webp"]
     return (
-        <>
-            <div key={post.id} style={{ minHeight: "20px" }}
-                className={`w-full my-4 p-2 relative flex  flex-col items-start mt-4 rounded-xl ${isDarkMode ? "bg-slate-900 text-white sd shadow-whide" : "text-black bg-white shadow-md"} lg:w-3/4`}>
-                <Link to={`/account/${post.user_id}`} className="flex items-center">
-                    <img className="rounded-full object-cover h-10 w-10" src={post?.user_picture} />
-                    <div className="ml-2 flex flex-col items-start">
-                        <div className={`leading-snug text-sm ${isDarkMode ? "text-white" : ""}  font-bold`}>{post?.user_name?.toUpperCase()}</div>
-                        <div className={`leading-snug text-xs ${isDarkMode ? "text-gray-400" : ""} `}>{post?.date}</div>
-                    </div>
-                </Link>
+        <div key={post.id} style={{ minHeight: "20px" }}
+            className={`w-full my-4 p-2 relative flex  flex-col items-start mt-4 rounded-xl ${isDarkMode ? "bg-slate-900 text-white sd shadow-whide" : "text-black bg-white shadow-md"} lg:w-3/4`}>
+            <Link to={`/account/${post.user_id}`} className="flex items-center">
+                <img className="rounded-full object-cover h-10 w-10" src={post?.user_picture} />
+                <div className="ml-2 flex flex-col items-start">
+                    <div className={`leading-snug text-sm ${isDarkMode ? "text-white" : ""}  font-bold`}>{post?.user_name?.toUpperCase()}</div>
+                    <div className={`leading-snug text-xs ${isDarkMode ? "text-gray-400" : ""} `}>{post?.date}</div>
+                </div>
+            </Link>
 
-                <button className={"right-0 absolute "}><EllipsisHorizontalIcon className={"w-10 h-6 font-bold   inline-block cursor-pointer"} /></button>
-                <p className={"m-4"}>{post?.title}</p>
-                {post.files.length > 1 ?
-                    <ImageList variant="masonry" cols={3} gap={8}>
-                        {post.files &&
-                            post.files.map((item: any) => {
-                                const fileExt = item.split(".")?.slice(-1)
-                                return (
-                                    <ImageListItem key={item}>
+            <button className={"right-0 absolute "}><EllipsisHorizontalIcon className={"w-10 h-6 font-bold   inline-block cursor-pointer"} /></button>
+            <p className={"m-4"}>{post?.title}</p>
+            {post.files.length > 1 ?
+                <ImageList variant="masonry" cols={3} gap={8}>
+                    {post.files &&
+                        post.files.map((item: any) => {
+                            const fileExt = item.split(".")?.slice(-1)
+                            return (
+                                <ImageListItem key={item}>
 
-                                        {fileExt && videoExtensions.includes(fileExt[0]) ?
+                                    {fileExt && videoExtensions.includes(fileExt[0]) ?
 
-                                            < VideoPlayer file={`http://localhost:8000/storage/posts/${post?.id}/${item}`
-                                            } /> :
-                                            fileExt && imageExtensions.includes(fileExt[0]) ?
-                                                < Image preview
+                                        < VideoPlayer file={`http://localhost:8000/storage/posts/${post?.id}/${item}`
+                                        } /> :
+                                        fileExt && imageExtensions.includes(fileExt[0]) ?
+                                            < Image preview
 
-                                                    loading="lazy" className={`cursor-pointer w-full  border-2 `} src={`http://localhost:8000/storage/posts/${post?.id}/${item}`} /> : <></>
-                                        }                                    </ImageListItem>
-                                )
+                                                loading="lazy" className={`cursor-pointer w-full  border-2 `} src={`http://localhost:8000/storage/posts/${post?.id}/${item}`} /> : <></>
+                                    }                                    </ImageListItem>
+                            )
 
-                            })
-                        }
-                    </ImageList>
-                    :
-                    post.files &&
-                    post.files.map((item: any) => {
-                        const fileExt = item.split(".")?.slice(-1)
-                        return (
-                            <ImageListItem key={item}>
+                        })
+                    }
+                </ImageList>
+                :
+                post.files &&
+                post.files.map((item: any) => {
+                    const fileExt = item.split(".")?.slice(-1)
+                    return (
+                        <ImageListItem key={item}>
 
-                                {fileExt && videoExtensions.includes(fileExt[0]) ?
+                            {fileExt && videoExtensions.includes(fileExt[0]) ?
 
-                                    < VideoPlayer file={`http://localhost:8000/storage/posts/${post?.id}/${item}`
-                                    } /> :
-                                    fileExt && imageExtensions.includes(fileExt[0]) ?
-                                        < Image preview
+                                < VideoPlayer file={`http://localhost:8000/storage/posts/${post?.id}/${item}`
+                                } /> :
+                                fileExt && imageExtensions.includes(fileExt[0]) ?
+                                    < Image preview
 
-                                            loading="lazy" className={` w-full cursor-pointe border-2 `} src={`http://localhost:8000/storage/posts/${post?.id}/${item}`} /> : <></>
-                                }                                    </ImageListItem>
-                        )
+                                        loading="lazy" className={` w-full cursor-pointe border-2 `} src={`http://localhost:8000/storage/posts/${post?.id}/${item}`} /> : <></>
+                            }                                    </ImageListItem>
+                    )
 
-                    })
-                }
+                })
+            }
 
 
-                <div className={"m-4 flex items-center justify-between w-full"}>
-                    <div>
+            <div className={"m-4 flex items-center justify-between w-full"}>
+                <div>
 
-                        <span className={"text-sm"}>{lks}</span>
-                        <label title={"like"} onClick={e => submitHandler(e, "like")} htmlFor={"like"}><HandThumbUpIcon
-                            className={`w-10 h-6 inline-block cursor-pointer transform transition duration-300 hover:scale-125 ${reactType == 'like' ? "text-green-800" : "text-green-100"}`} /></label>
-                        <label title={"dislike"} onClick={e => submitHandler(e, "dislike")} htmlFor={"dislike"} ><HandThumbDownIcon
-                            className={`w-10 h-6 inline-block cursor-pointer transform transition duration-300 hover:scale-125 ${reactType == "dislike" ? 'text-red-800' : "text-red-100"}`} /></label>
-                        <span className={"text-sm"}>{dsl}</span>
-                    </div>
-
-                    <div className={"me-6 t text-sky-600"}>
-                        <button className="flex space-x-2" onClick={e => setLoad(true)} title={"comments"}><span className={`${isDarkMode ? "text-white" : "text-black"} `}>{commentsCnt}</span><ChatBubbleBottomCenterTextIcon className={"bg-sk w-6"} /></button>  {/*"comments button"*/}
-                        {load && (
-
-                            <Comment setLoad={setLoad} commentsCnt={commentsCnt} setCommentsCnt={setCommentsCnt} user_id={auth.id} post_id={post?.id} />
-                        )}
-                    </div>
-
+                    <span className={"text-sm"}>{lks}</span>
+                    <label title={"like"} onClick={e => submitHandler(e, "like")} htmlFor={"like"}><HandThumbUpIcon
+                        className={`w-10 h-6 inline-block cursor-pointer transform transition duration-300 hover:scale-125 ${reactType == 'like' ? "text-green-800" : "text-green-100"}`} /></label>
+                    <label title={"dislike"} onClick={e => submitHandler(e, "dislike")} htmlFor={"dislike"} ><HandThumbDownIcon
+                        className={`w-10 h-6 inline-block cursor-pointer transform transition duration-300 hover:scale-125 ${reactType == "dislike" ? 'text-red-800' : "text-red-100"}`} /></label>
+                    <span className={"text-sm"}>{dsl}</span>
                 </div>
 
-            </div >
-        </>
+                <div className={"me-6 t text-sky-600"}>
+                    <button className="flex space-x-2" onClick={e => setLoad(true)} title={"comments"}><span className={`${isDarkMode ? "text-white" : "text-black"} `}>{commentsCnt}</span><ChatBubbleBottomCenterTextIcon className={"bg-sk w-6"} /></button>  {/*"comments button"*/}
+                    {load && (
+
+                        <Comment setLoad={setLoad} commentsCnt={commentsCnt} setCommentsCnt={setCommentsCnt} user_id={auth.id} post_id={post?.id} />
+                    )}
+                </div>
+
+            </div>
+
+        </div >
     )
 }

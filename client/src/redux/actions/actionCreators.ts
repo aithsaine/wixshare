@@ -7,6 +7,7 @@ import {
     ADDNOTIFICATIONS,
     ADDSUGGESTFRIENDS,
     APPENDMULTIPLEPOSTS,
+    APPENDNEWFRIEND,
     APPENDNEWMESSAGE,
     APPENDNEWPOST,
     APPENDPOSTS,
@@ -139,5 +140,12 @@ export const addAuthDescription = (data: String) => {
     return {
         type: ADDAUTHDESCRIPTION,
         payload: data
+    }
+}
+
+export const appendNewFriend = (data: any) => {
+    return {
+        type: APPENDNEWFRIEND
+        , payload: data
     }
 }

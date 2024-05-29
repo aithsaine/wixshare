@@ -13,13 +13,25 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\NotificationResource;
 use App\Http\Middleware\AddBearerTokenFromCookie;
 use App\Http\Controllers\Api\AuthenticationController;
+use App\Models\Chat;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/user', function (Request $request) {
     $auth =  new UserResource($request->user());
+    $user_id = $request->user()->id;
+    $ids = DB::table("chats")->whereRaw("receiver_id=? or sender_id=?", [$request->user()->id, $request->user()->id])->get();
+    $cleanChatIds = [];
+    foreach ($ids as $item) {
+        if ($item->sender_id !== $request->user()->id) {
+            array_push($cleanChatIds, $item->sender_id);
+        } else {
+            array_push($cleanChatIds, $item->receiver_id);
+        }
+    }
     $messages = array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray());
-    $friends = UserResource::collection(User::whereNot("id", $request->user()->id)->get());
+    $friends = UserResource::collection(User::findMany($cleanChatIds));
     $notifications = Notification::where("to", $request->user()->id)->get();
-    return response()->json(["success" => true, "auth" => $auth, "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get()), "notifications" => NotificationResource::collection($notifications)]);
+    return response()->json(["success" => true, "auth" => $auth,  "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get()), "notifications" => NotificationResource::collection($notifications)]);
 })->middleware(["auth:sanctum", LastSeen::class]);
 
 Route::controller(AuthenticationController::class)

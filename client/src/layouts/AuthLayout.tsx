@@ -3,7 +3,7 @@ import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import { LOGIN } from '../routes/routes';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import api, { csrf } from '../tools/api';
-import { Add_authenticate, addNewFriends, addNewMessages, addNotifications, addSuggestFriend, appendNewMessage, insertNotification, setUserId } from '../redux/actions/actionCreators';
+import { Add_authenticate, addNewFriends, addNewMessages, addNotifications, addSuggestFriend, appendNewFriend, appendNewMessage, insertNotification, setUserId } from '../redux/actions/actionCreators';
 import Loading from '../components/loading';
 import Nav from '../components/Nav';
 import { Toaster } from 'sonner';
@@ -49,14 +49,12 @@ export default function Authenticated() {
     }
     window.Echo.channel("messageWith." + auth?.id).listen("SendMessage", function (e: any) {
         dispatch(appendNewMessage(e.message))
+        dispatch(appendNewFriend(e.friend))
         if (selectedUserId !== e.message.sender_id && accessMskSeen && location.pathname == "/chat") {
 
             markSeen()
         }
     })
-
-
-
     useEffect(() => {
         !auth && getUser()
         if (!localStorage.getItem("light_mode"))

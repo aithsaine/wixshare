@@ -41,7 +41,6 @@ class PostController extends Controller
         $newPost->title = $request->title;
         $newPost->user_id = $request->user_id;
         $newPost->save();
-
         $newPost->hasAssets = true;
         $postDirectory = "storage/posts/{$newPost->id}/";
 
