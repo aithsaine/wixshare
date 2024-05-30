@@ -65,7 +65,7 @@ export default function Authenticated() {
         (loading) ? <Loading /> : <main className={`relative w-full ${isDarkMode ? "bg-black text-white" : "bg-white"} mb-0 no-scrollbar font-mono`}>
             <Nav />
 
-            <Toaster theme={isDarkMode ? "dark" : "light"} position="bottom-right" />
+            <Toaster richColors theme={isDarkMode ? "dark" : "light"} position="bottom-right" />
             <div className='py-14 min-h-screen'>
                 <Outlet />
             </div>

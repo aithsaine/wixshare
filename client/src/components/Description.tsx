@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Editor } from "primereact/editor";
 import api from '../tools/api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addAuthDescription } from '../redux/actions/actionCreators';
 import { toast } from 'sonner';
 
 export default function SettingDescription() {
+    const { auth } = useSelector((state: any) => state)
     const [allowUpdate, setAllowUpdate] = useState(false)
-    const [description, setDescription] = useState("")
+    const [description, setDescription] = useState(auth.description)
     useEffect(() => {
         if (description == null) {
             setAllowUpdate(false)

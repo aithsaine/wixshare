@@ -9,6 +9,7 @@ import { Tooltip } from 'primereact/tooltip';
 import ProfileCard from '../components/profileCard';
 import { CameraIcon, DevicePhoneMobileIcon, EnvelopeIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { addCoverImage } from '../redux/actions/actionCreators';
+import { toast } from 'sonner';
 
 export default function Account() {
     const { id } = useParams();
@@ -81,14 +82,16 @@ export default function Account() {
                 });
                 if (response?.data.success) {
                     dispatch(addCoverImage(response?.data.cover));
+                    toast.success("your cover has been added")
                     setCoverImage(`${process.env.REACT_APP_BACKEND_URI}/storage/covers/${response?.data.cover}`);
                     const domElem: HTMLElement | null = document.getElementById("coverdiv");
                     if (domElem) {
                         domElem.style.backgroundImage = `url(${process.env.REACT_APP_BACKEND_URI}/storage/covers/${response?.data.cover})`;
                     }
                 }
-            } catch (error) {
-                console.log(error);
+            } catch (error: any) {
+                if (error?.response.data.cover[0])
+                    toast.error(error?.response.data.cover[0]);
             }
         }
     };

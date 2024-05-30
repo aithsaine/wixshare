@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'primereact/image';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
     const { auth, isDarkMode } = useSelector((state: any) => state)
+    const [flwns, setFollowings] = useState(user?.following)
+    const [flwrs, setFollowers] = useState(user?.followers)
     return (
         <div className="  h-screen hidden md:block ">
             <div className={`max-w-sm h-full ${isDarkMode ? "bg-gray-900 text-white" : "bg-white"}   rounded-lg overflow-hidden shadow-lg`}>
@@ -41,7 +43,7 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
 
                                     <strong className="text-black dark:text-white"></strong> Followers
                                 </span>
-                                <span>{user?.followers}</span>
+                                <span>{flwrs}</span>
 
                             </div>
                             <div className='flex flex-col items-center'>
@@ -49,7 +51,7 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
 
                                     <strong className={`${isDarkMode ? " text-white" : "text-black"}`}></strong> Following
                                 </span>
-                                <span>{user?.following}</span>
+                                <span>{flwns}</span>
 
                             </div>
                         </div>
