@@ -26,7 +26,7 @@ class ChatController extends Controller
         $message->message = $request->message;
         $message->save();
         event(new SendMessage($message, new UserResource($request->user())));
-        // event(new MessageNotification($message));
+        event(new MessageNotification($message));
     }
 
 

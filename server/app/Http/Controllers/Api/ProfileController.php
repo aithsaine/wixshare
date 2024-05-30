@@ -137,4 +137,28 @@ class ProfileController extends Controller
             return response($er->errors(), 422);
         }
     }
+
+
+    public function uploadCover(Request $request)
+    {
+        try {
+            $request->validate([
+                "cover" => "image|mimes:png,jpg,jpeg,gif|dimensions:min_width:500,max_height:100"
+            ]);
+            $user =   $request->user();
+            $name = $user->id . "." . $request->cover->getClientOriginalExtension();
+
+            if (File::exists(public_path('storage/covers/' . $user->cover))) {
+                File::delete(public_path('storage/covers/' . $user->cover));
+            }
+            $save = $request->file('cover')->move(public_path('storage/covers'), $name);
+            if ($save) {
+                $user->cover = $name;
+                $user->save();
+                return response()->json(["success" => true, 'cover' => $user->cover]);
+            }
+        } catch (ValidationException $er) {
+            return response($er->errors(), 422);
+        }
+    }
 }

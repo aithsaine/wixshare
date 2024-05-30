@@ -31,10 +31,11 @@ class UserResource extends JsonResource
             "posts" => count($this->posts),
             "FollowStatus" => Follower::where("user_id", auth()->user()->id)->where("follower_id", $this->id)->first()?->status,
             "status" => Helper::userLastActivityStatus($this->last_seen),
-            "msgs_not_seen" => count(Chat::where("sender_id", $this->id)->where("receiver_id", auth()->user()->id)->where("seen_at", null)->get()),
-            "msgsNotify" => count(Chat::where("receiver_id", $this->id)->whereNull("seen_at")->get()),
+            // "msgs_not_seen" => count(Chat::where("sender_id", $this->id)->where("receiver_id", auth()->user()->id)->where("seen_at", null)->get()),
+            // "msgsNotify" => count(Chat::where("receiver_id", $this->id)->whereNull("seen_at")->get()),
             "description" => $this->description,
             "phone" => $this->phone,
+            "cover" => $this->cover
         ];
     }
 }

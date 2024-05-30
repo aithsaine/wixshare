@@ -66,7 +66,7 @@ export default function Chat() {
             receiver_id: selectedUserId,
             message: newMsg
         }).then((resp: any) => {
-            dispatch(appendNewMessage(resp.data))
+            dispatch(appendNewMessage(resp?.data))
             setNewMsg("")
             setButtonDisabled(false)
         }).catch((err: any) => setButtonDisabled(false))

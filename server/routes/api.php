@@ -69,7 +69,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::delete('/profile', [\App\Http\Controllers\Api\ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::patch("/profile/picture/update", [\App\Http\Controllers\Api\ProfileController::class,  "uploadOnlyPicture"])->name("profile.updatePicture");
     Route::patch("/profile/description", [\App\Http\Controllers\Api\ProfileController::class, "addDescription"]);
-
+    Route::patch("/profile/cover/upload", [\App\Http\Controllers\Api\ProfileController::class, "uploadCover"]);
     //Comment Controller
     Route::get("/comments/{post_id}", [\App\Http\Controllers\Api\CommentController::class, "index"]);
     Route::post("/comment/store", [\App\Http\Controllers\Api\CommentController::class, "store"])->name("comment.store");
@@ -91,8 +91,10 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::get("getuser/{id}", function ($id) {
         return response()->json(["user" => new UserResource(User::find($id)), "posts" => PostResource::collection(User::find($id)->posts)]);
     });
-    Route::post("notification/users", function (Request $request) {
-        $posts = PostResource::collection(Post::findMany($request->posts));
-        return response()->json(["users" =>  UserResource::collection(User::findMany($request->users)), "posts" => $posts]);
-    });
+
+
+    //Notification controller
+
+    Route::post("notification/users", [\App\Http\Controllers\Api\NotificationController::class, 'store']);
+    Route::patch("notification/{to}/maskseen", [\App\Http\Controllers\Api\NotificationController::class, 'maskseen']);
 });

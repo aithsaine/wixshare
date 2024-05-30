@@ -1,13 +1,28 @@
-import { ADDAUTHDESCRIPTION, ADDAUTHENTICATE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDNOTIFICATIONS, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWFRIEND, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, INSERTNOTIFICATION, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE, UPDATEPROFILE } from "../actions/types";
+import { ADDAUTHDESCRIPTION, ADDAUTHENTICATE, ADDCOVERIMAGE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDNOTIFICATIONS, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWFRIEND, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, INSERTNOTIFICATION, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE, UPDATEPROFILE } from "../actions/types";
+import { User, Post, Message } from "../../types"
+type StatesTypes = {
+    auth: User | null,
+    isDarkMode: boolean,
+    posts: Post[],
+    suggestions: User[],
+    messages: Message[],
+    friends: User[],
+    page: number,
+    notifications: Notification[],
+    selectedUserId: number | null
 
-const initialState: any = {
+
+
+
+}
+const initialState: StatesTypes = {
     auth: null,
     isDarkMode: localStorage.getItem("light_mode") === "dark" ?? false,
     posts: [],
     suggestions: [],
     messages: [],
-    test: "redux is working",
     friends: [],
+    notifications: [],
     page: 1,
     selectedUserId: null,//for chat component
 
@@ -71,6 +86,8 @@ function mainReducer(state = initialState, action: any) {
             }
             return { ...state }
 
+        case ADDCOVERIMAGE:
+            return { ...state, auth: { ...state.auth, cover: action.payload } }
         default:
             return state;
     }

@@ -1,6 +1,8 @@
+import { User } from "../../types"
 import {
     ADDAUTHDESCRIPTION,
     ADDAUTHENTICATE,
+    ADDCOVERIMAGE,
     ADDNEWFRIENDS,
     ADDNEWMESSAGES,
     ADDNEWPOST,
@@ -143,9 +145,17 @@ export const addAuthDescription = (data: String) => {
     }
 }
 
-export const appendNewFriend = (data: any) => {
+export const appendNewFriend = (data: User) => {
     return {
         type: APPENDNEWFRIEND
         , payload: data
     }
+}
+
+export const addCoverImage = (data: string) => {
+    return {
+        type: ADDCOVERIMAGE,
+        payload: data
+    }
+
 }

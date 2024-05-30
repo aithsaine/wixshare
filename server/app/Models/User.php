@@ -31,7 +31,7 @@ class User extends Authenticatable
         "description",
         "phone",
         "country",
-        "hasCover"
+        "cover"
     ];
 
     /**
@@ -67,7 +67,6 @@ class User extends Authenticatable
             "gender" => "required",
             "description" => "max:500",
             "phone" => "",
-            "hasCover" => "boolean"
         ]);
     }
     public  function posts()

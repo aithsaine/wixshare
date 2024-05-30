@@ -11,6 +11,7 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
                 <div className=" px-4 pb-6">
                     <div className="text-center my-4">
                         <Image
+                            style={{ borderRadius: "50%" }}
                             preview
                             className="h-32 w-32 rounded-full  mx-auto my-4"
                             src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}`} alt="Profile"

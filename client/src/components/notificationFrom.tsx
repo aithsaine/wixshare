@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import api from '../tools/api'
 import { Link, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Skeleton } from 'primereact/skeleton'
+import { addNotifications } from '../redux/actions/actionCreators'
 
 export default function NotificationFrom({ content }: any) {
-    const { isDarkMode, notifications } = useSelector((state: any) => state)
+    const { isDarkMode, notifications, auth } = useSelector((state: any) => state)
     const [NotificationPosts, setNotificationPosts] = useState<any>([]);
     const postsIds = notifications.filter((item: any) => item.type === "new_comment" || item.type === "new_reaction").map((item: any) => item.data_id);
     const [ntfs, setNtfs] = useState(notifications)
     const [type, setType] = useState("all")
+    const [to, setTo] = useState(auth.id)
+    const dispatch = useDispatch()
 
     const [iswaiting, setWaiting] = useState(true)
     useEffect(() => {
         const getUsers = async () => {
-            const resp = await api.post(`api/notification/users`, { users: notifications.map((item: any) => item.from), posts: Array.from(new Set(postsIds)) })
+            const resp = await api.post(`api/notification/users`, { users: notifications.map((item: any) => item.from), posts: Array.from(new Set(postsIds)), to })
             setWaiting(false)
             setNotificationPosts(resp?.data.posts)
+            dispatch(addNotifications(resp?.data.notifications))
         }
         getUsers()
     }, [])
