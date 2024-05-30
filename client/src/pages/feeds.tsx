@@ -17,10 +17,11 @@ export default function Feeds() {
         posts: state.posts,
         isDarkMode: state.isDarkMode,
         suggestions: state.suggestions,
-        page: state.page
+        page: state.page,
+        newPost: state.newPost
     });
 
-    const { auth, posts, page, isDarkMode, suggestions } = useSelector(specificStateSelector)
+    const { auth, posts, page, isDarkMode, suggestions, newPost } = useSelector(specificStateSelector)
     const [pers, setPers] = useState(0)
     const dispatch = useDispatch()
 
@@ -107,7 +108,7 @@ export default function Feeds() {
                 <SharePost />
 
                 <div className='w-full'>
-
+                    {newPost && <Post post={newPost} />}
                     {posts.map((elem: any) => { return <Post post={elem} /> })}
                 </div>
 
