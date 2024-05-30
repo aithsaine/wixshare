@@ -11,7 +11,7 @@ export default function NotificationFrom({ content }: any) {
     const postsIds = notifications.filter((item: any) => item.type === "new_comment" || item.type === "new_reaction").map((item: any) => item.data_id);
     const [ntfs, setNtfs] = useState(notifications)
     const [type, setType] = useState("all")
-    const [to, setTo] = useState(auth.id)
+    const [to, setTo] = useState(auth?.id)
     const dispatch = useDispatch()
 
     const [iswaiting, setWaiting] = useState(true)

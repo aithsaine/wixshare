@@ -143,7 +143,7 @@ export default function Post({ post }: any) {
                     <button className="flex space-x-2" onClick={e => setLoad(true)} title={"comments"}><span className={`${isDarkMode ? "text-white" : "text-black"} `}>{commentsCnt}</span><ChatBubbleBottomCenterTextIcon className={"bg-sk w-6"} /></button>  {/*"comments button"*/}
                     {load && (
 
-                        <Comment setLoad={setLoad} commentsCnt={commentsCnt} setCommentsCnt={setCommentsCnt} user_id={auth.id} post_id={post?.id} />
+                        <Comment setLoad={setLoad} commentsCnt={commentsCnt} setCommentsCnt={setCommentsCnt} user_id={auth?.id} post_id={post?.id} />
                     )}
                 </div>
 

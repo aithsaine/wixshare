@@ -108,7 +108,7 @@ export default function Feeds() {
 
                 <div className='w-full'>
 
-                    {posts.sort((a: any, b: any) => (a.created_at < b.created_at) ? 1 : ((b.created_at < a.created_at) ? -1 : 0)).map((elem: any) => { return <Post post={elem} /> })}
+                    {posts.map((elem: any) => { return <Post post={elem} /> })}
                 </div>
 
                 <ContentLoader

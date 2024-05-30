@@ -39,8 +39,7 @@ function mainReducer(state = initialState, action: any) {
         case ADDNEWPOST:
             return { ...state, posts: [...action.payload] };
         case APPENDNEWPOST:
-
-            return { ...state, posts: [...state.posts, action.payload] };
+            return { ...state, posts: [action.payload, ...state.posts] };
         case APPENDMULTIPLEPOSTS:
             if (action.payload[action.payload.length - 1].id !== state.posts[state.posts.length - 1]?.id)
                 return { ...state, posts: [...state.posts, ...action.payload], page: state.page + 1 };

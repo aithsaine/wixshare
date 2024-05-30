@@ -14,20 +14,32 @@ export default function SharePost() {
     const navigate = useNavigate()
     const { auth, isDarkMode } = useSelector(specificStateSelector)
     const dispatch = useDispatch()
-    const [postFile, setPostFile] = useState<FileList>()
+    const [postFiles, setpostFiles] = useState<any>()
     const [title, setTitle] = useState<string>("")
     const [user_id, setUserId] = useState(auth?.id)
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [selecedFiles, setSelectedFiles] = useState<any>([]);
+    const handlDelete = (file: any) => {
+        setSelectedFiles(selecedFiles.filter((item: any) => item !== file))
+
+    }
+    useEffect(() => {
+        const ar: any[] = []
+        for (let i = 0; i < postFiles?.length; i++) {
+            ar[i] = postFiles[i]
+        }
+        setSelectedFiles(ar)
+    }, [postFiles])
     const submit = async (e: any) => {
         e.preventDefault();
-        const resp = await api.post("api/post/store", { postFile, title, user_id }, {
+        const resp = await api.post("api/post/store", { postFiles: selecedFiles, title, user_id }, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
             onUploadProgress: (progressEvent) => {
                 const total = progressEvent.total ?? 1;
                 const progress = Math.round((progressEvent.loaded / total) * 100);
-                postFile && setUploadProgress(progress);
+                postFiles && setUploadProgress(progress);
             }
         }
 
@@ -36,7 +48,7 @@ export default function SharePost() {
             setTitle("")
             dispatch(appendNewPost(resp.data.post))
             toast.success(resp.data.message)
-
+            setSelectedFiles([])
             setUploadProgress(0)
             navigate("/feeds")
         }
@@ -70,20 +82,26 @@ export default function SharePost() {
             <textarea name="" id="mytextarea" value={title} onChange={e => setTitle(e.target.value)} placeholder={`What's on your mind, ${auth?.first_name?.toUpperCase()}?`} className={`w-full mt-2 rounded-xl ${isDarkMode ? 'bg-gray-800' : "bg-gray-200"}    text-md border-none  resize-none`} rows={2}></textarea>
             <form onSubmit={submit} encType="multipart/form-data" className="w-full space-y-2">
                 <input type="file" multiple onChange={(e: any) => {
-                    setPostFile(e.currentTarget.files ?? [])
+                    setpostFiles(e.currentTarget.files ?? [])
                 }
-                } name="Postfile" className='hidden' id="post-file" />
+                } name="postFiles" className='hidden' id="post-file" />
                 <div className='flex w-full  items-center justify-between'>
                     <button type='button' onClick={() => {
                         document?.getElementById("post-file")?.click()
-                    }} className='text-md  font-bold  text-sky-600 p-4'><span className='m-2 bg-green-800 text-white text-xs rounded p-2'>{postFile?.length && (postFile?.length)}</span>File <PaperClipIcon className='w-6 h-6 inline-block mx-1 ' />
+                    }} className='text-md  font-bold  text-sky-600 p-4'>
+                        File <PaperClipIcon className='w-6 h-6 inline-block mx-1 ' />
                     </button >
                     <button type={"submit"} className='text-md  font-bold  text-sky-600 p-4'>Send<PaperAirplaneIcon className='w-6 h-6 inline-block mx-1 text-sky-600' /></button>
                 </div>
             </form>
-            <ul>
+            <div className="mt-4 flex  justify-start gap-4">
+                {selecedFiles && selecedFiles.map((file: any, index: number) => (
+                    <div key={index} className="flex mb-4  relative">
+                        <img src={URL.createObjectURL(file)} alt={file.name} className="w-12 h-12 object-cover rounded-md" />
+                        <button className="absolute -top-3 -right-3  bg-red-500 text-white rounded-full px-2" onClick={() => handlDelete(file)}>x</button>                </div>
+                ))}
 
-            </ul>
+            </div>
         </div>
     )
 }

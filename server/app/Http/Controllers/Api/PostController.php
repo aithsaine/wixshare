@@ -49,7 +49,7 @@ class PostController extends Controller
         //     File::makeDirectory(public_path($postDirectory), 0755, true);
         // }
 
-        foreach ($request->file("postFile") as $file) {
+        foreach ($request->file("postFiles") as $file) {
             $fileName = uniqid() . '_' . $file->getClientOriginalName();
             $file->move(public_path($postDirectory), $fileName);
         }
@@ -62,6 +62,8 @@ class PostController extends Controller
             "success" => true
         ]);
     }
+
+
 
     public function getPostAsset($userId, $postId, $filename)
     {

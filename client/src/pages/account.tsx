@@ -68,7 +68,7 @@ export default function Account() {
     }, [coverImage]);
 
     const uploadCover = async (e: any) => {
-        if (auth.id === user.id) {
+        if (auth?.id === user?.id) {
             const formdata: FormData = new FormData();
             formdata.append("_method", "patch");
             formdata.append("cover", e.target.files[0]);
@@ -109,7 +109,7 @@ export default function Account() {
                                 className={containerClasses}
                                 style={{ backgroundImage: coverImage ? `url(${coverImage})` : '', backgroundSize: 'cover', backgroundPosition: 'center' }}
                             >
-                                {auth.id === user.id && (
+                                {auth?.id === user?.id && (
                                     <>
                                         <Tooltip target=".custom-target-icon" mouseTrack mouseTrackLeft={10} />
                                         <CameraIcon data-pr-tooltip="Upload Cover Picture" onClick={() => document.getElementById("coverInput")?.click()} className="w-6 h-6 hover:text-sky-600 custom-target-icon cursor-pointer" />
@@ -127,10 +127,10 @@ export default function Account() {
                                 <section className="flex w-full items-center justify-start">
                                     {where === "about" ? (
                                         <div className="w-6/8 me-8 py-4 space-y-10 min-h-screen ms-6">
-                                            <h2 className={`text-lg inline font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}`}>{user.id === auth.id && <Link to={"/settings"}><PencilSquareIcon title="update your intro" className="w-6 h-6 inline-block" /></Link>}Introduction:</h2>
+                                            <h2 className={`text-lg inline font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}`}>{user?.id === auth?.id && <Link to={"/settings"}><PencilSquareIcon title="update your intro" className="w-6 h-6 inline-block" /></Link>}Introduction:</h2>
                                             <ul className={`w-full space-y-1 ${isDarkMode ? "text-gray-400" : "text-gray-500"} list-inside`}>
                                                 <li>
-                                                    <div id="intro" dangerouslySetInnerHTML={{ __html: user.description }} className="flex items-start flex-col justify-start"></div>
+                                                    <div id="intro" dangerouslySetInnerHTML={{ __html: user?.description }} className="flex items-start flex-col justify-start"></div>
                                                 </li>
                                             </ul>
 
@@ -144,7 +144,7 @@ ide`}>
                                                 </li>
                                                 <li>
                                                     <div className="flex items-center justify-start">
-                                                        <EnvelopeIcon className="w-4 h-4" /> : <Link to={`mailto:${user.email}`}> {user.email}</Link>
+                                                        <EnvelopeIcon className="w-4 h-4" /> : <Link to={`mailto:${user?.email}`}> {user?.email}</Link>
                                                     </div>
                                                 </li>
                                             </ul>

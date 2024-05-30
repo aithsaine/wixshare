@@ -41,7 +41,7 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
 
                                     <strong className="text-black dark:text-white"></strong> Followers
                                 </span>
-                                <span>{user.followers}</span>
+                                <span>{user?.followers}</span>
 
                             </div>
                             <div className='flex flex-col items-center'>
@@ -49,7 +49,7 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
 
                                     <strong className={`${isDarkMode ? " text-white" : "text-black"}`}></strong> Following
                                 </span>
-                                <span>{user.following}</span>
+                                <span>{user?.following}</span>
 
                             </div>
                         </div>
