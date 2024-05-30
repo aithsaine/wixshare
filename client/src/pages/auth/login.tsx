@@ -41,7 +41,7 @@ export default function Login() {
             }
 
         } catch (error: any) {
-            // setErrors(error.response.data)
+            setErrors(error.response.data)
             setWait(false);
 
         }

@@ -1,6 +1,6 @@
-export type User = {
-    id: number,
-    first_name: string,
+export interface User {
+    id: bigint,
+    first_name: never,
     last_name: string,
     email: string,
     gender: string,
@@ -18,22 +18,22 @@ export type User = {
 
 }
 
-export type Notification = {
-    id: number,
+export interface Notification {
+    id: bigint,
 
 }
 
-export type Message = {
-    id: number,
+export interface Message {
+    id: bigint,
 
 }
 
-export type Post = {
-    id: number,
+export interface Post {
+    id: bigint,
 
 }
 
 
-export type Comment = {
-    id: number,
+export interface Comment {
+    id: bigint,
 }

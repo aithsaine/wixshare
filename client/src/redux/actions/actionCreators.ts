@@ -1,4 +1,4 @@
-import { User } from "../../types"
+import { Post, User } from "../../types"
 import {
     ADDAUTHDESCRIPTION,
     ADDAUTHENTICATE,
@@ -23,21 +23,21 @@ import {
 } from "./types"
 
 
-export const Add_authenticate = (data: any) => {
+export const Add_authenticate = (data: User) => {
     return {
         type: ADDAUTHENTICATE,
         payload: data
     }
 }
 
-export const toggleLightMode = (data: any) => {
+export const toggleLightMode = (data: boolean) => {
     return {
         type: TOGGLELIGHTMODE,
         payload: data
     }
 }
 
-export const addNewPost = (data: any) => {
+export const addNewPost = (data: Post) => {
     return {
         type: ADDNEWPOST,
         payload: data
