@@ -58,7 +58,7 @@ function mainReducer(state = initialState, action: any) {
                 return { ...state, messages: [...state.messages, action.payload] }
             return state
         case LOGOUT:
-            return { ...state, auth: null, messages: [], friends: [], suggests: [] }
+            return initialState
         case MASKMESSAGESEEN:
             return {
                 ...state, friends: state.friends.map((item: any) => {

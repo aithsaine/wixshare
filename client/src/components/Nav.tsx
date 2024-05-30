@@ -11,6 +11,8 @@ import { Button } from '@mui/base';
 import NotificationFrom from './notificationFrom';
 import logo from "../assets/imgs/logo.png"
 import { ArrowLeftStartOnRectangleIcon, Cog6ToothIcon, UserCircleIcon } from '@heroicons/react/24/solid';
+import Bars from 'react-loading-icons/dist/esm/components/bars';
+import Cite from 'react-loading-icons/dist/esm/components/circles'
 
 export default function Nav() {
     const { auth, friends, isDarkMode, messages, notifications } = useSelector((state: any) => state);
@@ -21,6 +23,7 @@ export default function Nav() {
     const dispatch = useDispatch()
     const [msgs_not_seen, SetMsgNotSeen] = useState(messages.filter((item: any) => item.seen_at == null).length ?? 0);
     const navigate = useNavigate()
+    const [processingLogout, setProcessingLogout] = useState<Boolean>(false)
     const [isOppenNotifications, setIsOpenNotifications] = useState(false)
     const [notifications_not_seen, setNotificationsNotSeen] = useState(0)
     useEffect(() => {
@@ -73,11 +76,17 @@ export default function Nav() {
 
 
     const logout = async () => {
-        const resp = await api.post("api/logout")
-        if (resp.data.success) {
-            dispatch(logOut())
-            navigate(HOME)
+        if (!processingLogout) {
+            setProcessingLogout(true)
+
+            const resp = await api.post("api/logout")
+            if (resp.data.success) {
+                dispatch(logOut())
+                navigate(HOME)
+            }
         }
+        setProcessingLogout(true)
+
     }
 
     return (
@@ -151,7 +160,7 @@ export default function Nav() {
                                             <li><Link to={`/account/${auth?.id}`} className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><UserCircleIcon className='w-6 h-6' />{auth?.first_name.toUpperCase()}</Link></li>
                                             <li><Link to="/settings" className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><Cog6ToothIcon className='w-6 h-6' /> Settings</Link></li>
                                             <li><hr className="my-1" /></li>
-                                            <li><button onClick={logout} className={`flex space-x-2 w-full text-start px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><ArrowLeftStartOnRectangleIcon className='w-6 h-6' /> Logout</button></li>
+                                            <li><button onClick={logout} className={`flex space-x-2 w-full text-start px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 " : "hover:bg-gray-100"} `}>{!processingLogout ? <ArrowLeftStartOnRectangleIcon className='w-6 h-6' /> : <Cite color='black' className={`w-6 h-6 font-bold ${isDarkMode ? "bg-white" : "bg-black"}`} />} Logout</button></li>
                                         </ul>
                                     )}
                                 </div>
