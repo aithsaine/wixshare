@@ -91,6 +91,12 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::get("getuser/{id}", function ($id) {
         return response()->json(["user" => new UserResource(User::find($id)), "posts" => PostResource::collection(User::find($id)->posts)]);
     });
+    Route::get("onlyuser/{id}", function ($id) {
+        $user = User::find($id);
+        if ($user) {
+            return response()->json(["user" => new UserResource($user), "success" => true]);
+        }
+    });
 
 
     //Notification controller

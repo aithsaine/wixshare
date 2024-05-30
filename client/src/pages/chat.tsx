@@ -4,9 +4,11 @@ import React, { useEffect, useState } from 'react'
 import InputEmoji from "react-input-emoji";
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../tools/api';
-import { addNewFriends, addNewMessages, appendNewMessage, markMessagesSeen, setUserId } from '../redux/actions/actionCreators';
+import { addNewFriends, addNewMessages, appendNewFriend, appendNewMessage, markMessagesSeen, setUserId } from '../redux/actions/actionCreators';
 import UserItem from '../components/UserItem';
 import RightSideBoxChat from '../components/RightSideBoxChat';
+import Loading from '../components/loading';
+import { useNavigate } from 'react-router-dom';
 // import { echo } from '../tools/echo';
 
 
@@ -24,13 +26,32 @@ export default function Chat() {
     const urlParams = new URLSearchParams(queryString);
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const dispatch = useDispatch()
+    const [wait, setWait] = useState(true)
+    const navigate = useNavigate()
+    const getUser = async (id: any) => {
+        setWait(true)
+        const resp = await api.get(`api/onlyuser/${id}`)
+        if (resp.data.success) {
+            dispatch(appendNewFriend(resp?.data.user))
+            return setWait(false)
+        }
+        return navigate("/404")
 
+    }
     useEffect(() => {
         if (urlParams.get("userid") !== null) {
             dispatch(setUserId(urlParams.get("userid")))
+            if (!friends.map((item: any) => item.id).includes(urlParams.get("userid"))) {
+                getUser(urlParams.get("userid"))
+            }
         }
     }, [urlParams.get("userid")])
+    useEffect(() => {
+        if (!urlParams.has("userid")) {
+            setWait(false)
 
+        }
+    }, [])
     const [hasNotSeenMsgs, setHasNotSeenMsgs] = useState(selectedUserId ? messages.filter((msg: any) => msg.sender_id == selectedUserId).filter((msg: any) => msg.seen_at !== null).length > 0 : false)
     const markSeen = async () => {
         const resp = await api.post(`api/chat/${auth?.id}/${selectedUserId}/markseen`)
@@ -70,6 +91,9 @@ export default function Chat() {
             setNewMsg("")
             setButtonDisabled(false)
         }).catch((err: any) => setButtonDisabled(false))
+    }
+    if (wait) {
+        return <Loading />
     }
     return (
         <section className='p-4 flex space-x-4 fixed w-full   h-[575px]  '>

@@ -98,7 +98,9 @@ export default function Account() {
 
     const containerClasses = `mx-4 rounded-2xl w-6/8 h-44 flex items-center justify-center ${user?.cover ? '' : 'bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% relative'
         }`;
-
+    if (!user) {
+        return <Loading />
+    }
     return (
         user && (
             <main className={`${isDarkMode ? "bg-black text-white" : ""} min-h-screen md:mx-10 mt-6 shadow-2xl shadow-gray-500`}>

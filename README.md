@@ -7,7 +7,7 @@ Connect,Chat with Friends. Share Your Life. Discover More - Your World, All in O
 - Share Moments
 - Connect with Friends
 - Show your Friends Posts
-- React posts (`like`, `dislike`,`comment`)
+- React posts (  `like`  ,  `dislike`  ,  `comment`  )
 - Upload Files
 - Searching
 - Realtime Chat
