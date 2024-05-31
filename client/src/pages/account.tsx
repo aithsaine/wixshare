@@ -97,8 +97,6 @@ export default function Account() {
         }
     };
 
-    const containerClasses = `mx-4 rounded-2xl w-6/8 h-44 flex items-center justify-center ${user?.cover ? '' : 'bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% relative'
-        }`;
     if (!user) {
         return <Loading />
     }
@@ -112,8 +110,9 @@ export default function Account() {
                         <div className="w-full justify-start">
                             <div
                                 id="coverdiv"
-                                className={containerClasses}
-                                style={{ backgroundImage: user?.cover ? `url(${process.env.REACT_APP_BACKEND_URI}/storage/covers/${user?.cover})` : '', backgroundSize: 'cover', backgroundPosition: 'center' }}
+                                className={`mx-4 rounded-2xl w-6/8 h-44 flex items-center justify-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% relative`}
+                                style={user.cover && { backgroundImage: user?.cover && `url(${process.env.REACT_APP_BACKEND_URI}/storage/covers/${user?.cover})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+
                             >
                                 {auth?.id === user?.id && (
                                     <>
