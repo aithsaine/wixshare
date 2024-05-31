@@ -20,7 +20,6 @@ export default function Account() {
     const navigate = useNavigate();
     const [followStatus, setFollowStatus] = useState("");
     const dispatch = useDispatch();
-    const [coverImage, setCoverImage] = useState<string | null>(null);
 
     const following = async (e: any) => {
         e.preventDefault();
@@ -49,7 +48,6 @@ export default function Account() {
                 const userData = resp?.data.user;
                 setUser(userData);
                 setPosts(resp?.data.posts);
-                setCoverImage(userData?.cover ? `${process.env.REACT_APP_BACKEND_URI}/storage/covers/${userData.cover}` : null);
                 setFollowStatus(userData?.FollowStatus);
             } catch (error: any) {
                 navigate("/404");
@@ -58,15 +56,7 @@ export default function Account() {
         getUser();
     }, [id]);
 
-    useEffect(() => {
-        const updateCoverBackground = () => {
-            const coverDiv = document.getElementById("coverdiv");
-            if (coverDiv) {
-                coverDiv.style.backgroundImage = coverImage ? `url(${coverImage})` : '';
-            }
-        };
-        updateCoverBackground();
-    }, [coverImage]);
+
 
     const uploadCover = async (e: any) => {
         if (auth?.id === user?.id) {
@@ -81,12 +71,13 @@ export default function Account() {
                     }
                 });
                 if (response?.data.success) {
+
                     dispatch(addCoverImage(response?.data.cover));
                     toast.success("your cover has been added")
-                    setCoverImage(`${process.env.REACT_APP_BACKEND_URI}/storage/covers/${response?.data.cover}`);
                     const domElem: HTMLElement | null = document.getElementById("coverdiv");
+                    console.log(`url("${process.env.REACT_APP_BACKEND_URI}/storage/covers/${user?.cover}")`)
                     if (domElem) {
-                        domElem.style.backgroundImage = `url(${process.env.REACT_APP_BACKEND_URI}/storage/covers/${response?.data.cover})`;
+                        domElem.style.backgroundImage = `url("${process.env.REACT_APP_BACKEND_URI}/storage/covers/${response?.data.cover}")`;
                     }
                 }
             } catch (error: any) {
@@ -112,7 +103,7 @@ export default function Account() {
                             <div
                                 id="coverdiv"
                                 className={containerClasses}
-                                style={{ backgroundImage: coverImage ? `url(${coverImage})` : '', backgroundSize: 'cover', backgroundPosition: 'center' }}
+                                style={{ backgroundImage: user?.cover ? `url(${process.env.REACT_APP_BACKEND_URI}/storage/covers/${user?.cover})` : '', backgroundSize: 'cover', backgroundPosition: 'center' }}
                             >
                                 {auth?.id === user?.id && (
                                     <>

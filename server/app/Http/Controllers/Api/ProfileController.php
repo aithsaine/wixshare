@@ -146,7 +146,7 @@ class ProfileController extends Controller
                 "cover" => "image|mimes:png,jpg,jpeg,gif|dimensions:min_width:500,max_height:100"
             ]);
             $user =   $request->user();
-            $name = $user->id . "." . $request->cover->getClientOriginalExtension();
+            $name = uniqid() . "." . $request->cover->getClientOriginalExtension();
 
             if (File::exists(public_path('storage/covers/' . $user->cover))) {
                 File::delete(public_path('storage/covers/' . $user->cover));
