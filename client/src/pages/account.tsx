@@ -60,30 +60,40 @@ export default function Account() {
 
     const uploadCover = async (e: any) => {
         if (auth?.id === user?.id) {
-            const formdata: FormData = new FormData();
-            formdata.append("_method", "patch");
-            formdata.append("cover", e.target.files[0]);
+            const formData = new FormData();
+            formData.append('_method', 'patch');
+            formData.append('cover', e.target.files[0]);
 
-            try {
-                const response = await api.post("api/profile/cover/upload", formdata, {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                });
-                if (response?.data.success) {
+            const uploadPromise = api.post('api/profile/cover/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
-                    dispatch(addCoverImage(response?.data.cover));
-                    toast.success("your cover has been added")
-                    const domElem: HTMLElement | null = document.getElementById("coverdiv");
-                    console.log(`url("${process.env.REACT_APP_BACKEND_URI}/storage/covers/${user?.cover}")`)
-                    if (domElem) {
-                        domElem.style.backgroundImage = `url("${process.env.REACT_APP_BACKEND_URI}/storage/covers/${response?.data.cover}")`;
-                    }
+            toast.promise(
+                uploadPromise,
+                {
+                    loading: 'Uploading cover image...',
+                    success: (response) => {
+                        if (response?.data.success) {
+                            dispatch(addCoverImage(response?.data.cover));
+                            const coverImageUrl = `${process.env.REACT_APP_BACKEND_URI}/storage/covers/${response?.data.cover}`;
+
+                            const coverDiv = document.getElementById('coverdiv');
+                            if (coverDiv) {
+                                coverDiv.style.backgroundImage = `url("${coverImageUrl}")`;
+                            }
+                            return 'Your cover has been added';
+                        }
+                    },
+                    error: (error) => {
+                        if (error?.response?.data?.cover?.[0]) {
+                            return error.response.data.cover[0];
+                        }
+                        return 'Failed to upload cover image';
+                    },
                 }
-            } catch (error: any) {
-                if (error?.response.data.cover[0])
-                    toast.error(error?.response.data.cover[0]);
-            }
+            );
         }
     };
 
