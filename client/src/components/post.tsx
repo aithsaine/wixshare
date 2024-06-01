@@ -1,7 +1,7 @@
 
 import { HandThumbUpIcon, HandThumbDownIcon } from "@heroicons/react/24/solid"
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EllipsisHorizontalIcon, ChatBubbleBottomCenterTextIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { useDispatch, useSelector } from "react-redux";
 import api from "../tools/api";
@@ -10,9 +10,12 @@ import VideoPlayer from "./videoPlayer";
 import Comment from "./comment";
 import { ImageList, ImageListItem } from "@mui/material";
 import { Image } from "primereact/image";
+import DropDownMenu from "./dropDownMenu";
 
 
 export default function Post({ post }: any) {
+    const reference = useRef(null)
+    const [isOpenMenu, setIsOpenMenu] = useState(false)
     const specificStateSelector = (state: any) => ({
         auth: state.auth,
         isDarkMode: state.isDarkMode,
@@ -22,6 +25,26 @@ export default function Post({ post }: any) {
     const [dsl, setDislikes] = useState(post?.dislikes ?? 0)
     const [reactType, setReactType] = useState(post?.reaction)
     const [commentsCnt, setCommentsCnt] = useState(post?.commentsCount ?? 0)
+    useEffect(() => {
+        const handleClickOutside = (event: any) => {
+
+            let em: any = reference.current;
+            if (em) {
+
+                if (!em.contains(event.target)) {
+                    setIsOpenMenu(false);
+
+                }
+            }
+
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     const submitHandler = async (e: any, type: String) => {
         e.preventDefault()
         if (reactType == "like") {
@@ -82,7 +105,12 @@ export default function Post({ post }: any) {
                 </div>
             </Link>
 
-            <button className={"right-0 absolute "}><EllipsisHorizontalIcon className={"w-10 h-6 font-bold   inline-block cursor-pointer"} /></button>
+            <button onClick={(e: any) => setIsOpenMenu(!isOpenMenu)} className={"right-0 absolute "}><EllipsisHorizontalIcon className={"w-10 h-6 font-bold   inline-block cursor-pointer"} /></button>
+            {isOpenMenu &&
+                <div ref={reference} className={`absolute right-0 top-8  z-50 p-0  shadow-sm shadow-slate-500  mt-0 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-32 overflow-y-auto   rounded-md shadow-sm `}>
+                    <DropDownMenu post={post} />
+                </div>
+            }
             <p className={"m-4"}>{post?.title}</p>
             {post.files.length > 1 ?
                 <ImageList variant="masonry" cols={3} gap={8}>

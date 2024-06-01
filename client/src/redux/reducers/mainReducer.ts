@@ -58,7 +58,18 @@ function mainReducer(state = initialState, action: any) {
                 return { ...state, messages: [...state.messages, action.payload] }
             return state
         case LOGOUT:
-            return initialState
+            return {
+                auth: null,
+                isDarkMode: localStorage.getItem("light_mode") === "dark" ?? false,
+                posts: [],
+                newPost: null,
+                suggestions: [],
+                messages: [],
+                friends: [],
+                notifications: [],
+                page: 1,
+                selectedUserId: null
+            }
         case MASKMESSAGESEEN:
             return {
                 ...state, friends: state.friends.map((item: any) => {

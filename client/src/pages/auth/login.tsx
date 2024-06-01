@@ -7,8 +7,11 @@ import Lottie from 'react-lottie';
 import animationdata from "../../assets/lottiefiles/phone.json";
 import Bars from 'react-loading-icons/dist/esm/components/bars';
 import api from '../../tools/api';
+import { useDispatch } from 'react-redux';
+import { Add_authenticate } from '../../redux/actions/actionCreators';
 
 export default function Login() {
+    const dispatch = useDispatch()
     const [email, setEmail] = useState<String>("")
     const [password, setPassword] = useState<String>("")
     const [errors, setErrors] = useState<any>()
@@ -34,7 +37,6 @@ export default function Login() {
             if (resp.data.success) {
                 setWait(false);
                 if (resp.data.user_picture == "profile.png") {
-                    console.log(resp.data)
                     return navigate(UPLOADPROFILEPICTURE)
                 }
                 return navigate(FEEDS)
@@ -50,8 +52,6 @@ export default function Login() {
 
     return (
         <main className="md:flex flex-start md:items-center  min-h-screen  ">
-
-
             <form className="md:w-1/2 flex items-center justify-center min-h-screen  m-4 " onSubmit={submit}>
 
                 <div className="dark:text-white p-6 shadow-2xl w-full shadow-black rounded-3xl m-6">

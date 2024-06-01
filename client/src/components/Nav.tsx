@@ -94,7 +94,7 @@ export default function Nav() {
             <nav className={`border-bottom border-black ${isDarkMode ? "bg-black shadow-sky-800" : "bg-white"}  px-6 shadow-lg   py-2 fixed w-full z-50 `}>
                 <div className="flex justify-between items-center">
                     <div className="flex   space-x-2">
-                        <img className="h-8" src={logo} alt="" />
+                        <img className="h-10" style={{ filter: "drop-shadow(1px 1px 30px red) invert(75%)" }} src={logo} alt="" />
                         <SearchInput />
                     </div>
                     <div className="relative flex justify-around w-2/5 items-start" >

@@ -26,13 +26,13 @@ class Helper
             return (int)\Carbon\Carbon::parse($dt)->diffInSeconds(Carbon::now()) . " seconds ago";
         }
         if (\Carbon\Carbon::parse($dt)->diffInMinutes(Carbon::now()) < 60) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInMinutes(Carbon::now()) . " minutes ago";
+            return (int)\Carbon\Carbon::parse($dt)->diffInMinutes(Carbon::now()) . "min ago";
         }
         if (\Carbon\Carbon::parse($dt)->diffInHours(Carbon::now()) < 24) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInHours(Carbon::now()) . " hours ago";
+            return (int)\Carbon\Carbon::parse($dt)->diffInHours(Carbon::now()) . "h ago";
         }
         if (\Carbon\Carbon::parse($dt)->diffInDays(Carbon::now()) < 7) {
-            return (int)\Carbon\Carbon::parse($dt)->diffInDays(Carbon::now()) . " days ago";
+            return (int)\Carbon\Carbon::parse($dt)->diffInDays(Carbon::now()) . "d ago";
         }
         if (\Carbon\Carbon::parse($dt)->diffInWeeks(Carbon::now()) <= 5) {
             return (int)\Carbon\Carbon::parse($dt)->diffInWeeks(Carbon::now()) . " weeks ago";
@@ -41,6 +41,6 @@ class Helper
             return (int)\Carbon\Carbon::parse($dt)->diffInMonths(Carbon::now()) . " months ago";
         }
 
-        return (int)\Carbon\Carbon::parse($dt)->diffInYears(Carbon::now()) . " years ago";
+        return (int)\Carbon\Carbon::parse($dt)->diffInYears(Carbon::now()) . "y ago";
     }
 }

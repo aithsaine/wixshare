@@ -36,7 +36,8 @@ export default function Authenticated() {
     }
 
     window.Echo.channel("notifyUser." + auth?.id).listen("Notify", function (e: any) {
-        dispatch(insertNotification(e.notification))
+        if (auth.id == e.notification.to)
+            dispatch(insertNotification(e.notification))
     })
 
     const markSeen = async () => {
