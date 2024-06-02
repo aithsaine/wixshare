@@ -2,16 +2,16 @@ import { BookmarkIcon, ChatBubbleBottomCenterTextIcon, PencilSquareIcon, Present
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import api, { csrf } from '../tools/api'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SharePost from '../components/sharePost'
 import ContentLoader from "react-content-loader";
 import SuggestItem from '../components/suggestItem'
 import Post from '../components/post'
 import { appendMultiplePosts } from '../redux/actions/actionCreators'
-import { SETTINGS } from '../routes/routes'
-
+import { LOGIN, SERVERERROR, SETTINGS } from '../routes/routes'
 
 export default function Feeds() {
+    const navigate = useNavigate()
     const specificStateSelector = (state: any) => ({
         auth: state.auth,
         posts: state.posts,
@@ -26,12 +26,17 @@ export default function Feeds() {
     const dispatch = useDispatch()
 
     const getPosts = async () => {
-        const response = await api.get(`api/posts/index?page=${page}`)
-        if (response.data.success) {
-            if (posts.length < response.data.length) {
-                dispatch(appendMultiplePosts((response.data.posts)))
-                setPers(0)
+        try {
+
+            const response = await api.get(`api/posts/index?page=${page}`)
+            if (response.data.success) {
+                if (posts.length < response.data.length) {
+                    dispatch(appendMultiplePosts((response.data.posts)))
+                    setPers(0)
+                }
             }
+        } catch (error: any) {
+            return navigate(SERVERERROR)
         }
     }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { UseSelector, useDispatch, useSelector } from 'react-redux';
-import { LOGIN } from '../routes/routes';
+import { LOGIN, SERVERERROR } from '../routes/routes';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import api, { csrf } from '../tools/api';
 import { Add_authenticate, addNewFriends, addNewMessages, addNotifications, addSuggestFriend, appendNewFriend, appendNewMessage, insertNotification, setUserId } from '../redux/actions/actionCreators';
@@ -30,8 +30,13 @@ export default function Authenticated() {
             dispatch(addNewFriends(resp.data.friends))
             dispatch(addNotifications(resp.data.notifications))
             setLoading(false)
-        } catch (error) {
-            return navigate(LOGIN)
+        } catch (error: any) {
+            if (error.response.data.message == "Unauthenticated.") {
+                setLoading(false)
+                return navigate(LOGIN)
+            }
+            setLoading(false)
+            return navigate(SERVERERROR)
         }
     }
 

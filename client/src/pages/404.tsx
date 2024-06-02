@@ -15,5 +15,6 @@ export default function NotFound() {
                     <Link to="/">Return Home</Link>
                 </div>
             </div>
-        </div>)
+        </div>
+    )
 }

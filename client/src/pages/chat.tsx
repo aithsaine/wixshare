@@ -28,6 +28,7 @@ export default function Chat() {
     const dispatch = useDispatch()
     const [wait, setWait] = useState(true)
     const navigate = useNavigate()
+    const [newProcessMsg, setNewProcessMsg] = useState<any>();
     const getUser = async (id: any) => {
         setWait(true)
         const resp = await api.get(`api/onlyuser/${id}`)
@@ -82,11 +83,15 @@ export default function Chat() {
     })
 
     const chatHandler = () => {
+
+        setNewProcessMsg(<RightSideBoxChat message={{ message: newMsg }} />)
+
         setButtonDisabled(true)
         api.post("api/chat", {
             receiver_id: selectedUserId,
             message: newMsg
         }).then((resp: any) => {
+            setNewProcessMsg(null)
             dispatch(appendNewMessage(resp?.data))
             setNewMsg("")
             setButtonDisabled(false)
@@ -112,9 +117,11 @@ export default function Chat() {
                             if (item.receiver_id == selectedUserId) {
                                 return <RightSideBoxChat message={item} />
                             }
-                            return <LeftSideBoxChat message={item} />
+                            return <LeftSideBoxChat message={item} sender_picture={friends.find((elem: any) => elem.id == item.sender_id).picture} />
                         }
                     )}
+                    {newProcessMsg && newProcessMsg}
+
                     <div className='flex'>
 
                         <InputEmoji

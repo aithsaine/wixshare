@@ -6,4 +6,4 @@ export const UPLOADPROFILEPICTURE = "/profile/picture/upload"
 export const CHAT = "/chat"
 export const USERACCOUNT = `account/:id`
 export const SETTINGS = "/settings"
-
+export const SERVERERROR = "/server-error"

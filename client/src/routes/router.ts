@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom"
 import GuestLayout from "../layouts/GuestLayout"
 import Home from "../pages/home"
-import { HOME, REGISETR, LOGIN, FEEDS, UPLOADPROFILEPICTURE, CHAT, USERACCOUNT, SETTINGS } from "./routes"
+import { HOME, REGISETR, LOGIN, FEEDS, UPLOADPROFILEPICTURE, CHAT, USERACCOUNT, SETTINGS, SERVERERROR } from "./routes"
 import NotFound from "../pages/404";
 import Register from "../pages/auth/register";
 import Login from "../pages/auth/login";
@@ -12,6 +12,7 @@ import FileUpload from "../components/fileUpload";
 import Chat from "../pages/chat";
 import Account from "../pages/account";
 import Settings from "../pages/settings";
+import ServerError from "../pages/serverError";
 
 const router = createBrowserRouter([
     {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
                 Component: () => Settings()
             }
         ]
+    },
+    {
+        path: SERVERERROR,
+        Component: () => ServerError()
     },
 
     {
