@@ -32,26 +32,42 @@ export default function SharePost() {
     }, [postFiles])
     const submit = async (e: any) => {
         e.preventDefault();
-        const resp = await api.post("api/post/store", { postFiles: selecedFiles, title, user_id }, {
+        const savePromise = api.post("api/post/store", { postFiles: selecedFiles, title, user_id }, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
             },
             onUploadProgress: (progressEvent) => {
                 const total = progressEvent.total ?? 1;
                 const progress = Math.round((progressEvent.loaded / total) * 100);
                 postFiles && setUploadProgress(progress);
             }
-        }
+        });
+        toast.promise(
+            savePromise,
+            {
+                loading: 'Uploading cover image...',
+                success: (response) => {
+                    if (response?.data.success) {
+                        setTitle("")
+                        dispatch(appendNewPost(response?.data.post))
+                        setSelectedFiles([])
+                        setUploadProgress(0)
+                        setpostFiles(null)
 
+
+
+                        return 'Your cover has been added';
+                    }
+                },
+                error: (error) => {
+                    if (error?.response?.data?.cover?.[0]) {
+                        return error.response.data.cover[0];
+                    }
+                    return 'Failed to upload cover image';
+                },
+            }
         );
-        if (resp.data.success) {
-            setTitle("")
-            dispatch(appendNewPost(resp.data.post))
-            toast.success(resp.data.message)
-            setSelectedFiles([])
-            setUploadProgress(0)
-            navigate("/feeds")
-        }
+
     }
 
     return (

@@ -8,7 +8,8 @@ export default function Comment({ user_id, post_id, setLoad, commentsCnt, setCom
     const [comments, setComments] = useState<any>([]);
     const [wait, setWait] = useState(true)
     const [newComment, setNewComment] = useState<string>("")
-    const { isDarkMode } = useSelector((state: any) => state)
+    const { isDarkMode, auth } = useSelector((state: any) => state)
+    const [itemCmt, setItemCmt] = useState<any>(null);
 
     useEffect(() => {
         const getComments = async () => {
@@ -21,17 +22,18 @@ export default function Comment({ user_id, post_id, setLoad, commentsCnt, setCom
         }
         commentsCnt > 0 && getComments()
 
-        console.log(comments)
 
     }, [])
 
     const saveComment = async () => {
+        setItemCmt(<CommentItem filename={auth?.picture} user_name={`${auth?.first_name} ${auth?.last_name}`} date={"please wait"} user_id={auth.user_id} content={newComment} />)
         const resp = await api.post("/api/comment/store", {
             post_id, user_id, content: newComment
         })
         if (resp.data.status === "success") {
             setComments([resp.data.comment, ...comments])
             setCommentsCnt(commentsCnt + 1)
+            setItemCmt(null)
             setNewComment("")
             setWait(false)
         }
@@ -62,21 +64,18 @@ export default function Comment({ user_id, post_id, setLoad, commentsCnt, setCom
                                 <PaperAirplaneIcon onClick={saveComment} className="w-6 cursor-pointer " title="Save comment" />
                             </div >
                             <div className="flex flex-col p-2">
-
-
+                                {itemCmt}
                                 {!wait ? comments.map((comment: any) => <CommentItem filename={comment.picture} user_name={comment.user_name} user_id={comment.user_id} date={comment.date} content={comment.content} />) : (
-                                    <div className="flex flex-col">
-
-                                        {
-                                            Array.from({ length: commentsCnt }, (_, idx) => (
-                                                <div key={idx} className="flex items-center justify-between">
-                                                    <div className="flex items-center">
-                                                        <span className="mr-2 h-8 w-8 rounded-full bg-gray-100"></span>
-                                                        <span className="h-4 w-40 rounded-lg bg-gray-100"></span>
-                                                    </div>
-                                                    <span className="h-4 w-14 rounded-lg bg-gray-100"></span>
+                                    <div className="flex flex-col">                                        {
+                                        Array.from({ length: commentsCnt }, (_, idx) => (
+                                            <div key={idx} className="flex items-center justify-between">
+                                                <div className="flex items-center">
+                                                    <span className="mr-2 h-8 w-8 rounded-full bg-gray-100"></span>
+                                                    <span className="h-4 w-40 rounded-lg bg-gray-100"></span>
                                                 </div>
-                                            ))}
+                                                <span className="h-4 w-14 rounded-lg bg-gray-100"></span>
+                                            </div>
+                                        ))}
 
                                     </div>
 

@@ -81,9 +81,9 @@ export default function Post({ post }: any) {
             setReactType(type)
         }
         const resp = await api.post("api/reaction/store", { type, user_id: auth?.id, post_id: post?.id })
-        setLikes(resp?.data?.post.likes)
-        setDislikes(resp?.data?.post.dislikes)
-        setReactType(resp.data?.post.reaction)
+        setLikes(resp?.data?.post?.likes)
+        setDislikes(resp?.data?.post?.dislikes)
+        setReactType(resp.data?.post?.reaction)
 
 
     }
@@ -97,9 +97,9 @@ export default function Post({ post }: any) {
     return (
         post && (
 
-            <div key={post.id} style={{ minHeight: "20px" }}
+            <div key={post?.id} style={{ minHeight: "20px" }}
                 className={`w-full my-4 p-2 relative flex  flex-col items-start mt-4 rounded-xl ${isDarkMode ? "bg-slate-900 text-white sd shadow-whide" : "text-black bg-white shadow-md"} lg:w-3/4`}>
-                <Link to={`/account/${post.user_id}`} className="flex items-center">
+                <Link to={`/account/${post?.user_id}`} className="flex items-center">
                     <img className="rounded-full object-cover h-10 w-10" src={post?.user_picture} />
                     <div className="ml-2 flex flex-col items-start">
                         <div className={`leading-snug text-sm ${isDarkMode ? "text-white" : ""}  font-bold`}>{post?.user_name?.toUpperCase()}</div>
@@ -110,14 +110,14 @@ export default function Post({ post }: any) {
                 <button onClick={(e: any) => setIsOpenMenu(!isOpenMenu)} className={"right-0 absolute "}><EllipsisHorizontalIcon className={"w-10 h-6 font-bold   inline-block cursor-pointer"} /></button>
                 {isOpenMenu &&
                     <div ref={reference} className={`absolute right-0 top-8  z-50 p-0  shadow-sm shadow-slate-500  mt-0 ${isDarkMode ? "bg-slate-800 text-white  shadow-white" : "bg-white text-gray-800"} w-32 overflow-y-auto   rounded-md shadow-sm `}>
-                        <DropDownMenu post={post} />
+                        <DropDownMenu setIsOpenMenu={setIsOpenMenu} post={post} />
                     </div>
                 }
                 <p className={"m-4"}>{post?.title}</p>
-                {post.files.length > 1 ?
+                {post?.files.length > 1 ?
                     <ImageList variant="masonry" cols={3} gap={8}>
-                        {post.files &&
-                            post.files.map((item: any) => {
+                        {post?.files &&
+                            post?.files.map((item: any) => {
                                 const fileExt = item.split(".")?.slice(-1)
                                 return (
                                     <ImageListItem key={item}>
@@ -137,8 +137,8 @@ export default function Post({ post }: any) {
                         }
                     </ImageList>
                     :
-                    post.files &&
-                    post.files.map((item: any) => {
+                    post?.files &&
+                    post?.files.map((item: any) => {
                         const fileExt = item.split(".")?.slice(-1)
                         return (
                             <ImageListItem key={item}>
@@ -182,5 +182,5 @@ export default function Post({ post }: any) {
             </div >
         )
     )
-// 
+    // 
 }

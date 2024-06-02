@@ -5,15 +5,13 @@ import { toast } from 'sonner'
 import { useDispatch, useSelector } from 'react-redux'
 import { deletePost } from '../redux/actions/actionCreators'
 
-export default function DropDownMenu({ post }: any) {
+export default function DropDownMenu({ post, setIsOpenMenu }: any) {
     const { auth } = useSelector((state: any) => state)
 
     const dispatch = useDispatch()
     const deleting = async (e: any) => {
-
-
         const uploadPromise = api.delete(`api/post/${post.id}/delete`);
-
+        setIsOpenMenu(false)
         toast.promise(
             uploadPromise,
             {

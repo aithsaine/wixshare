@@ -1,4 +1,4 @@
-import { ChatBubbleBottomCenterTextIcon, PencilSquareIcon, PresentationChartBarIcon, UserGroupIcon, UserIcon, VideoCameraIcon } from '@heroicons/react/24/solid'
+import { BookmarkIcon, ChatBubbleBottomCenterTextIcon, PencilSquareIcon, PresentationChartBarIcon, UserGroupIcon, UserIcon, VideoCameraIcon } from '@heroicons/react/24/solid'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import api, { csrf } from '../tools/api'
@@ -63,9 +63,9 @@ export default function Feeds() {
         },
         {
             key: 3,
-            title: "Analytics",
+            title: "Save",
             path: "/",
-            icon: PresentationChartBarIcon
+            icon: BookmarkIcon
         }
         ,
         {

@@ -67,6 +67,11 @@ class PostController extends Controller
         try {
             $post = Post::find($post_id);
             if ($post->user_id == $request->user()->id) {
+                $postDirectory =
+                    public_path('storage/posts/' . $post->id);;
+                if (File::exists($postDirectory)) {
+                    File::deleteDirectory($postDirectory);
+                }
                 $post->delete();
                 return response()->json(["success" => true]);
             }

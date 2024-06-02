@@ -39,11 +39,14 @@ function mainReducer(state = initialState, action: any) {
             localStorage.setItem("light_mode", newMode);
             return { ...state, isDarkMode: !state.isDarkMode };
         case ADDNEWPOST:
-            return { ...state, posts: [...action.payload] };
+            if (state.posts.length > 0) {
+                return { ...state, posts: [...action.payload] };
+            }
+            return state;
         case APPENDNEWPOST:
             return { ...state, newPost: action.payload };
         case APPENDMULTIPLEPOSTS:
-            if (action.payload[action.payload.length - 1].id !== state.posts[state.posts.length - 1]?.id)
+            if (action.payload[action.payload.length - 1]?.id !== state.posts[state.posts.length - 1]?.id)
                 return { ...state, posts: [...state.posts, ...action.payload], page: state.page + 1 };
             return state;
         case ADDSUGGESTFRIENDS:
@@ -101,7 +104,11 @@ function mainReducer(state = initialState, action: any) {
         case ADDCOVERIMAGE:
             return { ...state, auth: { ...state.auth, cover: action.payload } }
         case DELETEPOST:
-            return { ...state, posts: [state.posts.filter((post: Post) => post.id !== action.payload.id)] }
+            const newPosts = state.posts
+            newPosts.splice(newPosts.map((item: any) => item.id).indexOf(action.payload), 1)
+            if (state.newPost && state.newPost?.id == action.payload)
+                return { ...state, posts: newPosts, newPost: null }
+            return { ...state, posts: newPosts }
         default:
             return state;
     }
