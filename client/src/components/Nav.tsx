@@ -13,13 +13,13 @@ import logo from "../assets/imgs/logo.png"
 import { ArrowLeftStartOnRectangleIcon, Cog6ToothIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import Bars from 'react-loading-icons/dist/esm/components/bars';
 import Cite from 'react-loading-icons/dist/esm/components/circles'
-
+import fakePicture from "../assets/imgs/profile.png"
 export default function Nav() {
     const { auth, friends, isDarkMode, messages, notifications } = useSelector((state: any) => state);
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const dropdownRef2 = useRef(null);
-    const [image, setImage] = useState(`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}`)
+    const [image, setImage] = useState(auth?.picture != '' ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}` : fakePicture)
     const dispatch = useDispatch()
     const [msgs_not_seen, SetMsgNotSeen] = useState(messages.filter((item: any) => item.seen_at == null).length ?? 0);
     const navigate = useNavigate()
@@ -27,7 +27,7 @@ export default function Nav() {
     const [isOppenNotifications, setIsOpenNotifications] = useState(false)
     const [notifications_not_seen, setNotificationsNotSeen] = useState(0)
     useEffect(() => {
-        setImage(`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}`)
+        setImage(auth?.picture != '' ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}` : fakePicture)
     }, [auth])
 
     useEffect(() => {

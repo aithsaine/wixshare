@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class Post extends Model
 {
     use HasFactory;
-    protected $fillable = ["title", "user_id", "hasAssets", "created_at"];
+    protected $fillable = ["title", "user_id", "hasAssets"];
 
     public function  user()
     {

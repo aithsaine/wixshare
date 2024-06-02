@@ -7,6 +7,7 @@ import {
     ADDNEWMESSAGES,
     ADDNEWPOST,
     ADDNOTIFICATIONS,
+    ADDSPECIFICUSERPOSTS,
     ADDSUGGESTFRIENDS,
     APPENDMULTIPLEPOSTS,
     APPENDNEWFRIEND,
@@ -164,6 +165,12 @@ export const addCoverImage = (data: string) => {
 export const deletePost = (data: any) => {
     return {
         type: DELETEPOST,
+        payload: data
+    }
+}
+export const addSpecificUserPosts = (data: any) => {
+    return {
+        type: ADDSPECIFICUSERPOSTS,
         payload: data
     }
 }

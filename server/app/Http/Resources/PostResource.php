@@ -39,12 +39,8 @@ class PostResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-
-
-
-
         return [
-            "user_picture" => asset('storage/profiles/' . $this->user->picture),
+            "user_picture" => $this->user->picture ?? null,
             "user_name" => $this->user->first_name . " " . $this->user->last_name,
             "user_id" => $this->user_id,
             "id" => $this->id,

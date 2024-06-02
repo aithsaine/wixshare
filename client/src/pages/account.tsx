@@ -8,12 +8,12 @@ import { Button, ButtonGroup } from "@nextui-org/react";
 import { Tooltip } from 'primereact/tooltip';
 import ProfileCard from '../components/profileCard';
 import { CameraIcon, DevicePhoneMobileIcon, EnvelopeIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
-import { addCoverImage } from '../redux/actions/actionCreators';
+import { addCoverImage, addSpecificUserPosts } from '../redux/actions/actionCreators';
 import { toast } from 'sonner';
 
 export default function Account() {
     const { id } = useParams();
-    const { isDarkMode, auth } = useSelector((state: any) => state);
+    const { isDarkMode, auth, SpecificUserPosts } = useSelector((state: any) => state);
     const [user, setUser] = useState<any>();
     const [posts, setPosts] = useState([]);
     const [where, setWhere] = useState("about");
@@ -47,7 +47,7 @@ export default function Account() {
                 const resp = await api.get(`api/getuser/${id}`);
                 const userData = resp?.data.user;
                 setUser(userData);
-                setPosts(resp?.data.posts);
+                dispatch(addSpecificUserPosts(resp?.data.posts))
                 setFollowStatus(userData?.FollowStatus);
             } catch (error: any) {
                 navigate("/404");
@@ -110,8 +110,9 @@ export default function Account() {
                         <div className="w-full justify-start">
                             <div
                                 id="coverdiv"
-                                className={`mx-4 rounded-2xl w-6/8 h-44 flex items-center justify-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% relative`}
+                                className={`mx-4 rounded-2xl w-6/8 h-44 bg-center bg-cover flex items-center justify-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% relative`}
                                 style={user.cover && { backgroundImage: user?.cover && `url(${process.env.REACT_APP_BACKEND_URI}/storage/covers/${user?.cover})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+
 
                             >
                                 {auth?.id === user?.id && (
@@ -158,8 +159,8 @@ ide`}>
 
                                     {where === "posts" ? (
                                         <div className="w-full space-y-10 min-h-screen p-4 ms-6">
-                                            {posts.length > 0 ? (
-                                                posts.map((item: any) => <Post key={item.id} post={item} />)
+                                            {SpecificUserPosts.length > 0 ? (
+                                                SpecificUserPosts?.map((item: any) => <Post key={item.id} post={item} />)
                                             ) : (
                                                 <div className="bg-teal-100 border-t-4 mt-10 border-teal-500 rounded-b text-teal-900 px-4 py-3 me-6 shadow-md" role="alert">
                                                     <div className="flex">

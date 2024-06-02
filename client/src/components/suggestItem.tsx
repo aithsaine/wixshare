@@ -5,11 +5,12 @@ import { motion } from "framer-motion"
 import api from '../tools/api'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import fakeUserProfile from "../assets/imgs/profile.png"
 
 export default function SuggestItem({ user }: any) {
     const { isDarkMode } = useSelector((state: any) => state)
     const [followStatus, setFollowStatus] = useState(user?.FollowStatus)
-
+    const [userPicture, setUserPicture] = useState<string>(user?.picture != "" ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}` : fakeUserProfile)
     const following = async (e: any) => {
         e.preventDefault();
         try {
@@ -39,7 +40,7 @@ export default function SuggestItem({ user }: any) {
             animate="show"
             className="py-2 flex items-center  justify-between  cursor-pointer ">
             <Link to={`/account/${user?.id}`} className="flex items-start">
-                <img className="rounded-full object-cover h-10 w-10" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}`} />
+                <img className="rounded-full object-cover h-10 w-10" src={userPicture} />
                 <div className="ml-2 flex flex-col items-start">
                     <div className={`leading-snug text-xs flex items-center flex-col ${isDarkMode ? "text-white" : "font-bold"}  `}>{user?.first_name?.toUpperCase() + ' ' + user?.last_name?.toUpperCase()} </div>
                 </div>

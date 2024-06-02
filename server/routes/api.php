@@ -31,7 +31,9 @@ Route::get('/user', function (Request $request) {
     $messages = array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray());
     $friends = UserResource::collection(User::findMany($cleanChatIds));
     $notifications = Notification::where("to", $request->user()->id)->get();
-    return response()->json(["success" => true, "auth" => $auth,  "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->get()), "notifications" => NotificationResource::collection($notifications)]);
+    return response()->json(["success" => true, "auth" => $auth,  "friends" => $friends, "messages" => $messages, "suggests" => UserResource::collection(User::whereNot("id", $request->user()->id)->inRandomOrder()
+        ->limit(5)
+        ->get()), "notifications" => NotificationResource::collection($notifications)]);
 })->middleware(["auth:sanctum", LastSeen::class]);
 
 Route::controller(AuthenticationController::class)

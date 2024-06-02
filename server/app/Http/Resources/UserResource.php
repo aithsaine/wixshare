@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             "email" => $this->email,
             "gender" => $this->gender,
             "birthday" => $this->birthday,
-            "picture" => $this->picture,
+            "picture" => $this->picture ?? null,
             "followers" => count($this->followers),
             "following" => count($this->following),
             "posts" => count($this->posts),
