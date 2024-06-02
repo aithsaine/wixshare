@@ -49,7 +49,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::get("posts/{post_id}/show", [\App\Http\Controllers\Api\PostController::class, "show"])->name("post.show");
     Route::post("post/store", [\App\Http\Controllers\Api\PostController::class, "store"])->name("post.store");
     Route::get("post/assets/posts/{folder}/{filename}", [\App\Http\Controllers\Api\PostController::class, "getPostAsset"]);
-
+    Route::delete("post/{post_id}/delete", [\App\Http\Controllers\Api\PostController::class, "destroy"]);
 
 
     // Chat Controller
@@ -70,6 +70,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::patch("/profile/picture/update", [\App\Http\Controllers\Api\ProfileController::class,  "uploadOnlyPicture"])->name("profile.updatePicture");
     Route::patch("/profile/description", [\App\Http\Controllers\Api\ProfileController::class, "addDescription"]);
     Route::patch("/profile/cover/upload", [\App\Http\Controllers\Api\ProfileController::class, "uploadCover"]);
+
     //Comment Controller
     Route::get("/comments/{post_id}", [\App\Http\Controllers\Api\CommentController::class, "index"]);
     Route::post("/comment/store", [\App\Http\Controllers\Api\CommentController::class, "store"])->name("comment.store");

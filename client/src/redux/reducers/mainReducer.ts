@@ -1,4 +1,4 @@
-import { ADDAUTHDESCRIPTION, ADDAUTHENTICATE, ADDCOVERIMAGE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDNOTIFICATIONS, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWFRIEND, APPENDNEWMESSAGE, APPENDNEWPOST, GETPOSTS, INSERTNOTIFICATION, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE, UPDATEPROFILE } from "../actions/types";
+import { ADDAUTHDESCRIPTION, ADDAUTHENTICATE, ADDCOVERIMAGE, ADDNEWFRIENDS, ADDNEWMESSAGES, ADDNEWPOST, ADDNOTIFICATIONS, ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWFRIEND, APPENDNEWMESSAGE, APPENDNEWPOST, DELETEPOST, GETPOSTS, INSERTNOTIFICATION, LOGOUT, MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE, UPDATEPROFILE } from "../actions/types";
 import { User, Post, Message } from "../../types"
 interface StatesTypes {
     auth: User | null,
@@ -100,6 +100,8 @@ function mainReducer(state = initialState, action: any) {
 
         case ADDCOVERIMAGE:
             return { ...state, auth: { ...state.auth, cover: action.payload } }
+        case DELETEPOST:
+            return { ...state, posts: [state.posts.filter((post: Post) => post.id !== action.payload.id)] }
         default:
             return state;
     }

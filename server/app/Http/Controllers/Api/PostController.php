@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
+use Error;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -44,17 +45,15 @@ class PostController extends Controller
         $newPost->hasAssets = true;
         $postDirectory = "storage/posts/{$newPost->id}/";
 
-        // Create directory if it doesn't exist
-        // if (!File::exists(public_path($postDirectory))) {
-        //     File::makeDirectory(public_path($postDirectory), 0755, true);
-        // }
+        if ($request->postFiles) {
+            foreach ($request->file("postFiles") as $file) {
+                $fileName = uniqid() . '_' . $file->getClientOriginalName();
+                $file->move(public_path($postDirectory), $fileName);
+            }
 
-        foreach ($request->file("postFiles") as $file) {
-            $fileName = uniqid() . '_' . $file->getClientOriginalName();
-            $file->move(public_path($postDirectory), $fileName);
+            $newPost->save();
         }
 
-        $newPost->save();
 
         return response()->json([
             "message" => "Post created successfully",
@@ -63,6 +62,19 @@ class PostController extends Controller
         ]);
     }
 
+    public function destroy($post_id, Request $request)
+    {
+        try {
+            $post = Post::find($post_id);
+            if ($post->user_id == $request->user()->id) {
+                $post->delete();
+                return response()->json(["success" => true]);
+            }
+            return response("error deleting this post", 422);
+        } catch (Error    $error) {
+            return response($error, 422);
+        }
+    }
 
 
     public function getPostAsset($userId, $postId, $filename)

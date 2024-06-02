@@ -13,6 +13,7 @@ import {
     APPENDNEWMESSAGE,
     APPENDNEWPOST,
     APPENDPOSTS,
+    DELETEPOST,
     GETPOSTS,
     INSERTNOTIFICATION,
     LOGOUT,
@@ -158,4 +159,11 @@ export const addCoverImage = (data: string) => {
         payload: data
     }
 
+}
+
+export const deletePost = (data: any) => {
+    return {
+        type: DELETEPOST,
+        payload: data
+    }
 }
