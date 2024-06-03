@@ -3,7 +3,7 @@ import {
     ADDNEWMESSAGES, ADDNEWPOST, ADDNOTIFICATIONS, ADDSPECIFICUSERPOSTS,
     ADDSUGGESTFRIENDS, APPENDMULTIPLEPOSTS, APPENDNEWFRIEND, APPENDNEWMESSAGE,
     APPENDNEWPOST, DELETEPOST, GETPOSTS, INSERTNOTIFICATION, LOGOUT,
-    MASKMESSAGESEEN, SETSELECTEDUSERID, TOGGLELIGHTMODE, UPDATEPROFILE
+    MASKMESSAGESEEN, SEARCH, SETSELECTEDUSERID, TOGGLELIGHTMODE, UPDATEPROFILE
 } from "../actions/types";
 import { User, Post, Message, Notification } from "../../types";
 
@@ -17,6 +17,7 @@ interface StatesTypes {
     friends: User[];
     SpecificUserPosts: Post[];
     page: number;
+    search: any
     notifications: Notification[];
     selectedUserId: number | null;
 }
@@ -29,6 +30,7 @@ const initialState: StatesTypes = {
     suggestions: [],
     messages: [],
     friends: [],
+    search: { searchquery: null, users: [], posts: [] },
     SpecificUserPosts: [],
     notifications: [],
     page: 1,
@@ -112,6 +114,9 @@ function mainReducer(state: StatesTypes = initialState, action: Action): StatesT
                 return { ...state, posts: newPosts, newPost: null, SpecificUserPosts: newUserPosts };
             }
             return { ...state, posts: newPosts, SpecificUserPosts: newUserPosts };
+        case SEARCH:
+            return { ...state, search: { searchquery: action.payload.searchquery, users: action.payload.users, posts: action.payload.posts } }
+
         default:
             return state;
     }

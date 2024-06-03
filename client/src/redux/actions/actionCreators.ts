@@ -19,6 +19,7 @@ import {
     INSERTNOTIFICATION,
     LOGOUT,
     MASKMESSAGESEEN,
+    SEARCH,
     SETSELECTEDUSERID,
     TOGGLELIGHTMODE,
     UPDATEPROFILE
@@ -171,6 +172,13 @@ export const deletePost = (data: any) => {
 export const addSpecificUserPosts = (data: any) => {
     return {
         type: ADDSPECIFICUSERPOSTS,
+        payload: data
+    }
+}
+
+export const search = (data: any) => {
+    return {
+        type: SEARCH,
         payload: data
     }
 }

@@ -14,6 +14,7 @@ import { ArrowLeftStartOnRectangleIcon, Cog6ToothIcon, UserCircleIcon } from '@h
 import Bars from 'react-loading-icons/dist/esm/components/bars';
 import Cite from 'react-loading-icons/dist/esm/components/circles'
 import fakePicture from "../assets/imgs/profile.png"
+import SearchModal from './searchModal';
 export default function Nav() {
     const { auth, friends, isDarkMode, messages, notifications } = useSelector((state: any) => state);
     const [isOpen, setIsOpen] = useState(false);
@@ -93,9 +94,9 @@ export default function Nav() {
         <>
             <nav className={`border-bottom border-black ${isDarkMode ? "bg-black shadow-sky-800" : "bg-white"}  px-6 shadow-lg   py-2 fixed w-full z-50 `}>
                 <div className="flex justify-between items-center">
-                    <div className="flex   space-x-2">
+                    <div className="flex bg-inherit items-center  space-x-6">
                         <img className="h-10" style={{ filter: "drop-shadow(1px 1px 30px red) invert(75%)" }} src={logo} alt="" />
-                        <SearchInput />
+                        <SearchModal />
                     </div>
                     <div className="relative flex justify-around w-2/5 items-start" >
                         <div className="relative group">

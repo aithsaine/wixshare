@@ -82,7 +82,13 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::post("follow/store", [\App\Http\Controllers\Api\FollowController::class, "follow"]);
     Route::delete("follow/{user_id}/delete", [\App\Http\Controllers\Api\FollowController::class, "unfollow"]);
 
+    //Notification controller
 
+    Route::post("notification/users", [\App\Http\Controllers\Api\NotificationController::class, 'store']);
+    Route::patch("notification/{to}/maskseen", [\App\Http\Controllers\Api\NotificationController::class, 'maskseen']);
+
+    //Search Controller
+    Route::post("/search", [\App\Http\Controllers\Api\SearchController::class, "search"]);
 
     //Other
     Route::get('/storage/picture/{filename}', function ($filename) {
@@ -100,10 +106,4 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
             return response()->json(["user" => new UserResource($user), "success" => true]);
         }
     });
-
-
-    //Notification controller
-
-    Route::post("notification/users", [\App\Http\Controllers\Api\NotificationController::class, 'store']);
-    Route::patch("notification/{to}/maskseen", [\App\Http\Controllers\Api\NotificationController::class, 'maskseen']);
 });
