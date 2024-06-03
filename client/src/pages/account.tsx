@@ -136,7 +136,7 @@ export default function Account() {
                                             <h2 className={`text-lg inline font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}`}>{user?.id === auth?.id && <Link to={"/settings"}><PencilSquareIcon title="update your intro" className="w-6 h-6 inline-block" /></Link>}Introduction:</h2>
                                             <ul className={`w-full space-y-1 ${isDarkMode ? "text-gray-400" : "text-gray-500"} list-inside`}>
                                                 <li>
-                                                    <div id="intro" dangerouslySetInnerHTML={{ __html: user?.description }} className="flex items-start flex-col justify-start"></div>
+                                                    <div id="intro" dangerouslySetInnerHTML={{ __html: user?.description }} className="flex items-start text-white flex-col justify-start"></div>
                                                 </li>
                                             </ul>
 

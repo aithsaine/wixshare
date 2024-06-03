@@ -9,18 +9,13 @@ import UserItem from '../components/UserItem';
 import RightSideBoxChat from '../components/RightSideBoxChat';
 import Loading from '../components/loading';
 import { useNavigate } from 'react-router-dom';
+import { LoaderIcon } from 'react-hot-toast';
 // import { echo } from '../tools/echo';
 
 
 export default function Chat() {
-    const specificStateSelector = (state: any) => ({
-        auth: state.auth,
-        friends: state.friends,
-        isDarkMode: state.isDarkMode,
-        messages: state.messages,
-        selectedUserId: state.selectedUserId
-    });
-    const { auth, friends, isDarkMode, messages, selectedUserId } = useSelector(specificStateSelector)
+
+    const { auth, friends, isDarkMode, messages, selectedUserId } = useSelector((state: any) => state)
     const [newMsg, setNewMsg] = useState("")
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -29,6 +24,7 @@ export default function Chat() {
     const [wait, setWait] = useState(true)
     const navigate = useNavigate()
     const [newProcessMsg, setNewProcessMsg] = useState<any>();
+    console.log(friends)
     const getUser = async (id: any) => {
         setWait(true)
         const resp = await api.get(`api/onlyuser/${id}`)
@@ -84,7 +80,7 @@ export default function Chat() {
 
     const chatHandler = () => {
 
-        setNewProcessMsg(<RightSideBoxChat message={{ message: newMsg }} />)
+        setNewProcessMsg(<RightSideBoxChat message={{ message: newMsg }} processing={true} />)
 
         setButtonDisabled(true)
         api.post("api/chat", {
@@ -95,7 +91,10 @@ export default function Chat() {
             dispatch(appendNewMessage(resp?.data))
             setNewMsg("")
             setButtonDisabled(false)
-        }).catch((err: any) => setButtonDisabled(false))
+        }).catch((err: any) => {
+            setButtonDisabled(false)
+            setNewProcessMsg(null)
+        })
     }
     if (wait) {
         return <Loading />
@@ -120,7 +119,7 @@ export default function Chat() {
                             return <LeftSideBoxChat message={item} sender_picture={friends.find((elem: any) => elem.id == item.sender_id).picture} />
                         }
                     )}
-                    {newProcessMsg && newProcessMsg}
+                    {newProcessMsg && (newProcessMsg)}
 
                     <div className='flex'>
 

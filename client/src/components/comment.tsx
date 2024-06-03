@@ -26,7 +26,7 @@ export default function Comment({ user_id, post_id, setLoad, commentsCnt, setCom
     }, [])
 
     const saveComment = async () => {
-        setItemCmt(<CommentItem filename={auth?.picture} user_name={`${auth?.first_name} ${auth?.last_name}`} date={"please wait"} user_id={auth.user_id} content={newComment} />)
+        setItemCmt(<CommentItem filename={auth?.picture} user_name={`${auth?.first_name} ${auth?.last_name}`} date={"Shareing your comment ..."} user_id={auth.user_id} content={newComment} />)
         const resp = await api.post("/api/comment/store", {
             post_id, user_id, content: newComment
         })

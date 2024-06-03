@@ -16,9 +16,9 @@ class SearchController extends Controller
     {
         try {
             $query = $request->searchQuery;
-            $users                = User::whereRaw("concat(first_name,last_name) like '%{$query}%' ")->get();
+            $users                = User::whereRaw("concat(first_name,last_name) like '%{$query}%' ")->orWhereRaw("description like '%{$query}%'")->get();
             $posts = Post::whereRaw("title like '%{$query}%' ")->get();
-            return  response()->json(["users" => $users, "posts" => $posts, "success" => true]);
+            return  response()->json(["users" => UserResource::collection($users), "posts" => $posts, "success" => true]);
         } catch (Exception $e) {
             return response($e, 500);
         }

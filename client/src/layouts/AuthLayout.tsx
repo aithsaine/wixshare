@@ -3,7 +3,7 @@ import { UseSelector, useDispatch, useSelector } from 'react-redux';
 import { LOGIN, SERVERERROR } from '../routes/routes';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import api, { csrf } from '../tools/api';
-import { Add_authenticate, addNewFriends, addNewMessages, addNotifications, addSuggestFriend, appendNewFriend, appendNewMessage, insertNotification, setUserId } from '../redux/actions/actionCreators';
+import { Add_authenticate, addNewFriends, addNewMessages, addNotifications, addSuggestFriend, appendNewFriend, appendNewMessage, insertNotification, logOut, setUserId } from '../redux/actions/actionCreators';
 import Loading from '../components/loading';
 import Nav from '../components/Nav';
 import { Toaster } from 'sonner';
@@ -24,10 +24,11 @@ export default function Authenticated() {
     async function getUser() {
         try {
             const resp = await api.get("api/user")
+
+            dispatch(addNewFriends(resp.data.friends))
             dispatch(Add_authenticate(resp.data.auth))
             dispatch(addSuggestFriend(resp.data.suggests))
             dispatch(addNewMessages(resp.data.messages))
-            dispatch(addNewFriends(resp.data.friends))
             dispatch(addNotifications(resp.data.notifications))
             setLoading(false)
         } catch (error: any) {
@@ -46,17 +47,22 @@ export default function Authenticated() {
     })
 
     const markSeen = async () => {
-        setAccessMskSeen(false)
-        const resp = await api.post(`api/chat/${auth?.id}/${selectedUserId}/markseen`)
-        if (resp.data.success) {
-            dispatch(addNewMessages(resp.data.messages))
+        try {
+
+            setAccessMskSeen(false)
+            const resp = await api.post(`api/chat/${auth?.id}/${selectedUserId}/markseen`)
+            if (resp.data.success) {
+                dispatch(addNewMessages(resp.data.messages))
+            }
+            setAccessMskSeen(true)
+        } catch (error: any) {
+            console.log(error)
         }
-        setAccessMskSeen(true)
     }
     window.Echo.channel("messageWith." + auth?.id).listen("SendMessage", function (e: any) {
         dispatch(appendNewMessage(e.message))
         dispatch(appendNewFriend(e.friend))
-        if (selectedUserId !== e.message.sender_id && accessMskSeen && location.pathname == "/chat") {
+        if (selectedUserId !== e.message.sender_id && location.pathname == "/chat") {
 
             markSeen()
         }

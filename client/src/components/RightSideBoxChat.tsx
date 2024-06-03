@@ -1,8 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
+import { LoaderIcon } from 'react-hot-toast';
 
-export default function RightSideBoxChat({ message }: any) {
+export default function RightSideBoxChat({ message, processing = false }: any) {
     const specificStateSelector = (state: any) => ({
         auth: state.auth,
     });
@@ -15,9 +16,9 @@ export default function RightSideBoxChat({ message }: any) {
                 <div className="relative flex flex-row-reverse group">
                     <div className={clsx(message.message_deleted_at ? '' : 'lg:pr-20', `px-3 py-2 me-6 text-xs text-black  bg-[#bbf7d0] rounded-md lg:text-sm`)}>
 
-
                         {/* Chat Body */}
                         <div className="break-all whitespace-pre-wrap">{message.message}</div>
+                        {processing && <span className='flex items-center text-xs text-gray-600'><LoaderIcon /> sending</span>}
                     </div>
 
 

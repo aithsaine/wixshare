@@ -83,8 +83,8 @@ export default function Nav() {
 
             const resp = await api.post("api/logout")
             if (resp.data.success) {
-                dispatch(logOut())
-                navigate(HOME)
+                // dispatch(logOut())
+                window.location.replace("/")
             }
         }
         setProcessingLogout(true)
@@ -162,7 +162,7 @@ export default function Nav() {
                                             <li><Link to={`/account/${auth?.id}`} className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><UserCircleIcon className='w-6 h-6' />{auth?.first_name.toUpperCase()}</Link></li>
                                             <li><Link to="/settings" className={`flex space-x-2 w-full px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 text-white" : "hover:bg-gray-100"} `}><Cog6ToothIcon className='w-6 h-6' /> Settings</Link></li>
                                             <li><hr className="my-1" /></li>
-                                            <li><button onClick={logout} className={`flex space-x-2 w-full text-center px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 " : "hover:bg-gray-100"} `}>{!processingLogout ? <ArrowLeftStartOnRectangleIcon className='w-6 h-6' /> : <LoaderIcon />} Logout</button></li>
+                                            <li><button onClick={logout} className={`flex space-x-2 w-full text-center px-4 py-2 ${isDarkMode ? "hover:bg-slate-700 " : "hover:bg-gray-100"} `}>{!processingLogout ? <ArrowLeftStartOnRectangleIcon className='w-6 h-6' /> : <LoaderIcon className='w-6 h-6' />} Logout</button></li>
                                         </ul>
                                     )}
                                 </div>
