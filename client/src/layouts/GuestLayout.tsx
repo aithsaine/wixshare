@@ -46,7 +46,7 @@ export default function GuestLayout() {
 
     return (
         loading ? <Loading /> :
-            <div>
+            <div className=' bg-gradient-to-tr from-sky-50 overflow-hidden to-gray-300 '>
                 <Outlet />
                 <Toaster position="bottom-right" />
             </div>

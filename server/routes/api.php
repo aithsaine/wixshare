@@ -28,6 +28,7 @@ Route::get('/user', function (Request $request) {
             array_push($cleanChatIds, $item->receiver_id);
         }
     }
+    array_splice($cleanChatIds, array_search($request->user()->id, $cleanChatIds), 1);
     $messages = array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray());
     $friends = UserResource::collection(User::findMany($cleanChatIds));
     $notifications = Notification::where("to", $request->user()->id)->get();
@@ -52,7 +53,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::post("post/store", [\App\Http\Controllers\Api\PostController::class, "store"])->name("post.store");
     Route::get("post/assets/posts/{folder}/{filename}", [\App\Http\Controllers\Api\PostController::class, "getPostAsset"]);
     Route::delete("post/{post_id}/delete", [\App\Http\Controllers\Api\PostController::class, "destroy"]);
-
+    Route::get("post/{post_id}/detail", [\App\Http\Controllers\Api\PostController::class, "postDetails"]);
 
     // Chat Controller
     Route::get("chat/messages", [\App\Http\Controllers\Api\ChatController::class, "getChat"]);

@@ -65,7 +65,7 @@ export default function Register() {
 
 
             <form onSubmit={submit} className="md:w-1/2 m-4 ">
-                <div className="p-6 shadow-2xl m-6">
+                <div className="p-6  m-6">
 
                     <div className="text-4xl  font-primary text-center bg-gradient-to-l from-orange-500 to-yellow-500 text-transparent bg-clip-text font-bold mt-6"><span className="">Register</span></div>
                     <div className="flex flex-col">

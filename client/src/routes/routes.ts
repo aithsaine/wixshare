@@ -7,3 +7,4 @@ export const CHAT = "/chat"
 export const USERACCOUNT = `account/:id`
 export const SETTINGS = "/settings"
 export const SERVERERROR = "/server-error"
+export const POSTDETAILS = "post/:id/detail"

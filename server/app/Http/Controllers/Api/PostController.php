@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\PostResource;
 use Error;
 use Illuminate\Support\Facades\File;
@@ -91,5 +92,15 @@ class PostController extends Controller
         }
 
         return response()->file($filePath);
+    }
+
+    public function postDetails($post_id)
+    {
+        $post = Post::find($post_id);
+        if ($post) {
+            $comments = CommentResource::collection($post->comments);
+            $response = ["post" => new PostResource($post), "comments" => $comments, "success" => true];
+            return response()->json($response);
+        }
     }
 }

@@ -13,6 +13,7 @@ export default function NotificationFrom({ content }: any) {
     const [type, setType] = useState("all")
     const [to, setTo] = useState(auth?.id)
     const dispatch = useDispatch()
+    console.log(postsIds)
 
     const [iswaiting, setWaiting] = useState(true)
     useEffect(() => {
@@ -60,28 +61,28 @@ export default function NotificationFrom({ content }: any) {
 
                             return <div className=''>
 
-                                <Link to={`/account/${item.from_id}`} className=' flex  justify-between flex-col items-center' >
+                                <div className=' flex  justify-between flex-col items-center' >
                                     <div className={` font-mono px-3 py-3 my-1 ${isDarkMode ? " bg-slate-500" : " bg-sky-50"} text-black rounded-xl w-full`}>
 
-                                        <div className={`flex items-center justify-between w-full`}>
+                                        <Link to={`/account/${item.from_id}`} className={`flex items-center justify-between w-full`}>
                                             <img className="rounded-full object-cover h-8 w-8" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${item.user_picture}`} />
                                             <div className={`leading-snug text-[12px] text-black"}  `}><span className='m-1 font-bold'>{item.sender_name}</span> {(item.type == "new_follower" ? " started following you." : item.type == "new_comment" ? "commented on your post." : "reacted on your post.")}  <span className='text-[10px] ms-4'>{item.time}</span></div>
 
-                                        </div>
+                                        </Link>
 
-                                        {NotificationPosts.length > 0 && item.data_id && (<div className='border p-4 rounded-xl flex justify-start m-2 text-xs border-black w-full ms-1 '>
-                                            <img className='w-12 ' src={`http://localhost:8000/storage/posts/${item.data_id}/${NotificationPosts.find((elem: any) => elem.id == item.data_id)?.files[0]}`} alt="" />
+                                        {NotificationPosts.length > 0 && item.data_id && (<Link to={`/post/${NotificationPosts.find((elem: any) => elem.id == item.data_id)?.id}/detail`} className='border p-4 rounded-xl flex justify-start m-2 text-xs border-black w-full ms-1 '>
+                                            <img className='w-12 ' src={`${process.env.REACT_APP_BACKEND_URI}/storage/posts/${item.data_id}/${NotificationPosts.find((elem: any) => elem.id == item.data_id)?.files[0]}`} alt="" />
                                             <div>
                                                 {NotificationPosts.find((elem: any) => elem.id == item.data_id)?.title}
                                             </div>
-                                        </div>)}
+                                        </Link>)}
                                     </div>
-                                </Link>
+                                </div>
                             </div>
                         })
                     }
 
-                </div>
+                </div >
 
             ) :
                 Array.from({ length: notifications.length }, (_, idx) => (

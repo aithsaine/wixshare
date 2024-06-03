@@ -35,6 +35,13 @@ export default function Chat() {
         return navigate("/404")
 
     }
+
+
+
+    useEffect(() => {
+        markSeen()
+    }, [selectedUserId])
+
     useEffect(() => {
         if (urlParams.get("userid") !== null) {
             dispatch(setUserId(urlParams.get("userid")))
@@ -43,6 +50,8 @@ export default function Chat() {
             }
         }
     }, [urlParams.get("userid")])
+
+    
     useEffect(() => {
         if (!urlParams.has("userid")) {
             setWait(false)
@@ -57,9 +66,6 @@ export default function Chat() {
         }
     }
 
-    useEffect(() => {
-        markSeen()
-    }, [selectedUserId])
 
 
 
