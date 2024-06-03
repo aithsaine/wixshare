@@ -151,7 +151,7 @@ export default function Feeds() {
                 className=" md:block   hidden bg-sk-600 p-4 md:w-1/3  lg:w-1/3 text-center bg-inherit fixed right-0  top-20 min-h-screen   overflow-hidden  sm:rounded-lg">
                 <fieldset className={` rounded-xl p-4 items-center w-full  border-2 ${isDarkMode ? "bg-b" : "bg-white"}  `}>
                     <legend><UserGroupIcon className='w-10 text-sky-600 inline-block ' /> <span className='font-bold'>Suggest Friends</span></legend>
-                    {suggestions.map((elem: any) => <SuggestItem user={elem} />)}
+                    {suggestions.map((elem: any) => <span key={elem.id}> <SuggestItem user={elem} /></span>)}
 
                 </fieldset>
 

@@ -45,7 +45,7 @@ export default function SharePost() {
         toast.promise(
             savePromise,
             {
-                loading: 'Uploading cover image...',
+                loading: 'Posting ...',
                 success: (response) => {
                     if (response?.data.success) {
                         setTitle("")
@@ -56,14 +56,14 @@ export default function SharePost() {
 
 
 
-                        return 'Your cover has been added';
+                        return 'Your Post shared with success';
                     }
                 },
                 error: (error) => {
                     if (error?.response?.data?.cover?.[0]) {
                         return error.response.data.cover[0];
                     }
-                    return 'Failed to upload cover image';
+                    return 'Failed to share your post';
                 },
             }
         );

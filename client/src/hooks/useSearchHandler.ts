@@ -34,7 +34,7 @@ const useSearchHandler = () => {
     };
 
     const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const query = e.target.value;
+        const query = e.target.value.replace(/\s+/g, '');
         setSearchQuery(query);
 
         if (debounceTimeout) {
