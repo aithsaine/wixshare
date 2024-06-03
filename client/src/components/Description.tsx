@@ -33,10 +33,17 @@ export default function SettingDescription() {
 
             <div className='w-full'>
 
-                <Editor value={description} onTextChange={(e: any) => {
-                    setDescription(e.htmlValue)
-                    setAllowUpdate(true)
-                }} style={{ height: '320px' }} />
+                <Editor
+                    headerTemplate={
+                        <span className="ql-formats">
+                            <button className="ql-bold" aria-label="Bold"></button>
+                            <button className="ql-italic" aria-label="Italic"></button>
+                            <button className="ql-underline" aria-label="Underline"></button>
+                        </span>
+                    } value={description} onTextChange={(e: any) => {
+                        setDescription(e.htmlValue)
+                        setAllowUpdate(true)
+                    }} style={{ height: '320px' }} />
             </div>
             <div>
                 <button onClick={update} className={`flex-1 ${allowUpdate ? "bg-blue-600 dark:bg-blue-800 text-white cursor-pointer hover:bg-blue-800 dark:hover:bg-blue-900" : "cursor-not-allowed"} rounded-full bg-gray-600  text-gray-400  antialiased font-bold  px-4 py-2`}                        >Update</button>

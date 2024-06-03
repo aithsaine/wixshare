@@ -23,15 +23,11 @@ Route::get('/user', function (Request $request) {
     $cleanChatIds = [];
     foreach ($ids as $item) {
         if ($item->sender_id !== $request->user()->id) {
-            if (!in_array($item->sender_id, $cleanChatIds))
-                array_push($cleanChatIds, $item->sender_id);
+            array_push($cleanChatIds, $item->sender_id);
         } else {
-            if (!in_array($item->receiver_id, $cleanChatIds))
-
-                array_push($cleanChatIds, $item->receiver_id);
+            array_push($cleanChatIds, $item->receiver_id);
         }
     }
-    array_splice($cleanChatIds, array_search($request->user()->id, $cleanChatIds), 1);
     $messages = array_merge($request->user()->receivedMessages->toArray(), $request->user()->sendMessages->toArray());
     $friends = UserResource::collection(User::findMany($cleanChatIds));
     $notifications = Notification::where("to", $request->user()->id)->get();

@@ -94,6 +94,34 @@ export default function Post({ post }: any) {
 
     const videoExtensions = ["mp4", "mkv"]
     const imageExtensions = ["jpg", "png", "webp"]
+    const numberOfFiles = post?.files.length
+    const [cols, setCols] = useState<number>(1)
+    function countPicture(number: number) {
+
+        switch (number) {
+            case 2:
+                return 2
+            case 3:
+                return 2
+            case 4:
+                return 2
+            case 5:
+                return 3
+            case 6:
+                return 3
+            case 7:
+                return 4
+            case 8:
+                return 4
+            default:
+                return 1
+
+        }
+    }
+    useEffect(() => {
+        setCols(countPicture(numberOfFiles))
+
+    }, [])
     return (
         post && (
 
@@ -115,7 +143,7 @@ export default function Post({ post }: any) {
                 }
                 <p className={"m-4"}>{post?.title}</p>
                 {post?.files.length > 1 ?
-                    <ImageList variant="masonry" cols={3} gap={8}>
+                    <ImageList variant="masonry" cols={cols} gap={2}>
                         {post?.files &&
                             post?.files.map((item: any) => {
                                 const fileExt = item.split(".")?.slice(-1)
@@ -141,7 +169,7 @@ export default function Post({ post }: any) {
                     post?.files.map((item: any) => {
                         const fileExt = item.split(".")?.slice(-1)
                         return (
-                            <ImageListItem key={item}>
+                            <ImageListItem className="w-full" key={item}>
 
                                 {fileExt && videoExtensions.includes(fileExt[0]) ?
 
