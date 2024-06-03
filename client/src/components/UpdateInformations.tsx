@@ -5,14 +5,87 @@ import { useDispatch, useSelector } from 'react-redux';
 import api from '../tools/api';
 import { updateProfile } from '../redux/actions/actionCreators';
 import { toast } from 'sonner';
+
+import { outlinedInputClasses } from '@mui/material/OutlinedInput';
+import Box from '@mui/material/Box';
+import { createTheme, ThemeProvider, Theme, useTheme } from '@mui/material/styles';
 export default function UpdateInformations({ user }: any) {
     const [firstName, setfirstName] = useState(user?.first_name);
+    const outerTheme = useTheme();
     const { isDarkMode } = useSelector((state: any) => state)
     const [birthday, setBirthday] = useState(user?.birthday)
     const [lastName, setlastName] = useState(user?.last_name)
     const [picture, setPicture] = useState(user?.picture)
     const dispatch = useDispatch()
     const [allowUpdate, setAllowUpdate] = useState(false)
+    const customTheme = (outerTheme: Theme) =>
+
+        createTheme({
+            palette: {
+                mode: isDarkMode ? 'dark' : 'light',
+            },
+            components: {
+                MuiTextField: {
+                    styleOverrides: {
+                        root: {
+                            '--TextField-brandBorderColor': '#E0E3E7',
+                            '--TextField-brandBorderHoverColor': '#B2BAC2',
+                            '--TextField-brandBorderFocusedColor': '#6F7E8C',
+                            '& label.Mui-focused': {
+                                color: 'var(--TextField-brandBorderFocusedColor)',
+                            },
+                        },
+                    },
+                },
+                MuiOutlinedInput: {
+                    styleOverrides: {
+                        notchedOutline: {
+                            borderColor: 'var(--TextField-brandBorderColor)',
+                        },
+                        root: {
+                            [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
+                                borderColor: 'var(--TextField-brandBorderHoverColor)',
+                            },
+                            [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
+                                borderColor: 'var(--TextField-brandBorderFocusedColor)',
+                            },
+                        },
+                    },
+                },
+                MuiFilledInput: {
+                    styleOverrides: {
+                        root: {
+                            '&::before, &::after': {
+                                borderBottom: '2px solid var(--TextField-brandBorderColor)',
+                            },
+                            '&:hover:not(.Mui-disabled, .Mui-error):before': {
+                                borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
+                            },
+                            '&.Mui-focused:after': {
+                                borderBottom: '2px solid var(--TextField-brandBorderFocusedColor)',
+                            },
+                        },
+                    },
+                },
+                MuiInput: {
+                    styleOverrides: {
+                        root: {
+                            '&::before': {
+                                borderBottom: '2px solid var(--TextField-brandBorderColor)',
+                            },
+                            '&:hover:not(.Mui-disabled, .Mui-error):before': {
+                                borderBottom: '2px solid var(--TextField-brandBorderHoverColor)',
+                            },
+                            '&.Mui-focused:after': {
+                                borderBottom: '2px solid var(--TextField-brandBorderFocusedColor)',
+                            },
+                        },
+                    },
+                },
+            },
+        });
+
+
     const handleFileChange = (e: any) => {
         const file = e.target.files[0];
         setAllowUpdate(true)
@@ -60,7 +133,7 @@ export default function UpdateInformations({ user }: any) {
         }
     }
     return (
-        <section className={`flex w-full flex-col  p-10 space-y-6 `}>
+        <section className={`flex w-full  flex-col  p-10 space-y-6 `}>
             <div>
                 <div className="relative rounded-full w-32 h-32">
                     <input type="file" id="fileInput" className="hidden" onChange={handleFileChange} />
@@ -73,51 +146,61 @@ export default function UpdateInformations({ user }: any) {
             <div className="flex w-full space-x-2 ">
 
                 <div className={`flex w-1/2 flex-col `}>
-                    <TextField id="standard-basic"
-                        className='w-full'
-                        value={firstName}
-                        onChange={e => {
-                            setfirstName(e.target.value)
-                            setAllowUpdate(true)
-                        }}
-                        label="First Name"
-                        variant="standard" />
+                    <ThemeProvider theme={customTheme(outerTheme)}>
+
+                        <TextField id="standard-basic"
+                            className='w-full '
+                            value={firstName}
+                            onChange={e => {
+                                setfirstName(e.target.value)
+                                setAllowUpdate(true)
+                            }}
+
+                            label="First Name"
+                            variant="standard" />
+                    </ThemeProvider>
                     <InputError message={""} className="mt-2" />
 
                 </div>
                 <div className="flex w-1/2">
-                    <TextField id="standard-basic"
-                        value={lastName}
-                        className='w-full'
 
-                        onChange={e => {
-                            setlastName(e.target.value)
-                            setAllowUpdate(true)
-                        }}
-                        label="Last Name"
-                        variant="standard" />
+                    <ThemeProvider theme={customTheme(outerTheme)}>
+                        <TextField id="standard-basic"
+                            value={lastName}
+                            className='w-full'
+
+                            onChange={e => {
+                                setlastName(e.target.value)
+                                setAllowUpdate(true)
+                            }}
+                            label="Last Name"
+                            variant="standard" />
+                    </ThemeProvider>
                     <InputError message={""} className="mt-2" />
                 </div>
-            </div>
+            </div >
 
             <div className="flex w-full  space-x-2">
 
                 <div className='md:w-1/2'>
-                    <TextField
-                        id="birthday-input"
-                        type="date"
-                        className='w-full text-white'
-                        value={birthday}
-                        onChange={e => {
-                            setBirthday(e.target.value)
-                            setAllowUpdate(true)
-                        }}
-                        label="Birthday"
-                        variant="standard"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
+                    <ThemeProvider theme={customTheme(outerTheme)}>
+
+                        <TextField
+                            id="birthday-input"
+                            type="date"
+                            className='w-full text-white'
+                            value={birthday}
+                            onChange={e => {
+                                setBirthday(e.target.value)
+                                setAllowUpdate(true)
+                            }}
+                            label="Birthday"
+                            variant="standard"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </ThemeProvider>
                     <InputError message={""} className="mt-2" />
 
 

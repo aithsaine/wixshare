@@ -70,9 +70,9 @@ export default function NotificationFrom({ content }: any) {
                                         </div>
 
                                         {NotificationPosts.length > 0 && item.data_id && (<div className='border p-4 rounded-xl flex justify-start m-2 text-xs border-black w-full ms-1 '>
-                                            <img className='w-12 ' src={`http://localhost:8000/storage/posts/${item.data_id}/${NotificationPosts.find((elem: any) => elem.id == item.data_id).files[0]}`} alt="" />
+                                            <img className='w-12 ' src={`http://localhost:8000/storage/posts/${item.data_id}/${NotificationPosts.find((elem: any) => elem.id == item.data_id)?.files[0]}`} alt="" />
                                             <div>
-                                                {NotificationPosts.find((elem: any) => elem.id == item.data_id).title}
+                                                {NotificationPosts.find((elem: any) => elem.id == item.data_id)?.title}
                                             </div>
                                         </div>)}
                                     </div>
