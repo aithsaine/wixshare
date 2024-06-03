@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigation, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useNavigation, useNavigationType, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Loading from '../components/loading'
+
 import api from '../tools/api'
 import Post from '../components/post'
 import Comment from '../components/comment'
+
 import CommentItem from '../components/commentItem'
 import { HandThumbDownIcon, HandThumbUpIcon, PaperAirplaneIcon, XCircleIcon } from '@heroicons/react/24/solid'
 import InputEmojiWithRef from 'react-input-emoji'
@@ -14,6 +16,7 @@ import { Image } from 'primereact/image'
 import fakePicture from "../assets/imgs/profile.png"
 
 export default function PostDetails() {
+    const navigate = useNavigate();
     const { id } = useParams()
     const [post, setPost] = useState<any>()
     const [load, setLoad] = useState(true)
@@ -43,11 +46,12 @@ export default function PostDetails() {
             if (response?.data.success) {
                 setPost(response?.data.post)
                 setComments(response?.data.comments)
-                setLoad(false)
+                return setLoad(false)
             }
+            return navigate(-1)
 
         } catch (e) {
-
+            return navigate(-1)
         }
 
     }

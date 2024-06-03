@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 use Exception;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
@@ -159,6 +160,38 @@ class ProfileController extends Controller
             }
         } catch (ValidationException $er) {
             return response($er->errors(), 422);
+        }
+    }
+
+
+    public function changePassword(Request $request)
+    {
+        try {
+
+            $request->validate([
+                "current_password" => "required",
+                "new_password" => "required",
+                "new_password_confirmation" => "required"
+            ]);
+
+            if (Hash::check($request->current_password, $request->user()->password)) {
+                if ($request->new_password === $request->new_password_confirmation) {
+                    if (
+                        $request->new_password == $request->current_password
+                    ) {
+                        return response()->json(["msg" => "choose deferent new password"], 402);
+                    }
+
+                    $request->user()->password = Hash::make($request->new_password);
+                    $request->user()->save();
+                    return response()->json(["success" => true, "message" => "password updated with success"]);
+                }
+                return response()->json(["msg" => "new password and confirme password not the same"], 402);
+            } else {
+                return response()->json(["msg" => "password mismatch"], 402);
+            }
+        } catch (ValidationException $er) {
+            return response($er->errors(), 401);
         }
     }
 }

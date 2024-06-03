@@ -73,7 +73,7 @@ Route::middleware(["auth:sanctum", LastSeen::class])->group(function () {
     Route::patch("/profile/picture/update", [\App\Http\Controllers\Api\ProfileController::class,  "uploadOnlyPicture"])->name("profile.updatePicture");
     Route::patch("/profile/description", [\App\Http\Controllers\Api\ProfileController::class, "addDescription"]);
     Route::patch("/profile/cover/upload", [\App\Http\Controllers\Api\ProfileController::class, "uploadCover"]);
-
+    Route::patch("/profile/password/change", [\App\Http\Controllers\Api\ProfileController::class, "changePassword"]);
     //Comment Controller
     Route::get("/comments/{post_id}", [\App\Http\Controllers\Api\CommentController::class, "index"]);
     Route::post("/comment/store", [\App\Http\Controllers\Api\CommentController::class, "store"])->name("comment.store");
