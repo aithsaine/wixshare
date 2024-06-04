@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Skeleton } from 'primereact/skeleton'
 import { addNotifications } from '../redux/actions/actionCreators'
-
+import fakePicture from "../assets/imgs/profile.png"
 export default function NotificationFrom({ content }: any) {
     const { isDarkMode, notifications, auth } = useSelector((state: any) => state)
     const [NotificationPosts, setNotificationPosts] = useState<any>([]);
@@ -65,7 +65,7 @@ export default function NotificationFrom({ content }: any) {
                                     <div className={` font-mono px-3 py-3 my-1 ${isDarkMode ? " bg-slate-500" : " bg-sky-50"} text-black rounded-xl w-full`}>
 
                                         <Link to={`/account/${item.from_id}`} className={`flex items-center justify-between w-full`}>
-                                            <img className="rounded-full object-cover h-8 w-8" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${item.user_picture}`} />
+                                            <img className="rounded-full object-cover h-8 w-8" src={item.user_picture != null ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${item.user_picture}` : fakePicture} />
                                             <div className={`leading-snug text-[12px] text-black"}  `}><span className='m-1 font-bold'>{item.sender_name}</span> {(item.type == "new_follower" ? " started following you." : item.type == "new_comment" ? "commented on your post." : "reacted on your post.")}  <span className='text-[10px] ms-4'>{item.time}</span></div>
 
                                         </Link>

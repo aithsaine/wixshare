@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import api from '../tools/api';
 import { updateProfile } from '../redux/actions/actionCreators';
 import { toast } from 'sonner';
-
+import fakeProfile from "../assets/imgs/profile.png"
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider, Theme, useTheme } from '@mui/material/styles';
@@ -137,7 +137,7 @@ export default function UpdateInformations({ user }: any) {
             <div>
                 <div className="relative rounded-full w-32 h-32">
                     <input type="file" id="fileInput" className="hidden" onChange={handleFileChange} />
-                    <img id="previewImage" className="w-full h-full rounded-full object-cover" src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}`} alt="" />
+                    <img id="previewImage" className="w-full h-full rounded-full object-cover" src={user?.picture != null ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}` : fakeProfile} alt="" />
                     <div onClick={() => document.getElementById("fileInput")?.click()} className={`absolute inset-0 flex justify-center rounded-full items-center border ${isDarkMode ? "border-white bg-white" : "border-black"}  bg-opacity-10 hover:bg-white cursor-pointer`}>
                         <img className="w-10 opacity-10" src="https://www.svgrepo.com/show/33565/upload.svg" alt="Upload" />
                     </div>

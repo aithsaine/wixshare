@@ -17,7 +17,7 @@ const ProfileCard = ({ user, followStatus, following, Unfollowe }: any) => {
                             style={{ borderRadius: "50%" }}
                             preview
                             className="h-32 w-32 rounded-full  mx-auto my-4"
-                            src={user?.picture != "" ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}` : fakePicture} alt="Profile"
+                            src={user?.picture != null ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}` : fakePicture} alt="Profile"
                         />
                         <div className="py-2">
                             <h3 className={`font-bold text-2xl ${isDarkMode ? "text-white" : "text-gray-800"}   mb-1`}>{user?.first_name} {user?.last_name}</h3>

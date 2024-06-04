@@ -33,7 +33,7 @@ export default function UserItem({ user, status, setHasNotSeenMsgs }: any) {
             <motion.img
                 onMouseEnter={() => setVisible(true)}
                 onMouseLeave={() => setVisible(false)}
-                className="rounded-full object-cover h-10 w-10" src={user?.picture != "" ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}` : fakeProfile} />
+                className="rounded-full object-cover h-10 w-10" src={user?.picture != null ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}` : fakeProfile} />
             {msgs_not_seen > 0 && <span className="absolute  top-10 md:top-2 end-6 inline-flex items-center  py-0.5 px-2 rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-red-500  text-white">{msgs_not_seen}</span>}
             {status == "Online" ? <span className="absolute  md:hidden c end-6 md:bottom-2  inline-flex items-center  p-1 rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-green-600  text-white"></span> : <span className="absolute c end-6 md:bottom-2  md:hidden inline-flex items-center  p-1 rounded-full text-xs font-medium transform -translate-y-1/2 translate-x-1/2 bg-gray-400  text-white"></span>}
 

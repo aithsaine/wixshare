@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import clsx from "clsx"
+import fakePicture from "../assets/imgs/profile.png"
 export default function LeftSideBoxChat({ message, sender_picture }: any) {
     const specificStateSelector = (state: any) => ({
         isDarkMode: state.isDarkMode,
@@ -14,7 +15,7 @@ export default function LeftSideBoxChat({ message, sender_picture }: any) {
                     <div className="break-all whitespace-pre-wrap">{message.message}</div>
                 </div>
                 <div className={`absolute top-0 w-4 h-4  ${isDarkMode ? " bg-black" : "bg-white "} rounded-bl-full left-4`}></div>
-                <img src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${sender_picture}`} className='w-6 h-6 rounded-full absolute top-0  rounded-br-full -left-4' alt="" />
+                <img src={sender_picture !== null ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${sender_picture}` : fakePicture} className='w-6 h-6 rounded-full absolute top-0  rounded-br-full -left-4' alt="" />
 
             </div>
         </div>)

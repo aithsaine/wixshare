@@ -10,7 +10,7 @@ import fakeUserProfile from "../assets/imgs/profile.png"
 export default function SuggestItem({ user }: any) {
     const { isDarkMode } = useSelector((state: any) => state)
     const [followStatus, setFollowStatus] = useState(user?.FollowStatus)
-    const [userPicture, setUserPicture] = useState<string>(user?.picture != "" ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}` : fakeUserProfile)
+    const [userPicture, setUserPicture] = useState<string>(user?.picture != null ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${user?.picture}` : fakeUserProfile)
     const following = async (e: any) => {
         e.preventDefault();
         try {

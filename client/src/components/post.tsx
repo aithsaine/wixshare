@@ -128,7 +128,7 @@ export default function Post({ post }: any) {
             <div key={post?.id} style={{ minHeight: "20px" }}
                 className={`w-full my-4 p-2 relative flex  flex-col items-start mt-4 rounded-xl ${isDarkMode ? "bg-slate-900 text-white sd shadow-whide" : "text-black bg-white shadow-md"} lg:w-3/4`}>
                 <Link to={`/account/${post?.user_id}`} className="flex items-center">
-                    <img className="rounded-full object-cover h-10 w-10" src={post?.user_picture != "" ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${post?.user_picture}` : fakePicture} />
+                    <img className="rounded-full object-cover h-10 w-10" src={post?.user_picture != null ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${post?.user_picture}` : fakePicture} />
                     <div className="ml-2 flex flex-col items-start">
                         <div className={`leading-snug text-sm ${isDarkMode ? "text-white" : ""}  font-bold`}>{post?.user_name?.toUpperCase()}</div>
                         <div className={`leading-snug text-xs ${isDarkMode ? "text-gray-400" : ""} `}>{post?.date}</div>

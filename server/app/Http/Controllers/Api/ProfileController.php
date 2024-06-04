@@ -173,7 +173,6 @@ class ProfileController extends Controller
                 "new_password" => "required",
                 "new_password_confirmation" => "required"
             ]);
-
             if (Hash::check($request->current_password, $request->user()->password)) {
                 if ($request->new_password === $request->new_password_confirmation) {
                     if (

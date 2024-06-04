@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import { LoaderIcon } from 'react-hot-toast';
-
+import fakeProfile from "../assets/imgs/profile.png"
 export default function RightSideBoxChat({ message, processing = false }: any) {
     const specificStateSelector = (state: any) => ({
         auth: state.auth,
@@ -24,7 +24,7 @@ export default function RightSideBoxChat({ message, processing = false }: any) {
 
 
                     <div className={`absolute top-0 w-4 h-4  bg-[#bbf7d0]  rounded-br-full right-4`}></div>
-                    <img src={`${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}`} className='w-6 h-6 rounded-full absolute top-0  rounded-br-full -right-4' alt="" />
+                    <img src={auth?.picture ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${auth?.picture}` : fakeProfile} className='w-6 h-6 rounded-full absolute top-0  rounded-br-full -right-4' alt="" />
 
                 </div>
             </div >

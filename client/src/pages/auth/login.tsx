@@ -36,7 +36,7 @@ export default function Login() {
             })
             if (resp.data.success) {
                 setWait(false);
-                if (resp.data.user_picture == "") {
+                if (resp.data.user_picture == null) {
                     return navigate(UPLOADPROFILEPICTURE)
                 }
                 return navigate(FEEDS)

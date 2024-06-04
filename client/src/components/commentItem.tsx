@@ -10,7 +10,7 @@ export default function CommentItem({ filename, user_name, user_id, date, conten
 
     return (
         <div className={`flex  items-center mb-4`}>
-            <img src={filename != "" ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${filename}` : fakePicture} alt="Avatar" className="w-8 h-8 rounded-full mr-2 object-cover" />
+            <img src={filename != null ? `${process.env.REACT_APP_BACKEND_URI}/storage/profiles/${filename}` : fakePicture} alt="Avatar" className="w-8 h-8 rounded-full mr-2 object-cover" />
             <div className=''>
                 <Link to={`/account/${user_id}`} className="flex items-center ">
                     <span className={`${isDarkMode ? "text-white" : "text-black"} font-semibold  text-sm mr-1`}>{user_name}</span>

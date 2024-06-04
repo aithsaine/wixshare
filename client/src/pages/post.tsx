@@ -24,8 +24,8 @@ export default function PostDetails() {
     const [newComment, setNewComment] = useState<string>("")
     const { isDarkMode, auth } = useSelector((state: any) => state)
     const [itemCmt, setItemCmt] = useState<any>(null);
-    const [lks, setLikes] = useState(post?.likes ?? 0)
-    const [dsl, setDislikes] = useState(post?.dislikes ?? 0)
+    const [lks, setLikes] = useState(0)
+    const [dsl, setDislikes] = useState(0)
     const [reactType, setReactType] = useState(post?.reaction)
     const [cols, setCols] = useState<number>(1)
 
@@ -45,6 +45,8 @@ export default function PostDetails() {
             const response = await api.get(`api/post/${PostId}/detail`)
             if (response?.data.success) {
                 setPost(response?.data.post)
+                setLikes(response?.data.post?.likes)
+                setDislikes(response?.data.post?.dislikes)
                 setComments(response?.data.comments)
                 return setLoad(false)
             }
@@ -145,8 +147,8 @@ export default function PostDetails() {
     }
 
     return (
-        <section className='flex mt-6 h-screen items-start justify-center'>
-            <div className="w-1/2">
+        <section className='flex mt-6 flex-col md:flex-row h-screen items-start justify-center'>
+            <div className="md:w-1/2 w-full">
                 {
                     post && (
 
@@ -206,7 +208,7 @@ export default function PostDetails() {
                             }
 
 
-                            <div className={"m-4 flex items-center justify-between w-full"}>
+                            <div className={"m-4 flex  items-center justify-between w-full"}>
                                 <div>
 
                                     <span className={"text-sm"}>{lks}</span>
@@ -234,10 +236,10 @@ export default function PostDetails() {
 
 
             </div>
-            <div className="w-1/2">
+            <div className="md:w-1/2 w-full">
                 {comments && (
-                    <div className="w-full ">
-                        <div className="flex  " >
+                    <div className="w-full py-4 ">
+                        <div className="flex mx-4 " >
 
                             <InputEmojiWithRef
                                 cleanOnEnter={true}
