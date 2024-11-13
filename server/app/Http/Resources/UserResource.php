@@ -3,11 +3,9 @@
 namespace App\Http\Resources;
 
 use App\Helpers\Helper;
-use App\Models\Chat;
 use App\Models\Follower;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class UserResource extends JsonResource
 {
